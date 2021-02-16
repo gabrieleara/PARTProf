@@ -2,6 +2,7 @@
 
 import argparse
 import sys
+import os
 import numpy as np
 import pandas as pd
 
@@ -71,6 +72,8 @@ known_units = [
     ''.join(map(str, x)) for x in cartesian(unit_modifiers, base_units)
 ]
 
+known_units_underscore = tuple(["_" + x for x in known_units])
+
 # +--------------------------------------------------------+
 # |            Mapping labels to output columns            |
 # +--------------------------------------------------------+
@@ -112,16 +115,29 @@ def rawfile_to_df(inf):
         else:
             # Parse line and add it to the dictionary
             split = line.split()
-            k = split[0]
+            k = split[0].strip()
             vv = split[1:]
+
+            # Some columns are already in the _ format, but I don't like it,
+            # I prefer to do it manually in python so that I can change the
+            # mapping
+            # TODO:
+
+            if k.endswith(known_units_underscore):
+                #print("!!!!" + k)
+                ssplit = k.split('_')
+                k = '_'.join(ssplit[0:-1])
+                vv = [ssplit[-1]] + vv
+                #print(">>" + k)
+                #print(">>" + str(vv))
 
             # Remap columns based on the configured mapping
             if k in col_mapping:
                 k = col_mapping[k]
 
             # Units will be embedded in column names
-            if len(vv) > 1 and vv[0] in known_units:
-                k += '_' + vv[0]
+            if len(vv) > 1 and vv[0].strip() in known_units:
+                k += '_' + vv[0].strip()
                 vv = vv[1:]
 
             needs_suffix = len(vv) > 1
@@ -153,7 +169,7 @@ def call_or_exit_on_file(fname, fun):
     except:
         print("Unexpected error:", sys.exc_info()[0])
         raise
-#-- def call_or_exit_on_file
+#-- call_or_exit_on_file
 
 
 def main():
@@ -164,7 +180,23 @@ def main():
         call_or_exit_on_file(args.col_map, load_mapping_from_file)
 
     df = call_or_exit_on_file(args.in_file, rawfile_to_df)
-    df.to_csv(args.out_file, index=None)
+
+    # Create a temporary file in the destination mount fs
+    # (using tmp does not mean that moving = no copy)
+    tmpfile_name = os.path.dirname(
+        os.path.abspath(args.out_file)
+        ) + '/raw_' + str(os.getpid()) + '.tmp'
+
+    # tmpfile_name = '/tmp/raw_' + str(os.getpid()) + '.tmp'
+    df.to_csv(tmpfile_name, index=None)
+
+    # NOTE: It should be safe this way, but otherwise please
+    # disable signal interrupts before this operation
+
+    os.rename(tmpfile_name, args.out_file)
+
+    # NOTE: If disabled, re-enable signal interrupts here
+    # (or don't, the program will terminate anyway)
 
     return 0
 #-- main
