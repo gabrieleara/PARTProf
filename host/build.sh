@@ -42,7 +42,8 @@ function get_project_path() {
 
 # -------------------------------------------------------- #
 
-# Depends on: pandas (through python3-pip)
+# Depends on: pandas (through python3-pip); use:
+# sudo apt update && sudo apt install python3-pip -y && pip3 install pandas
 
 (
     set -e
@@ -69,15 +70,34 @@ function get_project_path() {
     # find "$results_dir" -name measure_power.txt -exec touch {} \;
     # find "$results_dir" -name measure_time.txt  -exec touch {} \;
 
+    nprocs=$(nproc)
+    nprocs=$((nprocs / 2))
+
+    cpumask="0-$((nprocs-1))"
+
     for d in "$results_dir/"*; do
         if [ ! -d "$d" ] || [ "$d" = "$results_dir/." ] ||
             [ "$d" = "$results_dir/.." ]; then
             continue
         fi
 
+
         COL_OPT="$HOST_PATH/raw_$(basename $d).cmap"
-        make -C "$d" -f "$MAKEFILE" col_opt="$COL_OPT" -j$(nproc) \
-            >"$d.log" 2>"$d.error_log" &
+
+        set +e
+        start_time="$(date -u +%s.%N)"
+        taskset -c "$cpumask" make -r -C "$d" -f "$MAKEFILE" col_opt="$COL_OPT" -j${nprocs}
+        # >"$d.log" 2>"$d.error_log" &
+        res=$?
+        end_time="$(date -u +%s.%N)"
+        set -e
+
+        elapsed="$(bc <<<"$end_time-$start_time")"
+        echo "Total of $elapsed seconds elapsed for $d"
+
+        if [ res = 1 ]; then
+            false
+        fi
     done
 
     wait

@@ -2,4 +2,4 @@ sensor_kfc=sensor_cpu
 sensor_arm=sensor_big
 sensor_mem=sensor_mem
 sensor_g3d=sensor_gpu
-TIME=time
+TIME:=time
