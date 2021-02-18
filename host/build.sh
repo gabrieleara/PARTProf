@@ -50,6 +50,9 @@ function get_project_path() {
 
     PROJ_PATH=$(get_project_path "..")
     HOST_PATH="$PROJ_PATH/host"
+    PYSCRIPTS_PATH="$HOST_PATH/pyscripts"
+
+    python3 -m compileall "${PYSCRIPTS_PATH}"
 
     # Arguments: [results-dir]
     results_dir=results
@@ -63,7 +66,7 @@ function get_project_path() {
         results_dir=$(realpath "$PROJ_PATH/$results_dir")
     fi
 
-    export PATH="$HOST_PATH/pyscripts:$PATH"
+    export PATH="${PYSCRIPTS_PATH}:${PATH}"
     MAKEFILE="$HOST_PATH/base.makefile"
 
     # NOTE: next command is virtually equivalent to a clean
@@ -81,14 +84,21 @@ function get_project_path() {
             continue
         fi
 
+        deps_makefile="$(mktemp)"
+
+        echo "GENERATING DEPENDENCIES FOR : $d"
+        echo "..."
+        "$HOST_PATH/gen_deps.sh" "$d" >> "${deps_makefile}"
 
         COL_OPT="$HOST_PATH/raw_$(basename $d).cmap"
 
-        time taskset -c "$cpumask" make -r -C "$d" -f "$MAKEFILE" col_opt="$COL_OPT" -j${nprocs}
+        echo "STARTING GENERATION"
+        time taskset -c "$cpumask" make -r -C "$d" -f "$MAKEFILE" \
+            GENERATED_DEPS="${deps_makefile}" \
+            col_opt="$COL_OPT" -j${nprocs}
         # >"$d.log" 2>"$d.error_log" &
 
-        read
-
+        rm "${deps_makefile}"
 
     done
 

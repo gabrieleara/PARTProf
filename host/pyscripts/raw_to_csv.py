@@ -156,6 +156,7 @@ def rawfile_to_df(inf):
     return df
 #-- rawfile_to_df
 
+# TODO: a way to ignore rows and insert manually empty lines in measure_time_*.txt
 
 def call_or_exit_on_file(fname, fun):
     try:
