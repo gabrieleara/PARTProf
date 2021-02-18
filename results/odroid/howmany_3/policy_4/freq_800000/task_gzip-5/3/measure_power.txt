@@ -1,0 +1,1292 @@
+sensor_arm uA 1146416
+sensor_arm uV 916250
+sensor_arm uW 1049736
+sensor_mem uA 46774
+sensor_mem uV 1216250
+sensor_mem uW 55936
+sensor_kfc uA 24522
+sensor_kfc uV 917500
+sensor_kfc uW 22008
+sensor_g3d uA 48184
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 26000 26000 29000 27000
+gpu_temp 23000
+fan_speed 255
+
+sensor_arm uA 1152170
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 41496
+sensor_mem uV 1215000
+sensor_mem uW 49815
+sensor_kfc uA 22265
+sensor_kfc uV 917500
+sensor_kfc uW 20174
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 27000 26000 29000 27000
+gpu_temp 23000
+fan_speed 255
+
+sensor_arm uA 1152992
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 38220
+sensor_mem uV 1215000
+sensor_mem uW 46170
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 27000 26000 30000 27000
+gpu_temp 24000
+fan_speed 255
+
+sensor_arm uA 1150526
+sensor_arm uV 916250
+sensor_arm uW 1053400
+sensor_mem uA 36036
+sensor_mem uV 1215000
+sensor_mem uW 43740
+sensor_kfc uA 10736
+sensor_kfc uV 918750
+sensor_kfc uW 9180
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 27000 27000 30000 28000
+gpu_temp 24000
+fan_speed 255
+
+sensor_arm uA 1153266
+sensor_arm uV 916250
+sensor_arm uW 1056148
+sensor_mem uA 36491
+sensor_mem uV 1215000
+sensor_mem uW 43740
+sensor_kfc uA 10980
+sensor_kfc uV 918750
+sensor_kfc uW 9180
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 27000 27000 30000 28000
+gpu_temp 24000
+fan_speed 255
+
+sensor_arm uA 1154910
+sensor_arm uV 916250
+sensor_arm uW 1057064
+sensor_mem uA 36036
+sensor_mem uV 1215000
+sensor_mem uW 43740
+sensor_kfc uA 10980
+sensor_kfc uV 918750
+sensor_kfc uW 9180
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 28000 27000 30000 28000
+gpu_temp 24000
+fan_speed 255
+
+sensor_arm uA 1156280
+sensor_arm uV 916250
+sensor_arm uW 1058896
+sensor_mem uA 34034
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 10980
+sensor_kfc uV 918750
+sensor_kfc uW 9180
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 28000 27000 30000 29000
+gpu_temp 24000
+fan_speed 255
+
+sensor_arm uA 1153814
+sensor_arm uV 916250
+sensor_arm uW 1056148
+sensor_mem uA 34762
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48488
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 28000 27000 30000 29000
+gpu_temp 24000
+fan_speed 255
+
+sensor_arm uA 1154636
+sensor_arm uV 916250
+sensor_arm uW 1057064
+sensor_mem uA 36036
+sensor_mem uV 1215000
+sensor_mem uW 43740
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48488
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 28000 27000 31000 29000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1155732
+sensor_arm uV 916250
+sensor_arm uW 1057980
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 10980
+sensor_kfc uV 918750
+sensor_kfc uW 9180
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 28000 28000 31000 29000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1154362
+sensor_arm uV 916250
+sensor_arm uW 1057064
+sensor_mem uA 36036
+sensor_mem uV 1215000
+sensor_mem uW 43740
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 28000 28000 31000 29000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1152170
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 34216
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 31000 29000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1155184
+sensor_arm uV 916250
+sensor_arm uW 1057980
+sensor_mem uA 34762
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 31000 29000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1154910
+sensor_arm uV 916250
+sensor_arm uW 1057064
+sensor_mem uA 34489
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11529
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48488
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 31000 29000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1152992
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 34762
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 31000 29000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1152992
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 35217
+sensor_mem uV 1215000
+sensor_mem uW 42525
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 31000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1156828
+sensor_arm uV 916250
+sensor_arm uW 1058896
+sensor_mem uA 34762
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 32000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1160664
+sensor_arm uV 916250
+sensor_arm uW 1062560
+sensor_mem uA 35217
+sensor_mem uV 1215000
+sensor_mem uW 42525
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 31000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1158746
+sensor_arm uV 916250
+sensor_arm uW 1060728
+sensor_mem uA 35763
+sensor_mem uV 1215000
+sensor_mem uW 42525
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48488
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 31000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1149430
+sensor_arm uV 916250
+sensor_arm uW 1052484
+sensor_mem uA 39039
+sensor_mem uV 1215000
+sensor_mem uW 47385
+sensor_kfc uA 11529
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 32000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1157650
+sensor_arm uV 916250
+sensor_arm uW 1059812
+sensor_mem uA 35217
+sensor_mem uV 1215000
+sensor_mem uW 42525
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 32000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1106412
+sensor_arm uV 915000
+sensor_arm uW 1011990
+sensor_mem uA 39039
+sensor_mem uV 1215000
+sensor_mem uW 47385
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 32000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1157102
+sensor_arm uV 916250
+sensor_arm uW 1059812
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 32000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1159568
+sensor_arm uV 916250
+sensor_arm uW 1061644
+sensor_mem uA 33033
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 28000 32000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1151896
+sensor_arm uV 915000
+sensor_arm uW 1053165
+sensor_mem uA 32487
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 29000 32000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1149430
+sensor_arm uV 916250
+sensor_arm uW 1052484
+sensor_mem uA 32760
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 29000 32000 30000
+gpu_temp 25000
+fan_speed 255
+
+sensor_arm uA 1151074
+sensor_arm uV 916250
+sensor_arm uW 1054316
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1158746
+sensor_arm uV 915000
+sensor_arm uW 1059570
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1155458
+sensor_arm uV 916250
+sensor_arm uW 1057980
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1156828
+sensor_arm uV 915000
+sensor_arm uW 1057740
+sensor_mem uA 33488
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1161486
+sensor_arm uV 915000
+sensor_arm uW 1062315
+sensor_mem uA 33215
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1159020
+sensor_arm uV 916250
+sensor_arm uW 1061644
+sensor_mem uA 32032
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 29000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1159020
+sensor_arm uV 916250
+sensor_arm uW 1061644
+sensor_mem uA 33033
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 10980
+sensor_kfc uV 917500
+sensor_kfc uW 9170
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1159568
+sensor_arm uV 916250
+sensor_arm uW 1061644
+sensor_mem uA 33033
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1157650
+sensor_arm uV 916250
+sensor_arm uW 1059812
+sensor_mem uA 32760
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11773
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1158746
+sensor_arm uV 916250
+sensor_arm uW 1060728
+sensor_mem uA 32214
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 10980
+sensor_kfc uV 917500
+sensor_kfc uW 9170
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1159020
+sensor_arm uV 916250
+sensor_arm uW 1061644
+sensor_mem uA 32760
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48488
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1153540
+sensor_arm uV 915000
+sensor_arm uW 1054995
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1150252
+sensor_arm uV 915000
+sensor_arm uW 1052250
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1151074
+sensor_arm uV 915000
+sensor_arm uW 1053165
+sensor_mem uA 33033
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11773
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1151074
+sensor_arm uV 915000
+sensor_arm uW 1053165
+sensor_mem uA 32487
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1156006
+sensor_arm uV 915000
+sensor_arm uW 1057740
+sensor_mem uA 33033
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1109700
+sensor_arm uV 915000
+sensor_arm uW 1014735
+sensor_mem uA 34216
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1155184
+sensor_arm uV 916250
+sensor_arm uW 1057980
+sensor_mem uA 35763
+sensor_mem uV 1215000
+sensor_mem uW 42525
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1152992
+sensor_arm uV 915000
+sensor_arm uW 1054080
+sensor_mem uA 32760
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1151896
+sensor_arm uV 915000
+sensor_arm uW 1053165
+sensor_mem uA 33215
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1152718
+sensor_arm uV 915000
+sensor_arm uW 1054080
+sensor_mem uA 34034
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1154910
+sensor_arm uV 915000
+sensor_arm uW 1055910
+sensor_mem uA 33488
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1155458
+sensor_arm uV 915000
+sensor_arm uW 1056825
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1158746
+sensor_arm uV 915000
+sensor_arm uW 1059570
+sensor_mem uA 34762
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 30000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1161486
+sensor_arm uV 915000
+sensor_arm uW 1062315
+sensor_mem uA 33215
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1160664
+sensor_arm uV 915000
+sensor_arm uW 1061400
+sensor_mem uA 32760
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1157924
+sensor_arm uV 915000
+sensor_arm uW 1058655
+sensor_mem uA 33488
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1156280
+sensor_arm uV 916250
+sensor_arm uW 1058896
+sensor_mem uA 33215
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1157924
+sensor_arm uV 915000
+sensor_arm uW 1058655
+sensor_mem uA 34034
+sensor_mem uV 1215000
+sensor_mem uW 41310
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1157102
+sensor_arm uV 916250
+sensor_arm uW 1059812
+sensor_mem uA 33033
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1157102
+sensor_arm uV 916250
+sensor_arm uW 1059812
+sensor_mem uA 33033
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1152992
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 33488
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1153266
+sensor_arm uV 916250
+sensor_arm uW 1056148
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1152992
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 33488
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1150252
+sensor_arm uV 916250
+sensor_arm uW 1053400
+sensor_mem uA 32760
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1158472
+sensor_arm uV 916250
+sensor_arm uW 1060728
+sensor_mem uA 33761
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1158746
+sensor_arm uV 916250
+sensor_arm uW 1060728
+sensor_mem uA 33488
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1152444
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 35217
+sensor_mem uV 1215000
+sensor_mem uW 42525
+sensor_kfc uA 11773
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1101206
+sensor_arm uV 916250
+sensor_arm uW 1008516
+sensor_mem uA 35490
+sensor_mem uV 1215000
+sensor_mem uW 42525
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1153540
+sensor_arm uV 916250
+sensor_arm uW 1056148
+sensor_mem uA 35035
+sensor_mem uV 1215000
+sensor_mem uW 42525
+sensor_kfc uA 12017
+sensor_kfc uV 917500
+sensor_kfc uW 11004
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1163678
+sensor_arm uV 916250
+sensor_arm uW 1065308
+sensor_mem uA 32214
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1022500
+sensor_g3d uW 49056
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1158746
+sensor_arm uV 916250
+sensor_arm uW 1060728
+sensor_mem uA 32760
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1147238
+sensor_arm uV 916250
+sensor_arm uW 1050652
+sensor_mem uA 32487
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1150526
+sensor_arm uV 916250
+sensor_arm uW 1053400
+sensor_mem uA 32032
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11529
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1156280
+sensor_arm uV 916250
+sensor_arm uW 1058896
+sensor_mem uA 32032
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1159020
+sensor_arm uV 916250
+sensor_arm uW 1061644
+sensor_mem uA 31759
+sensor_mem uV 1215000
+sensor_mem uW 37665
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1154910
+sensor_arm uV 916250
+sensor_arm uW 1057064
+sensor_mem uA 32032
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48792
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 32000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1152170
+sensor_arm uV 916250
+sensor_arm uW 1055232
+sensor_mem uA 33033
+sensor_mem uV 1215000
+sensor_mem uW 40095
+sensor_kfc uA 11224
+sensor_kfc uV 918750
+sensor_kfc uW 10098
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1157650
+sensor_arm uV 916250
+sensor_arm uW 1059812
+sensor_mem uA 32032
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11773
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
+sensor_arm uA 1159020
+sensor_arm uV 916250
+sensor_arm uW 1061644
+sensor_mem uA 32032
+sensor_mem uV 1215000
+sensor_mem uW 38880
+sensor_kfc uA 11224
+sensor_kfc uV 917500
+sensor_kfc uW 10087
+sensor_g3d uA 48944
+sensor_g3d uV 1021250
+sensor_g3d uW 49008
+cpu_freq 200000 200000 200000 200000 800000 800000 800000 800000
+cpu_temp -1 -1 -1 -1 30000 29000 33000 31000
+gpu_temp 26000
+fan_speed 255
+
