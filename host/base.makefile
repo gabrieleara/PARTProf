@@ -19,10 +19,20 @@ tasks       = $(shell $(def_funs); find_suffixes 'task_')
 
 # head is for debug
 orig_measure_power_files = $(shell find . -name 'measure_power.txt')
-orig_measure_time_files  = $(shell find . -name 'measure_time.txt' )
+
+orig_measure_time_files_1  = $(shell find . -name 'measure_time_1.txt')
+orig_measure_time_files_2  = $(shell find . -name 'measure_time_2.txt')
+orig_measure_time_files_3  = $(shell find . -name 'measure_time_3.txt')
+orig_measure_time_files_4  = $(shell find . -name 'measure_time_4.txt')
 
 raw_measure_power_files  = $(patsubst %measure_power.txt,%raw_measure_power.csv,$(orig_measure_power_files))
-raw_measure_time_files   = $(patsubst %measure_time.txt,%raw_measure_time.csv,$(orig_measure_time_files))
+
+raw_measure_time_files_1 = $(patsubst %measure_time_1.txt,%raw_measure_time_1.csv,$(orig_measure_time_files_1))
+raw_measure_time_files_2 = $(patsubst %measure_time_2.txt,%raw_measure_time_2.csv,$(orig_measure_time_files_2))
+raw_measure_time_files_3 = $(patsubst %measure_time_3.txt,%raw_measure_time_3.csv,$(orig_measure_time_files_3))
+raw_measure_time_files_4 = $(patsubst %measure_time_4.txt,%raw_measure_time_4.csv,$(orig_measure_time_files_4))
+
+raw_measure_time_files   = $(raw_measure_time_files_1) $(raw_measure_time_files_2) $(raw_measure_time_files_3) $(raw_measure_time_files_4)
 
 raw_measure_files        = $(raw_measure_time_files) $(raw_measure_power_files)
 

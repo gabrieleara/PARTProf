@@ -84,20 +84,12 @@ function get_project_path() {
 
         COL_OPT="$HOST_PATH/raw_$(basename $d).cmap"
 
-        set +e
-        start_time="$(date -u +%s.%N)"
-        taskset -c "$cpumask" make -r -C "$d" -f "$MAKEFILE" col_opt="$COL_OPT" -j${nprocs}
+        time taskset -c "$cpumask" make -r -C "$d" -f "$MAKEFILE" col_opt="$COL_OPT" -j${nprocs}
         # >"$d.log" 2>"$d.error_log" &
-        res=$?
-        end_time="$(date -u +%s.%N)"
-        set -e
 
-        elapsed="$(bc <<<"$end_time-$start_time")"
-        echo "Total of $elapsed seconds elapsed for $d"
+        read
 
-        if [ res = 1 ]; then
-            false
-        fi
+
     done
 
     wait
