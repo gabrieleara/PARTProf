@@ -98,6 +98,9 @@ def load_mapping_from_file(cinf):
 #-- load_mapping_from_file
 
 
+# Ignored columns
+ignore_list = ['FOREVER:', 'gzip:', 'Command', 'Run']
+
 # +--------------------------------------------------------+
 # |                          Body                          |
 # +--------------------------------------------------------+
@@ -142,10 +145,17 @@ def rawfile_to_df(inf):
 
             needs_suffix = len(vv) > 1
 
+            if k in ignore_list:
+                continue
+
             # Keys with multiple values will be split
             # into multiple columns in the resulting CSV
             for idx, v in enumerate(vv):
                 key = k + '_' + str(idx) if needs_suffix else k
+
+                if ('time' in key and float(v.strip()) < 0.05):
+                    continue
+
                 kvalues[key] = v.strip()
 
     # Append to dataframe
@@ -157,6 +167,7 @@ def rawfile_to_df(inf):
 #-- rawfile_to_df
 
 # TODO: a way to ignore rows and insert manually empty lines in measure_time_*.txt
+
 
 def call_or_exit_on_file(fname, fun):
     try:
@@ -186,7 +197,7 @@ def main():
     # (using tmp does not mean that moving = no copy)
     tmpfile_name = os.path.dirname(
         os.path.abspath(args.out_file)
-        ) + '/raw_' + str(os.getpid()) + '.tmp'
+    ) + '/raw_' + str(os.getpid()) + '.tmp'
 
     # tmpfile_name = '/tmp/raw_' + str(os.getpid()) + '.tmp'
     df.to_csv(tmpfile_name, index=None)
