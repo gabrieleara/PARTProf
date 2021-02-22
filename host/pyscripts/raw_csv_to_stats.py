@@ -53,7 +53,6 @@ def parse_cmdline_args():
 def to_single_df(in_files):
     dfs = []
     for inf in in_files:
-        print(inf)
         df = pd.from_csv(inf)
         dfs += df
 

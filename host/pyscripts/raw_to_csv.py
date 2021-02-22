@@ -127,12 +127,9 @@ def rawfile_to_df(inf):
             # TODO:
 
             if k.endswith(known_units_underscore):
-                #print("!!!!" + k)
                 ssplit = k.split('_')
                 k = '_'.join(ssplit[0:-1])
                 vv = [ssplit[-1]] + vv
-                #print(">>" + k)
-                #print(">>" + str(vv))
 
             # Remap columns based on the configured mapping
             if k in col_mapping:

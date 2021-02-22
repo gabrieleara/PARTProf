@@ -118,8 +118,8 @@ function find_all_deps() {
     echo -n 'outdata.csv: '
     tr '\n' ' ' < "${all_stats_files_fname}"
     echo '' # tr removes also the last newline, so I have to add it manually
-    # echo -e '\t' 'some_complex_command -o $@ $^'
-    # echo ''
+    echo -e '\t' 'collect_stats.py -o $@ $^'
+    echo ''
 
     rm "${all_stats_files_fname}"
 )
