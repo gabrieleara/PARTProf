@@ -1,0 +1,4 @@
+#!/bin/bash
+
+EXP_POLICY_FORCED_LIST=()
+EXP_POLICY_FORCED_LIST+=(4)

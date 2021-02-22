@@ -8,6 +8,6 @@ project(PARTProf_EMBEDDED
 # Set a default build type if none was specified
 set(default_build_type "Release")
 
-add_subdirectory(sampler)
-add_subdirectory(cacheapp)
-add_subdirectory(forever)
+add_subdirectory(apps/sampler)
+add_subdirectory(apps/cacheapp)
+add_subdirectory(apps/forever)
