@@ -10,3 +10,4 @@ set(default_build_type "Release")
 
 add_subdirectory(sampler)
 add_subdirectory(cacheapp)
+add_subdirectory(forever)
