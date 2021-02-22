@@ -102,6 +102,9 @@ def main():
         print(f.name)
         out_df = out_df.append(df, ignore_index=True)
 
+    if len(out_df['policy'].unique()) == 1:
+        out_df['policy'] = 'cpu'
+
     # Create a temporary file in the destination mount fs
     # (using tmp does not mean that moving = no copy)
     tmpfile_name = os.path.dirname(
@@ -109,7 +112,7 @@ def main():
     ) + '/raw_' + str(os.getpid()) + '.tmp'
 
     # tmpfile_name = '/tmp/raw_' + str(os.getpid()) + '.tmp'
-    out_df.to_csv(tmpfile_name)
+    out_df.to_csv(tmpfile_name, index=None)
 
     # NOTE: It should be safe this way, but otherwise please
     # disable signal interrupts before this operation

@@ -52,7 +52,7 @@ function get_project_path() {
     HOST_PATH="$PROJ_PATH/host"
     PYSCRIPTS_PATH="$HOST_PATH/pyscripts"
 
-    python3 -m compileall "${PYSCRIPTS_PATH}"
+    python3 -m compileall "${PYSCRIPTS_PATH}/*" >/dev/null
 
     # Arguments: [results-dir]
     results_dir=results
