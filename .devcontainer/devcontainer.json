@@ -20,6 +20,7 @@
     "extensions": [
         "twxs.cmake",
         "ms-vscode.cmake-tools",
+        "ms-python.python",
     ],
     // Ports to forward to the container; this project needs
     // none.
