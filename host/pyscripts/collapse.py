@@ -31,6 +31,7 @@ options = [
     },
 ]
 
+
 def parse_cmdline_args():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -47,29 +48,44 @@ def parse_cmdline_args():
 
 # ----------------------------------------------------------
 
-suffix = 'mean'
+ref_suffix = 'mean'
+
+suffixes = [
+    'mean',
+    'min',
+    '25%',
+    '50%',
+    '75%',
+    'max',
+]
 
 unit_to_field = {
     'uV': 'voltage',
     'uW': 'power',
 }
 
-interesting_fields = [
+# Order matters (for display reasons only)
+base_fields = [
     'howmany',
     'island',
-    'frequency',
     'task',
-    'time' + '_' + suffix,
+    'frequency',
 ]
+
+interesting_fields = base_fields.copy()
+
+for s in suffixes:
+    interesting_fields += ['time' + '_' + s]
 
 # ----------------------------------------------------------
 
-# This function:
-# - filters only rows containing the specified island
-# - drops columns that refer to data collected for the other
-#   island(s)
-# - remove from column names the name of the island itself
+
 def island_subtable(df, island, islands):
+    # This function:
+    # - filters only rows containing the specified island
+    # - drops columns that refer to data collected for the other
+    #   island(s)
+    # - remove from column names the name of the island itself
     island_suffix = '_' + island
     df = df[df['island'] == island]
 
@@ -80,16 +96,19 @@ def island_subtable(df, island, islands):
     return df.rename(columns=lambda col: col.replace(island_suffix, ''))
 #-- island_subtable
 
+
 def rel_time_calc(row, in_field, out_field, task_max_runtime):
     vmax = task_max_runtime[row['task']]
     row[out_field] = row[in_field] / vmax
     return row
 #-- rel_time_calc
 
+
 def collapse_table(df, reference_field='time'):
-    suffix              = globals()['suffix']
-    unit_to_field       = globals()['unit_to_field']
-    interesting_fields  = globals()['interesting_fields']
+    ref_suffix = globals()['ref_suffix']
+    suffixes = globals()['suffixes']
+    unit_to_field = globals()['unit_to_field']
+    interesting_fields = globals()['interesting_fields']
 
     df = df.rename({'policy': 'island'}, axis='columns')
     islands = df['island'].unique()
@@ -100,7 +119,8 @@ def collapse_table(df, reference_field='time'):
             original_field = 'sensor_' + island + '_' + unit
             novel_field = field + '_' + island
             translation_fields[original_field] = novel_field
-            interesting_fields += [ novel_field + '_' + suffix ]
+            for s in suffixes:
+                interesting_fields += [novel_field + '_' + s]
 
     # Rename a bunch of fields before starting actual operations
     for k, v in translation_fields.items():
@@ -126,8 +146,8 @@ def collapse_table(df, reference_field='time'):
 
     # Calculate max time needed for single execution on the
     # little core, for each task
-    the_suffix = '_' + suffix
-    in_field  = reference_field + the_suffix
+    the_suffix = '_' + ref_suffix
+    in_field = reference_field + the_suffix
     out_field = reference_field + '_' + 'rel'
 
     task_max_runtime = {}
@@ -146,8 +166,17 @@ def collapse_table(df, reference_field='time'):
         lambda row: rel_time_calc(row, in_field, out_field, task_max_runtime),
         axis=1,
     )
-    return df.rename(columns=lambda col: col.replace(the_suffix, ''))
+    # df = df.rename(columns=lambda col: col.replace(the_suffix, ''))
+    sorted_fields = base_fields.copy()
+    cols = list(df.columns)
+    for f in sorted_fields:
+        cols.remove(f)
+    sorted_fields += list(sorted(cols))
+    df = df[sorted_fields]
+    df = df.sort_values(by=base_fields, axis='index')
+    return df
 #-- collapse_table
+
 
 def safe_save_to_csv(out_df, out_file):
     # Create a temporary file in the destination mount fs
@@ -170,15 +199,16 @@ def safe_save_to_csv(out_df, out_file):
 
 #----------------------------------------------------------#
 
+
 def main():
     args = parse_cmdline_args()
     df = pd.read_csv(args.in_file)
     out_df = collapse_table(df)
-    Path()
     safe_save_to_csv(out_df, args.out_file)
 
     return 0
 #-- main
+
 
 if __name__ == "__main__":
     main()
