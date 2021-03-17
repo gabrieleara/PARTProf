@@ -15,4 +15,7 @@ for f in $infiles ; do
 
     # Then expand it to the new smaller tables
     ./host/pyscripts/prepare_tables.py "${out_dir}/${tname}" -o "${out_dir}/${dirname}"
+
+    # And calculate the coefficients using combinations of different methods
+    #TODO: disentangle time and power tables
 done
