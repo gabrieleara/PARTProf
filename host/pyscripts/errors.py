@@ -23,7 +23,7 @@ TIME    = 'time'
 POWER   = 'power'
 IDLE    = 'idle'
 
-COLL_TIME   = 'time_mean'
+COLL_TIME   = 'time_rel'
 COLL_POWER  = 'power_mean'
 
 MEAS_TIME   = 'meas_time'

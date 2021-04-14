@@ -142,7 +142,11 @@ def simulate_homogeneous(simtable, numcores):
     for h in range(1, numcores+1):
         for i in simtable[ISLAND].unique():
             for t in simtable[TASK].unique():
-                task_list = np.full(numcores, t)
+                # In any run, there are "h" active tasks and
+                # "numcores-h" idle tasks
+                task_list = [t    for _ in range(h)] + \
+                            [IDLE for _ in range(numcores-h)]
+
                 freqs = simtable[simtable[ISLAND] == i][FREQ].unique()
                 for f in freqs:
                     time = simulate_time(simtable, i, f, t)

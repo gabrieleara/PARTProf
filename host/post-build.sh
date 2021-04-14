@@ -19,10 +19,14 @@
     infiles=$(find "$results_dir" -name outdata.csv)
 
     # 'single', 'average', 'maximum'
-    power_method='single'
+    time_method='maximum'
 
     # 'single', 'true_regression', 'fixed_regression'
-    time_method='single'
+    power_method='fixed_regression'
+
+    error_tasks=("decrypt" "encrypt" "gzip-1" "gzip-5" "gzip-9" "hash" )
+
+    list_of_error_files=()
 
     for f in $infiles ; do
         dirname=$(basename "$(realpath "$(dirname "$f")")")
@@ -38,17 +42,17 @@
             -o "${out_dir}/${collapsed}"
         progress_done "$dirname"
 
-        # # Then expand it to the new smaller tables
+        # # Expand to other smaller tables (for plotting purposes only)
         # progress "$dirname" "EXPANDING DATA INTO SMALLER TABLES..."
-        ./host/pyscripts/prepare_tables.py                  \
-            "${out_dir}/${collapsed}"                       \
-            -o "${out_dir}/${dirname}"
+        # ./host/pyscripts/prepare_tables.py                  \
+        #     "${out_dir}/${collapsed}"                       \
+        #     -o "${out_dir}/${dirname}"
         # progress_done "$dirname"
 
         # Calculate the actual simulation table from the collapsed one
         # THIS IS THE TABLE THAT WILL BE USED BY RTSIM
         progress "$dirname" "PRODUCING SIMULATION TABLE..."
-        ./host/pyscripts/simtable.py
+        ./host/pyscripts/simtable.py                        \
             "${out_dir}/${collapsed}"                       \
             -p "${power_method}" -t "${time_method}"        \
             -o "${out_dir}/${simtable}"
@@ -69,6 +73,9 @@
             "${out_dir}/${simulation}"                      \
             -o "${out_dir}/${errors}"
         progress_done "$dirname"
+
+        list_of_error_files+=( "${out_dir}/${errors}" )
     done
 
+    ./host/pyscripts/describe_all_errors.py "${list_of_error_files[@]}" -t "${error_tasks[@]}"
 )

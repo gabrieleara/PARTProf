@@ -15,7 +15,7 @@ ISLAND  = 'island'
 FREQ    = 'frequency'
 TASK    = 'task'
 HOWMANY = 'howmany'
-TIME    = 'time_mean'
+TIME    = 'time_rel'
 POWER   = 'power_mean'
 IDLE    = 'idle'
 
