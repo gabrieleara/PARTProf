@@ -133,11 +133,6 @@ def time_max(df, island, frequency, task):
     df = df[df[FREQ] == frequency]
     df = df[df[TASK] == task]
     return df[TIME].max()
-    # howmanies = df[HOWMANY].unique()
-    # l = []
-    # for h in howmanies:
-    #     l += [df[df[HOWMANY] == h]['time_avg'].values[0]]
-    # return max(l)
 #-- time_max
 
 
@@ -164,11 +159,6 @@ def time_mean(df, island, frequency, task):
     df = df[df[FREQ] == frequency]
     df = df[df[TASK] == task]
     return df[TIME].mean()
-    # howmanies = df[HOWMANY].unique()
-    # l = []
-    # for h in howmanies:
-    #     l += [df[df[HOWMANY] == h]['time_avg'].values[0]]
-    # return sum(l) / (1.0 * len(l))
 #-- time_mean
 
 
@@ -218,17 +208,9 @@ def power_single(df, island, frequency, task):
 
 
 def power_getxy(df, pidle):
-    # x.append(0)
-    # y.append(pidle)
-    # for i in range(1, 5):
-    #     x.append(i)
-    #     y.append(df[df[HOWMANY] == i][POWER].values[0])
-    # x = np.array(x)
-    # y = np.array(y)
-
     numcores = df[HOWMANY].size
     x = np.arange(numcores+1)
-    y = np.empty_like(x)
+    y = np.empty_like(x, dtype=float)  # EXTREMELY IMPORTANT: USE FLOATS!
     y[0] = pidle
     for i in x[1:]:
         y[i] = df[df[HOWMANY] == i][POWER].values[0]
@@ -237,13 +219,42 @@ def power_getxy(df, pidle):
 #-- power_getxy
 
 
+# def plot_regression(title, x, y, m, q, qidle):
+#     yq = m * x + q
+#     yqi = m * x + qidle
+
+#     eyq = np.divide(abs(y - yq), y) * 100
+#     eyqi = np.divide(abs(y - yqi), y) * 100
+
+#     if (max(eyqi) > 25):
+#         print('TITLE:\t' + str(title))
+#         print('m:\t' + str(m))
+#         print('q:\t' + str(q))
+#         print('qi:\t' + str(qidle))
+#         print('x:\t' + str(x))
+#         print('y:\t' + str(y))
+#         print('yq:\t' + str(yq))
+#         print('yqi:\t' + str(yqi))
+#         print('eyq:\t' + str(eyq))
+#         print('eyqi:\t' + str(eyqi))
+#         plt.plot(x, y, 'o')
+#         plt.plot(x, yq, 'x', label='q')
+#         plt.plot(x, yqi, 'x', label='qidle')
+#         plt.legend()
+#         plt.title(str(title))
+#         plt.show()
+#         # input()
+#         plt.cla()
+#         print('\n')
+
+
 def true_regression_fun(x, y):
     m, q = np.polyfit(x, y, 1)
     return m, q
 
 
 def fixed_regression_fun(x, y):
-    q = x[0]
+    q = y[0]
     m = 1 / np.dot(x, x) * (np.dot(x, y) - q * x.sum())
     return m, q
 
@@ -262,6 +273,12 @@ def power_regression(df, island, frequency, task, regfun):
     df = df[df[TASK] == task]
     (x, y) = power_getxy(df, pidle)
     return regfun(x, y)
+    # m, q = regfun(x, y)
+    # plot_regression(
+    #     str(island) + '-' + str(frequency / 1000000) + '-' + str(task),
+    #     x, y, m, q, pidle,
+    # )
+    # return m, q
 #-- power_regression
 
 
