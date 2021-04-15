@@ -139,7 +139,7 @@ def produce_tables(df, out_path):
 
 def main():
     args = parse_cmdline_args()
-    df = pd.read_csv(args.in_file)
+    df = pd.read_csv(args.in_file, float_precision='high')
     produce_tables(df, args.out_dir)
 
     return 0

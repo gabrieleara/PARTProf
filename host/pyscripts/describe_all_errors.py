@@ -176,7 +176,7 @@ def main():
     out_df = pd.DataFrame()
 
     for inf in args.in_files:
-        df = pd.read_csv(inf)
+        df = pd.read_csv(inf, float_precision='high')
 
         if args.task_list:
             df = df[df[TASK].isin(args.task_list)]

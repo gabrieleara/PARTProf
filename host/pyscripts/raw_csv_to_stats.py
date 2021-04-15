@@ -71,7 +71,7 @@ def main():
     for f in args.in_files:
         for label in dfs_dict:
             if label in f.name:
-                df = pd.read_csv(f)
+                df = pd.read_csv(f, float_precision='high')
                 dfs_dict[label] += [df]
                 break
 

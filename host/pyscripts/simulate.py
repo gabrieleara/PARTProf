@@ -190,7 +190,7 @@ def simulate_heterogeneous_power(simtable, task_list):
 
 def main():
     args = parse_cmdline_args()
-    df = pd.read_csv(args.in_file)
+    df = pd.read_csv(args.in_file, float_precision='high')
 
     if args.task_list:
         out_df = simulate_heterogeneous_power(df, args.task_list)

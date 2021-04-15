@@ -135,8 +135,8 @@ def percent_error(m, p):
 def main():
     args = parse_cmdline_args()
 
-    measurements = pd.read_csv(args.collapsed_measurements_file)
-    simulations = pd.read_csv(args.simulated_data_file)
+    measurements = pd.read_csv(args.collapsed_measurements_file, float_precision='high')
+    simulations = pd.read_csv(args.simulated_data_file, float_precision='high')
 
     measurements = measurements[[
         HOWMANY,

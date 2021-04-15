@@ -328,7 +328,7 @@ def simulation_table(df, time_fun, power_fun):
 
 def main():
     args = parse_cmdline_args()
-    df = pd.read_csv(args.in_file)
+    df = pd.read_csv(args.in_file, float_precision='high')
 
     time_funs = {
         SINGLE: time_single,

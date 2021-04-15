@@ -202,7 +202,7 @@ def safe_save_to_csv(out_df, out_file):
 
 def main():
     args = parse_cmdline_args()
-    df = pd.read_csv(args.in_file)
+    df = pd.read_csv(args.in_file, float_precision='high')
     out_df = collapse_table(df)
     safe_save_to_csv(out_df, args.out_file)
 

@@ -94,7 +94,7 @@ def main():
         # TODO: fix this from args
         data['policy'] = 'little' if str(data['policy']) == '0' else 'big'
 
-        df = pd.read_csv(f, index_col=0)
+        df = pd.read_csv(f, index_col=0, float_precision='high')
         df.columns = df.columns.str.strip()
         df = df_to_single_row(df)
         df.loc[0, data.keys()] = data.values()
