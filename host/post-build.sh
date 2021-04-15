@@ -19,7 +19,7 @@
     infiles=$(find "$results_dir" -name outdata.csv)
 
     # 'single', 'average', 'maximum'
-    time_method='maximum'
+    time_method='single'
 
     # 'single', 'true_regression', 'fixed_regression'
     power_method='fixed_regression'
