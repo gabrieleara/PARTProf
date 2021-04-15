@@ -1,0 +1,56 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   4786       tick          5257          1211           345          5257 
+      2   4786       tick           103             1             1           103 
+      3   4786       tick            98             0             0            98 
+      4   4786       tick            96             1             0            96 
+      5   4786       tick            99             0             0            99 
+      6   4786       tick           114             2             1           114 
+      7   4786       tick            92             0             0            92 
+      8   4786       tick           101             1             0           101 
+      9   4786       tick            94             0             0            94 
+     10   4786       tick           100             0             0           100 
+     11   4786       tick            94             0             0            94 
+     12   4786       tick           103             0             0           103 
+     13   4786       tick            95             0             0            95 
+     14   4786       tick           105             1             0           105 
+     15   4786       tick           100             0             0           100 
+     16   4786       tick           116             0             0           116 
+     17   4786       tick            92             0             0            92 
+     18   4786       tick            91             0             1            91 
+     19   4786       tick            96             0             0            96 
+     20   4786       tick           102             1             0           102 
+     21   4786       tick            98             0             0            98 
+     22   4786       tick           100             1             0           100 
+     23   4786       tick           105             0             0           105 
+     24   4786       tick           105             0             0           105 
+     25   4786       tick            93             0             0            93 
+     26   4786       tick           111             1             1           111 
+     27   4786       tick           103             0             0           103 
+     28   4786       tick            92             0             0            92 
+     29   4786       tick            88             0             0            88 
+     30   4786       tick            90             0             0            90 
+     31   4786       tick            97             1             0            97 
+     32   4786       tick           103             0             0           103 
+     33   4786       tick            92             0             1            92 
+     34   4786       tick            87             0             0            87 
+     35   4786       tick            85             0             0            85 
+     36   4786       tick           100             1             0           100 
+     37   4786       tick           107             0             0           107 
+     38   4786       tick            81             0             0            81 
+     39   4786       tick            95             0             0            95 
+     40   4786       tick            96             0             0            96 
+     41   4786       tick            99             0             1            99 
+     42   4786       tick           100             1             0           100 
+     43   4786       tick            93             0             0            93 
+     44   4786       tick            90             0             0            90 
+     45   4786       tick           100             0             0           100 
+     46   4786       tick           105             0             0           105 
+     47   4786       tick            89             0             0            89 
+     48   4786       tick            95             0             0            95 
+     49   4786       exit           391           117            15           391 

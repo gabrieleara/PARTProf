@@ -1,0 +1,33 @@
+[Event-to-counter mappings]
+pmc1=llc_misses
+pmc2=mispred_branches
+pmc3=potentially_predicted_branches
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3
+      1  31289       tick           448          2367      32693334 
+      2  31289       tick             0             3      33085599 
+      3  31289       tick             0             2      33101750 
+      4  31289       tick             1             1      31928315 
+      5  31289       tick             0             2      34254577 
+      6  31289       tick             0             3      33084273 
+      7  31289       tick             0             0      33103318 
+      8  31289       tick             0             2      33091642 
+      9  31289       tick             0             0      33093137 
+     10  31289       tick             0             3      33105844 
+     11  31289       tick             0             0      33097459 
+     12  31289       tick             0             3      33096710 
+     13  31289       tick             0             2      33100904 
+     14  31289       tick             0             7      33052720 
+     15  31289       tick             0             1      33085883 
+     16  31289       tick             0             3      33058546 
+     17  31289       tick             0             2      33039238 
+     18  31289       tick             0             3      33059510 
+     19  31289       tick             0             2      33054655 
+     20  31289       tick             0             1      33041727 
+     21  31289       tick             0             2      33058237 
+     22  31289       tick             0             6      33047797 
+     23  31289       tick             0             3      33059851 
+     24  31289       tick             0             2      33089357 
+     25  31289       tick             0             3      33089379 
+     26  31289       tick             0             3      33059517 
+     27  31289       exit            44            92      20398892 

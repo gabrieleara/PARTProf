@@ -1,0 +1,27 @@
+[Event-to-counter mappings]
+pmc0=cycles_allmodes
+pmc1=bus_accesses
+pmc2=cycles
+pmc3=data_cache_eviction
+[Event counts]
+nsample    pid      event          pmc0          pmc1          pmc2          pmc3
+      1  25131       tick       3096780          3995        589583          1074 
+      2  25131       tick             0             0             0             0 
+      3  25131       tick             0             0             0             0 
+      4  25131       tick             0             0             0             0 
+      5  25131       tick             0             0             0             0 
+      6  25131       tick             0             0             0             0 
+      7  25131       tick             0             0             0             0 
+      8  25131       tick             0             0             0             0 
+      9  25131       tick             0             0             0             0 
+     10  25131       tick             0             0             0             0 
+     11  25131       tick             0             0             0             0 
+     12  25131       tick             0             0             0             0 
+     13  25131       tick             0             0             0             0 
+     14  25131       tick             0             0             0             0 
+     15  25131       tick             0             0             0             0 
+     16  25131       tick             0             0             0             0 
+     17  25131       tick             0             0             0             0 
+     18  25131       tick             0             0             0             0 
+     19  25131       tick             0             0             0             0 
+     20  25131       exit        378516           240         12363            46 

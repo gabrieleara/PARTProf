@@ -1,0 +1,26 @@
+[Event-to-counter mappings]
+pmc1=llc_misses
+pmc2=mispred_branches
+pmc3=potentially_predicted_branches
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3
+      1   3391       tick          2664         16462         70584 
+      2   3391       tick             0             0             0 
+      3   3391       tick             0             0             0 
+      4   3391       tick             0             0             0 
+      5   3391       tick             0             0             0 
+      6   3391       tick             0             0             0 
+      7   3391       tick             0             0             0 
+      8   3391       tick             0             0             0 
+      9   3391       tick             0             0             0 
+     10   3391       tick             0             0             0 
+     11   3391       tick             0             0             0 
+     12   3391       tick             0             0             0 
+     13   3391       tick             0             0             0 
+     14   3391       tick             0             0             0 
+     15   3391       tick             0             0             0 
+     16   3391       tick             0             0             0 
+     17   3391       tick             0             0             0 
+     18   3391       tick             0             0             0 
+     19   3391       tick             0             0             0 
+     20   3391       exit           168           136           341 

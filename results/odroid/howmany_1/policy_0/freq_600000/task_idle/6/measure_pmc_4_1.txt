@@ -1,0 +1,27 @@
+[Event-to-counter mappings]
+pmc1=itlb_misses
+pmc2=l1_data_accesses
+pmc3=l1_data_refills
+pmc4=l1_instr_refills
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  15954       tick           210        146261          4410          6475 
+      2  15954       tick             0             0             0             0 
+      3  15954       tick             0             0             0             0 
+      4  15954       tick             0             0             0             0 
+      5  15954       tick             0             0             0             0 
+      6  15954       tick             0             0             0             0 
+      7  15954       tick             0             0             0             0 
+      8  15954       tick             0             0             0             0 
+      9  15954       tick             0             0             0             0 
+     10  15954       tick             0             0             0             0 
+     11  15954       tick             0             0             0             0 
+     12  15954       tick             0             0             0             0 
+     13  15954       tick             0             0             0             0 
+     14  15954       tick             0             0             0             0 
+     15  15954       tick             0             0             0             0 
+     16  15954       tick             0             0             0             0 
+     17  15954       tick             0             0             0             0 
+     18  15954       tick             0             0             0             0 
+     19  15954       tick             0             0             0             0 
+     20  15954       exit            11           889           105           249 

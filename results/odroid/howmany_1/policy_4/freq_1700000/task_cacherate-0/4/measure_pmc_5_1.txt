@@ -1,0 +1,31 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  28564       tick          5360           185            58          5360 
+      2  28564       tick           110             0             0           110 
+      3  28564       tick           106             0             0           106 
+      4  28564       tick           123             0             0           123 
+      5  28564       tick           107             0             0           107 
+      6  28564       tick           106             0             0           106 
+      7  28564       tick           109             0             0           109 
+      8  28564       tick           109             0             0           109 
+      9  28564       tick           109             0             0           109 
+     10  28564       tick           108             0             0           108 
+     11  28564       tick           107             0             0           107 
+     12  28564       tick           109             0             0           109 
+     13  28564       tick           107             0             0           107 
+     14  28564       tick           106             0             0           106 
+     15  28564       tick           107             0             0           107 
+     16  28564       tick           107             0             0           107 
+     17  28564       tick           107             0             0           107 
+     18  28564       tick           112             0             0           112 
+     19  28564       tick           107             0             0           107 
+     20  28564       tick           113             0             0           113 
+     21  28564       tick           107             0             0           107 
+     22  28564       tick           106             0             0           106 
+     23  28564       tick           107             0             0           107 
+     24  28564       exit           366            19             7           366 

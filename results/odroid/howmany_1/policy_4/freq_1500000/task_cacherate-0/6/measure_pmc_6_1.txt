@@ -1,0 +1,33 @@
+[Event-to-counter mappings]
+pmc1=llc_misses
+pmc2=mispred_branches
+pmc3=potentially_predicted_branches
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3
+      1  31361       tick           254          2348      32680318 
+      2  31361       tick             0             2      33095618 
+      3  31361       tick             0             1      33060874 
+      4  31361       tick             0             0      33090537 
+      5  31361       tick             0             5      33072635 
+      6  31361       tick             0             2      33017282 
+      7  31361       tick             0             0      33095572 
+      8  31361       tick             0             2      33101456 
+      9  31361       tick             0             0      33099228 
+     10  31361       tick             0             3      33040612 
+     11  31361       tick             0             4      33093741 
+     12  31361       tick             0             0      33094037 
+     13  31361       tick             0             0      33087511 
+     14  31361       tick             0             1      33083344 
+     15  31361       tick             0             2      32970052 
+     16  31361       tick             0             3      33011030 
+     17  31361       tick             0             1      33094485 
+     18  31361       tick             0             1      33096943 
+     19  31361       tick             0             1      33100114 
+     20  31361       tick             0             1      33091511 
+     21  31361       tick             0             3      33073378 
+     22  31361       tick             0             0      33065084 
+     23  31361       tick             0             1      33048880 
+     24  31361       tick             0             2      33064253 
+     25  31361       tick             0             1      33060915 
+     26  31361       tick             0             0      32981059 
+     27  31361       exit            42            94      20661690 

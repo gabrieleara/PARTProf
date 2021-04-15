@@ -1,0 +1,29 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  23205       tick          5602           628           184          5602 
+      2  23205       tick            60             0             0            60 
+      3  23205       tick            58             0             0            58 
+      4  23205       tick            54             0             0            54 
+      5  23205       tick            58             0             0            58 
+      6  23205       tick            56             0             0            56 
+      7  23205       tick            54             0             0            54 
+      8  23205       tick            56             0             0            56 
+      9  23205       tick            54             0             0            54 
+     10  23205       tick            54             0             0            54 
+     11  23205       tick            56             0             0            56 
+     12  23205       tick            56             0             0            56 
+     13  23205       tick            60             0             0            60 
+     14  23205       tick            54             0             0            54 
+     15  23205       tick            85            10             1            85 
+     16  23205       tick            69             4             0            69 
+     17  23205       tick            54             0             1            54 
+     18  23205       tick            57             0             0            57 
+     19  23205       tick            55             0             0            55 
+     20  23205       tick            55             0             0            55 
+     21  23205       tick            56             0             0            56 
+     22  23205       exit           411           146            26           411 

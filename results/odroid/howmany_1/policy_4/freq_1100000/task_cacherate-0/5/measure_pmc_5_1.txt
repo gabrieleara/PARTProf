@@ -1,0 +1,44 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   8901       tick          5154           280            65          5154 
+      2   8901       tick            56             0             0            56 
+      3   8901       tick            69             0             0            69 
+      4   8901       tick            60             0             0            60 
+      5   8901       tick            60             0             0            60 
+      6   8901       tick            58             0             0            58 
+      7   8901       tick            56             0             0            56 
+      8   8901       tick            56             0             0            56 
+      9   8901       tick            56             0             0            56 
+     10   8901       tick            56             0             0            56 
+     11   8901       tick            56             0             0            56 
+     12   8901       tick            56             0             0            56 
+     13   8901       tick            89             0             0            89 
+     14   8901       tick            63             0             0            63 
+     15   8901       tick            63             0             0            63 
+     16   8901       tick            59             0             0            59 
+     17   8901       tick            61             0             0            61 
+     18   8901       tick            58             0             0            58 
+     19   8901       tick            57             0             0            57 
+     20   8901       tick            57             0             0            57 
+     21   8901       tick            58             0             0            58 
+     22   8901       tick            63             0             0            63 
+     23   8901       tick            61             0             0            61 
+     24   8901       tick            57             0             0            57 
+     25   8901       tick            59             0             0            59 
+     26   8901       tick            59             0             0            59 
+     27   8901       tick            57             0             0            57 
+     28   8901       tick            57             0             0            57 
+     29   8901       tick            59             0             0            59 
+     30   8901       tick            57             0             0            57 
+     31   8901       tick            57             0             0            57 
+     32   8901       tick            61             0             0            61 
+     33   8901       tick            94             0             0            94 
+     34   8901       tick            57             0             0            57 
+     35   8901       tick            61             0             0            61 
+     36   8901       tick            59             0             0            59 
+     37   8901       exit           310            18             1           310 

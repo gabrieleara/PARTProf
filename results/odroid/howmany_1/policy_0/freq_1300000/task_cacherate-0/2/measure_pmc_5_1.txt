@@ -1,0 +1,45 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  31500       tick          5232          1211           293          5232 
+      2  31500       tick           105             0             0           105 
+      3  31500       tick            86             0             0            86 
+      4  31500       tick           106             0             0           106 
+      5  31500       tick            99             0             0            99 
+      6  31500       tick           123             0             0           123 
+      7  31500       tick            91             0             0            91 
+      8  31500       tick            98             0             0            98 
+      9  31500       tick            89             0             0            89 
+     10  31500       tick            86             0             0            86 
+     11  31500       tick            92             0             0            92 
+     12  31500       tick           101             0             0           101 
+     13  31500       tick            91             0             0            91 
+     14  31500       tick            82             0             0            82 
+     15  31500       tick            90             0             0            90 
+     16  31500       tick           102             0             0           102 
+     17  31500       tick            78             0             0            78 
+     18  31500       tick            87             0             0            87 
+     19  31500       tick            83             0             0            83 
+     20  31500       tick            97             0             0            97 
+     21  31500       tick            80             0             0            80 
+     22  31500       tick            87             0             0            87 
+     23  31500       tick            76             0             0            76 
+     24  31500       tick           105             0             0           105 
+     25  31500       tick            88             0             0            88 
+     26  31500       tick           109             0             0           109 
+     27  31500       tick            89             0             0            89 
+     28  31500       tick            92             0             0            92 
+     29  31500       tick            92             0             0            92 
+     30  31500       tick            96             0             1            96 
+     31  31500       tick            84             0             0            84 
+     32  31500       tick            81             0             0            81 
+     33  31500       tick            89             0             0            89 
+     34  31500       tick            95             0             0            95 
+     35  31500       tick            83             0             0            83 
+     36  31500       tick           105             0             0           105 
+     37  31500       tick            89             1             1            89 
+     38  31500       exit           333           100             4           333 

@@ -1,0 +1,27 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   4335       tick         14770           730           217         14770 
+      2   4335       tick             0             0             0             0 
+      3   4335       tick             0             0             0             0 
+      4   4335       tick             0             0             0             0 
+      5   4335       tick             0             0             0             0 
+      6   4335       tick             0             0             0             0 
+      7   4335       tick             0             0             0             0 
+      8   4335       tick             0             0             0             0 
+      9   4335       tick             0             0             0             0 
+     10   4335       tick             0             0             0             0 
+     11   4335       tick             0             0             0             0 
+     12   4335       tick             0             0             0             0 
+     13   4335       tick             0             0             0             0 
+     14   4335       tick             0             0             0             0 
+     15   4335       tick             0             0             0             0 
+     16   4335       tick             0             0             0             0 
+     17   4335       tick             0             0             0             0 
+     18   4335       tick             0             0             0             0 
+     19   4335       tick             0             0             0             0 
+     20   4335       exit           461            41            14           461 

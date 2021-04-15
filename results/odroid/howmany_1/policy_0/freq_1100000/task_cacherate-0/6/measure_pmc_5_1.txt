@@ -1,0 +1,52 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   2902       tick          5398          1218           351          5398 
+      2   2902       tick           110             3             0           110 
+      3   2902       tick            96             0             0            96 
+      4   2902       tick            96             0             0            96 
+      5   2902       tick            94             0             0            94 
+      6   2902       tick           102             0             0           102 
+      7   2902       tick            95             0             0            95 
+      8   2902       tick            89             0             0            89 
+      9   2902       tick           116             0             0           116 
+     10   2902       tick           109             0             0           109 
+     11   2902       tick           104             1             1           104 
+     12   2902       tick            92             1             1            92 
+     13   2902       tick            94             0             0            94 
+     14   2902       tick            99             0             0            99 
+     15   2902       tick            92             0             0            92 
+     16   2902       tick            98             0             0            98 
+     17   2902       tick           106             0             0           106 
+     18   2902       tick           109             0             0           109 
+     19   2902       tick            98             0             0            98 
+     20   2902       tick            94             0             0            94 
+     21   2902       tick            96             1             1            96 
+     22   2902       tick            92             0             0            92 
+     23   2902       tick           106             0             0           106 
+     24   2902       tick            92             0             0            92 
+     25   2902       tick           104             1             1           104 
+     26   2902       tick            79             0             0            79 
+     27   2902       tick           101             2             1           101 
+     28   2902       tick            87             0             0            87 
+     29   2902       tick           119             0             0           119 
+     30   2902       tick            94             0             0            94 
+     31   2902       tick            86             0             0            86 
+     32   2902       tick            92             0             0            92 
+     33   2902       tick            99             0             0            99 
+     34   2902       tick           107             0             0           107 
+     35   2902       tick            96             0             0            96 
+     36   2902       tick           107             0             0           107 
+     37   2902       tick            88             0             0            88 
+     38   2902       tick            92             0             0            92 
+     39   2902       tick           130             0             0           130 
+     40   2902       tick            96             0             0            96 
+     41   2902       tick            92             0             0            92 
+     42   2902       tick            90             0             0            90 
+     43   2902       tick            96             1             1            96 
+     44   2902       tick            91             1             1            91 
+     45   2902       exit           348           109             8           348 

@@ -1,0 +1,37 @@
+[Event-to-counter mappings]
+pmc1=llc_misses
+pmc2=mispred_branches
+pmc3=potentially_predicted_branches
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3
+      1   2665       tick           207          2228      28259410 
+      2   2665       tick             0             8      28642303 
+      3   2665       tick             0             1      28668302 
+      4   2665       tick             0             1      28655624 
+      5   2665       tick             0             0      28683913 
+      6   2665       tick             0             1      28681623 
+      7   2665       tick             0             0      28677057 
+      8   2665       tick             0             0      28674147 
+      9   2665       tick             0             2      28680884 
+     10   2665       tick             0             1      28678431 
+     11   2665       tick             0             0      28662462 
+     12   2665       tick             0             1      28683369 
+     13   2665       tick             0             2      28669296 
+     14   2665       tick             0             5      28667260 
+     15   2665       tick             0             0      28683993 
+     16   2665       tick             0             0      28682545 
+     17   2665       tick             0             0      28681958 
+     18   2665       tick             0             3      28676833 
+     19   2665       tick             0             6      28619574 
+     20   2665       tick             0             0      28677200 
+     21   2665       tick             0             0      28661877 
+     22   2665       tick             0             0      28662215 
+     23   2665       tick             0             3      28668385 
+     24   2665       tick             0             1      28662283 
+     25   2665       tick             0             2      28678404 
+     26   2665       tick             0             1      28667492 
+     27   2665       tick             0             0      28672251 
+     28   2665       tick             0             0      28674938 
+     29   2665       tick             0             1      28676939 
+     30   2665       tick             0             1      28674427 
+     31   2665       exit            21            92      20327714 

@@ -1,0 +1,33 @@
+[Event-to-counter mappings]
+pmc1=llc_misses
+pmc2=mispred_branches
+pmc3=potentially_predicted_branches
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3
+      1  31325       tick           308          2332      32684881 
+      2  31325       tick             0             4      33081703 
+      3  31325       tick             0             2      33067728 
+      4  31325       tick             0             4      33105909 
+      5  31325       tick             0             4      33087049 
+      6  31325       tick             0             0      33088836 
+      7  31325       tick             0             0      33095924 
+      8  31325       tick             0             3      33071752 
+      9  31325       tick             0             2      33104484 
+     10  31325       tick             0             2      33094712 
+     11  31325       tick             0             2      33097252 
+     12  31325       tick             0             1      33094772 
+     13  31325       tick             0             1      33098639 
+     14  31325       tick             0             0      33101432 
+     15  31325       tick             0             1      33091189 
+     16  31325       tick             0             2      33076831 
+     17  31325       tick             0             2      33089386 
+     18  31325       tick             0             0      33084301 
+     19  31325       tick             0             0      33067600 
+     20  31325       tick             0             0      33003968 
+     21  31325       tick             0             0      33053778 
+     22  31325       tick             0             0      33048639 
+     23  31325       tick             0             0      33070978 
+     24  31325       tick             0             0      33063260 
+     25  31325       tick             0             2      32621304 
+     26  31325       tick             0             0      33458335 
+     27  31325       exit            21            90      20427532 

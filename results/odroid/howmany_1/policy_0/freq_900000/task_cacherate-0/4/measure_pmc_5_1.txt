@@ -1,0 +1,62 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   6623       tick          5213          1162           337          5213 
+      2   6623       tick            97             0             0            97 
+      3   6623       tick            89             0             0            89 
+      4   6623       tick           101             1             2           101 
+      5   6623       tick            90             0             0            90 
+      6   6623       tick            78             0             0            78 
+      7   6623       tick            87             0             0            87 
+      8   6623       tick            93             0             0            93 
+      9   6623       tick            83             0             0            83 
+     10   6623       tick           101             0             0           101 
+     11   6623       tick            88             0             0            88 
+     12   6623       tick            90             0             0            90 
+     13   6623       tick            73             0             0            73 
+     14   6623       tick            95             0             0            95 
+     15   6623       tick            80             0             0            80 
+     16   6623       tick            91             0             0            91 
+     17   6623       tick           100             0             0           100 
+     18   6623       tick            83             0             0            83 
+     19   6623       tick            82             0             0            82 
+     20   6623       tick            95             0             0            95 
+     21   6623       tick            89             0             0            89 
+     22   6623       tick            84             0             0            84 
+     23   6623       tick            88             0             0            88 
+     24   6623       tick            90             1             1            90 
+     25   6623       tick            90             0             0            90 
+     26   6623       tick           105             0             0           105 
+     27   6623       tick            82             0             0            82 
+     28   6623       tick            84             0             0            84 
+     29   6623       tick            83             0             0            83 
+     30   6623       tick           101             0             0           101 
+     31   6623       tick            83             0             0            83 
+     32   6623       tick            82             0             0            82 
+     33   6623       tick            81             0             0            81 
+     34   6623       tick            87             0             0            87 
+     35   6623       tick           101             0             0           101 
+     36   6623       tick            84             0             0            84 
+     37   6623       tick            91             0             0            91 
+     38   6623       tick            81             0             0            81 
+     39   6623       tick            86             0             0            86 
+     40   6623       tick            91             0             0            91 
+     41   6623       tick            99             0             0            99 
+     42   6623       tick            89             0             0            89 
+     43   6623       tick            88             0             0            88 
+     44   6623       tick            81             0             0            81 
+     45   6623       tick            86             0             0            86 
+     46   6623       tick            89             0             0            89 
+     47   6623       tick            79             0             0            79 
+     48   6623       tick            84             2             1            84 
+     49   6623       tick            78             0             0            78 
+     50   6623       tick            98             0             0            98 
+     51   6623       tick            85             0             0            85 
+     52   6623       tick            85             0             0            85 
+     53   6623       tick            86             0             0            86 
+     54   6623       tick            90             0             0            90 
+     55   6623       exit           343           118             8           343 

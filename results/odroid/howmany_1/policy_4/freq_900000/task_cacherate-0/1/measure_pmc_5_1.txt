@@ -1,0 +1,52 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  12581       tick          5499           658           251          5499 
+      2  12581       tick            58             0             0            58 
+      3  12581       tick            59             0             0            59 
+      4  12581       tick            58             0             0            58 
+      5  12581       tick            57             0             0            57 
+      6  12581       tick            55             0             0            55 
+      7  12581       tick            53             0             0            53 
+      8  12581       tick            57             0             0            57 
+      9  12581       tick            53             0             0            53 
+     10  12581       tick            53             0             0            53 
+     11  12581       tick            55             0             0            55 
+     12  12581       tick            58             0             0            58 
+     13  12581       tick            53             0             0            53 
+     14  12581       tick            58             0             0            58 
+     15  12581       tick            56             0             0            56 
+     16  12581       tick            57             0             0            57 
+     17  12581       tick            66             0             0            66 
+     18  12581       tick            58             0             0            58 
+     19  12581       tick            54             0             0            54 
+     20  12581       tick            54             0             0            54 
+     21  12581       tick            58             0             0            58 
+     22  12581       tick            54             0             0            54 
+     23  12581       tick            56             0             0            56 
+     24  12581       tick            50             0             0            50 
+     25  12581       tick            56             0             0            56 
+     26  12581       tick            54             0             0            54 
+     27  12581       tick            56             0             0            56 
+     28  12581       tick            60             0             0            60 
+     29  12581       tick            55             0             0            55 
+     30  12581       tick            54             0             0            54 
+     31  12581       tick            55             0             0            55 
+     32  12581       tick            54             0             0            54 
+     33  12581       tick            54             0             0            54 
+     34  12581       tick            55             0             0            55 
+     35  12581       tick            95             0             0            95 
+     36  12581       tick            53             0             0            53 
+     37  12581       tick            63             0             0            63 
+     38  12581       tick            54             0             0            54 
+     39  12581       tick            52             0             0            52 
+     40  12581       tick            54             0             0            54 
+     41  12581       tick            54             0             0            54 
+     42  12581       tick            55             0             0            55 
+     43  12581       tick            54             0             0            54 
+     44  12581       tick            53             0             0            53 
+     45  12581       exit           370            54            12           370 
