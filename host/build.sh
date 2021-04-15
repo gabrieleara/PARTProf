@@ -78,6 +78,8 @@ function get_project_path() {
 
     cpumask="0-$((nprocs-1))"
 
+    deps_makefile_list=()
+
     for d in "$results_dir/"*; do
         if [ ! -d "$d" ] || [ "$d" = "$results_dir/." ] ||
             [ "$d" = "$results_dir/.." ]; then
@@ -90,17 +92,18 @@ function get_project_path() {
         echo "..."
         "$HOST_PATH/gen_deps.sh" "$d" >> "${deps_makefile}"
 
-        COL_OPT="$HOST_PATH/raw_$(basename $d).cmap"
+        COL_OPT="$HOST_PATH/cmaps/raw_$(basename "$d").cmap"
 
         echo "STARTING GENERATION"
         time taskset -c "$cpumask" make -r -C "$d" -f "$MAKEFILE" \
             GENERATED_DEPS="${deps_makefile}" \
-            col_opt="$COL_OPT" -j${nprocs}
+            col_opt="$COL_OPT" -j"${nprocs}" \
         # >"$d.log" 2>"$d.error_log" &
 
-        rm "${deps_makefile}"
-
+        deps_makefile_list+=( "${deps_makefile}" )
     done
 
     wait
+
+    rm -f "${deps_makefile_list[@]}"
 )
