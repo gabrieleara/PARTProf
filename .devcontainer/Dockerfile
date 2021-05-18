@@ -2,23 +2,14 @@
 
 # [Choice] Debian version: buster, stretch
 ARG VARIANT="buster"
-FROM mcr.microsoft.com/vscode/devcontainers/base:0-${VARIANT}
+FROM gabrieleara/dev_environment:python
 
-# Basic development packages:
 # CMake is required for the embedded component
-RUN apt update && export DEBIAN_FRONTEND=noninteractive && \
-    apt -y install build-essential cmake gdb && \
-    apt autoremove -y && \
-    apt clean -y && \
-    rm -rf /var/lib/apt/lists
-
-# Pandas and Python3 is required for the host component
-RUN apt update && export DEBIAN_FRONTEND=noninteractive && \
-    apt -y install python3-pip && \
-    pip3 install pandas && \
-    apt autoremove -y && \
-    apt clean -y && \
-    rm -rf /var/lib/apt/lists
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get update \
+    && apt-get -y install build-essential cmake gdb \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists
 
 # Other interesting packages: cppcheck valgrind clang lldb llvm
 
