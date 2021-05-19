@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Experiment base output directory
-export EXP_BASE_DIR="./results"
+export EXP_BASE_DIR="./results-time"
 
 # Experiment title
-export EXP_TITLE="Power + Time"
+export EXP_TITLE="Time Measurement"
 
 # Experiment description
 export EXP_DESCRIPTION="This experiment runs a set of tasks multiple times for each policy and each frequency"
@@ -22,7 +22,8 @@ export EXP_TEST_DURATION=20
 export EXP_SLEEP_INTERVAL=10
 
 # The command to execute to measure elapsed time
-export TIME_CMD="${APPSDIR}/forever/forever"
+# TODO: check if this is right
+export TIME_CMD="/usr/bin/time"
 
 # This command is used to make a single dry run of the application if needed
 # (see run.sh script for more details)
@@ -30,7 +31,7 @@ export TIME_CMD_DRY="/usr/bin/time"
 export TIME=$'\ntime %e\n'
 
 # The command to execute to measure the power consumption
-export POWERSAMPLER_CMD="${APPSDIR}/sampler/sampler"
+export POWERSAMPLER_CMD=""
 
 # The number of repetitions to run for each test
 export HOWMANY_TIMES=5
@@ -62,3 +63,7 @@ export DEADLINE_RUNTIME=4000000000 # In nanoseconds
 # measurements respectively
 export FILENAME_OUT_TIME="measure_time"
 export FILENAME_OUT_POWER="measure_power"
+
+# Reset lists of forced policies
+export EXP_FREQ_FORCED_LIST=()
+export EXP_POLICY_FORCED_LIST=()

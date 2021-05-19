@@ -96,6 +96,26 @@ function cpufreq_policy_governor_get() {
     cpufreq_policy_get_attr "$1" "scaling_governor"
 }
 
+# Find a policy different than the current one, if any,
+# otherwise prints the given policy.
+#
+# Arguments:
+#  1. Policy we want to "skip"
+function cpufreq_policy_find_another() {
+    local policy
+    local policy_other
+
+    policy="$1"
+    for policy_other in $(cpufreq_policy_list | sort -n); do
+        if [ "$policy_other" != "$policy" ]; then
+            echo "$policy_other"
+            return
+        fi
+    done
+    echo "$policy"
+}
+
+
 # +--------------------------------------------------------+
 # |                        Setters                         |
 # +--------------------------------------------------------+

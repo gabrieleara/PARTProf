@@ -1,6 +1,9 @@
 #!/bin/bash
 
-################################## FUNCTIONS ###################################
+# ============================================================================ #
+#                                  Functions                                   #
+# ============================================================================ #
+
 # Find a policy different than the current one
 # First argument must be the current policy
 function policy_find_another() {
@@ -43,19 +46,28 @@ EOF
 
 # Get the command to execute from the given command index and the number of
 # the current task to be started
-# First arg: command index
+# Arguments:
+#  1. command index
+#  2. task index (depends on how many concurrent runs you launch)
 function tasks_get_command_index() {
     task=${TASKS_CMD[$1]}
     echo "${task//fakedata\/fakedata/fakedata\/fakedata${2}}"
 }
 
+# Uses following env variables:
+#  - policy
+#  - freq
+#  - task_name
 function current_test_directory() {
     echo "policy_${policy}/freq_${freq}/task_${task_name}"
 }
 
+# Arguments:
+#  1. current repetition
+#  2. task index (depends on how many concurrent runs you launch)
 function current_test_file_time() {
-    rep="$1"
-    count="$2"
+    local rep="$1"
+    local count="$2"
 
     if [ -n "${FILENAME_OUT_TIME}" ]; then
         echo "$(current_test_directory)/${rep}/${FILENAME_OUT_TIME}_${count}.txt"
@@ -64,8 +76,10 @@ function current_test_file_time() {
     fi
 }
 
+# Arguments:
+#  1. current repetition
 function current_test_file_power() {
-    rep="$1"
+    local rep="$1"
 
     if [ -n "${FILENAME_OUT_POWER}" ]; then
         echo "$(current_test_directory)/${rep}/${FILENAME_OUT_POWER}_.txt"
@@ -83,10 +97,11 @@ function printsay() {
     say "$@"
 }
 
+# Prints the command that should be used to run applications
+# with "high priority"
+# TODO: print these parameters in metadata?
+# FIXME: SCHED_DEADLINE does not work for some task types
 function get_prio_cmd() {
-    # Save the command to be used to start applications with high priority
-    # TODO: Should print these parameters on metadata too
-    # FIXME: SCHED_DEADLINE IS NOT YET FUNCTIONING FOR MANY TASK TYPES
     case $HIGH_PRIO_KIND in
     nice)
         echo "nice -n -100" # Will receive minimum niceness on the system
@@ -104,51 +119,45 @@ function get_prio_cmd() {
     esac
 }
 
-FAKEDATA_DIR="$HOME/.fakedata"
-
-function generate_fakedata() {
-    # TODO: generate encrypted fakedata also for the decrypt command
-    mkdir -p "${FAKEDATA_DIR}"
-
-    # Create a 2G tmp filesystem in /fakedata
-    mkdir -p /fakedata
-    umount /fakedata &>/dev/null || true
-    mount -t tmpfs -o size=2048m tmpfs /fakedata
-
-    FILESIZE_PREVIOUS=-1
-    # For each task in the specified task set
-    for ((task_index = 0; task_index < ${#TASKS_CMD[@]}; task_index++)); do
-        task_name=${TASKS_NAME[$task_index]}
-
-        # Create the fake file in a local directory (will then be copied in tmp later).
-        # This file is used so that tasks that read data will run for desired certain
-        # amount of time (see basic_conf.bash)
-        FILESIZE=$((EXP_TASK_MIN_DURATION * TASKS_FILESIZE_RATIO[task_index]))
-        if [ "$FILESIZE" -ne "$FILESIZE_PREVIOUS" ]; then
-            tput cuu 1 && tput el
-            echo "-----> Creating a ${FILESIZE}M file in ${FAKEDATA_DIR}/fakedata-${FILESIZE} "
-            if [ -f "${FAKEDATA_DIR}/fakedata-${FILESIZE}" ]; then
-                # File already exists, checking if file size matches
-                EXISTING_FILE_SIZE=$(stat --printf="%s" "${FAKEDATA_DIR}/fakedata-${FILESIZE}")
-                FILESIZE_BYTES=$((FILESIZE * 1024 * 1024))
-
-                if [ "${FILESIZE_BYTES}" = "${EXISTING_FILE_SIZE}" ]; then
-                    # Do nothing, file already exists with the right dimension
-                    :
-                else
-                    # | pv -s ${FILESIZE}m
-                    head -c ${FILESIZE}M /dev/urandom >"${FAKEDATA_DIR}/fakedata-${FILESIZE}"
-                fi
-            else
-                # | pv -s ${FILESIZE}m
-                head -c ${FILESIZE}M /dev/urandom >"${FAKEDATA_DIR}/fakedata-${FILESIZE}"
-            fi
-            tput cuu 1 && tput el
-        fi
-        FILESIZE_PREVIOUS=$FILESIZE
-    done
-    FILESIZE_PREVIOUS=-1
-}
+# function generate_fakedata() {
+#     # TODO: generate encrypted fakedata also for the decrypt command
+#     mkdir -p "${FAKEDATA_DIR}"
+#     # Create a 2G tmp filesystem in /fakedata
+#     mkdir -p /fakedata
+#     umount /fakedata &>/dev/null || true
+#     mount -t tmpfs -o size=2048m tmpfs /fakedata
+#     FILESIZE_PREVIOUS=-1
+#     # For each task in the specified task set
+#     for ((task_index = 0; task_index < ${#TASKS_CMD[@]}; task_index++)); do
+#         task_name=${TASKS_NAME[$task_index]}
+#         # Create the fake file in a local directory (will then be copied in tmp later).
+#         # This file is used so that tasks that read data will run for desired certain
+#         # amount of time (see basic_conf.bash)
+#         FILESIZE=$((EXP_TASK_MIN_DURATION * TASKS_FILESIZE_RATIO[task_index]))
+#         if [ "$FILESIZE" -ne "$FILESIZE_PREVIOUS" ]; then
+#             tput cuu 1 && tput el
+#             echo "-----> Creating a ${FILESIZE}M file in ${FAKEDATA_DIR}/fakedata-${FILESIZE} "
+#             if [ -f "${FAKEDATA_DIR}/fakedata-${FILESIZE}" ]; then
+#                 # File already exists, checking if file size matches
+#                 EXISTING_FILE_SIZE=$(stat --printf="%s" "${FAKEDATA_DIR}/fakedata-${FILESIZE}")
+#                 FILESIZE_BYTES=$((FILESIZE * 1024 * 1024))
+#                 if [ "${FILESIZE_BYTES}" = "${EXISTING_FILE_SIZE}" ]; then
+#                     # Do nothing, file already exists with the right dimension
+#                     :
+#                 else
+#                     # | pv -s ${FILESIZE}m
+#                     head -c ${FILESIZE}M /dev/urandom >"${FAKEDATA_DIR}/fakedata-${FILESIZE}"
+#                 fi
+#             else
+#                 # | pv -s ${FILESIZE}m
+#                 head -c ${FILESIZE}M /dev/urandom >"${FAKEDATA_DIR}/fakedata-${FILESIZE}"
+#             fi
+#             tput cuu 1 && tput el
+#         fi
+#         FILESIZE_PREVIOUS=$FILESIZE
+#     done
+#     FILESIZE_PREVIOUS=-1
+# }
 
 function prepare_fakedata() {
     sync
@@ -502,6 +511,7 @@ function get_project_path() {
     # Importing functions and basic configuration
     . "${SCRIPT_PATH}/cpufreq.bash"
     . "${SCRIPT_PATH}/trip_points.bash"
+    . "${SCRIPT_PATH}/fakedata.bash"
     . "${CONFDIR}/conf-base.bash"
 
     # Load custom parameters to substitute the ones in basic_conf.bash from the specified file, if any
@@ -569,7 +579,8 @@ function get_project_path() {
     echo ""
 
     echo "---> Generaring fake data files..."
-    generate_fakedata
+    generate_fakedata_ondisk
+    create_fakedata_inram
 
     activate_pwm_fans
 
@@ -703,7 +714,8 @@ function get_project_path() {
 
             # Copy if necessary a new fakedata file in /fakedata from the
             # fakedata directory created beforehand
-            prepare_fakedata
+            copy_fakedata_inram /fakedata/fakedata \
+                    "$((EXP_TASK_MIN_DURATION * TASKS_FILESIZE_RATIO[task_index]))"
 
             # FIXME: This whole parade here is needed only for the
             # encrypt/decrypt application pair, maybe it would be useful to

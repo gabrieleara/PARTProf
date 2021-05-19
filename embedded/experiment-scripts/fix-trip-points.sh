@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# NOTE: these functions are kind of custom, use with caution
+
 function activate_pwm_fans() {
     local PREFIX=/sys/devices/virtual/thermal/thermal_zone
     for tz in "${PREFIX}"*; do

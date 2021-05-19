@@ -4,7 +4,7 @@
 export EXP_BASE_DIR="./results"
 
 # Experiment title
-export EXP_TITLE="Simple Run"
+export EXP_TITLE="Power + Time"
 
 # Experiment description
 export EXP_DESCRIPTION="This experiment runs a set of tasks multiple times for each policy and each frequency"
@@ -30,7 +30,7 @@ export TIME_CMD_DRY="/usr/bin/time"
 export TIME=$'\ntime %e\n'
 
 # The command to execute to measure the power consumption
-export POWERSAMPLER_CMD=""
+export POWERSAMPLER_CMD="${APPSDIR}/sampler/sampler"
 
 # The number of repetitions to run for each test
 export HOWMANY_TIMES=5
@@ -60,5 +60,9 @@ export DEADLINE_RUNTIME=4000000000 # In nanoseconds
 
 # Base names of the two files that will be outputed, for time and power
 # measurements respectively
-export FILENAME_OUT_TIME=""
-export FILENAME_OUT_POWER=""
+export FILENAME_OUT_TIME="measure_time"
+export FILENAME_OUT_POWER="measure_power"
+
+# Reset lists of forced policies
+export EXP_FREQ_FORCED_LIST=()
+export EXP_POLICY_FORCED_LIST=()

@@ -1,10 +1,14 @@
 #!/bin/bash
 
 # Experiment base output directory
-export EXP_BASE_DIR="./results-pmc"
+export EXP_BASE_DIR="./results-power"
 
 # Experiment title
-export EXP_TITLE="PMC Measurement"
+export EXP_TITLE="Power Measurement"
+
+
+# Experiment description
+export EXP_DESCRIPTION="This experiment runs a set of tasks multiple times for each policy and each frequency"
 
 # Number of seconds for which a single task run should roughly execute at least
 # (when running on the fastest core at the fastest frequency)
@@ -19,7 +23,7 @@ export EXP_TEST_DURATION=20
 export EXP_SLEEP_INTERVAL=10
 
 # The command to execute to measure elapsed time
-export TIME_CMD="pmctrack -o /dev/stderr -T 0.1 -c ${PMC_CURRENT_EVENTS}"
+export TIME_CMD="${APPSDIR}/forever/forever"
 
 # This command is used to make a single dry run of the application if needed
 # (see run.sh script for more details)
@@ -27,7 +31,7 @@ export TIME_CMD_DRY="/usr/bin/time"
 export TIME=$'\ntime %e\n'
 
 # The command to execute to measure the power consumption
-export POWERSAMPLER_CMD=""
+export POWERSAMPLER_CMD="${APPSDIR}/sampler/sampler"
 
 # The number of repetitions to run for each test
 export HOWMANY_TIMES=5
@@ -44,7 +48,22 @@ export HOWMANY_TASKS=1
 # - deadline    ->  "chrt -P $DEADLINE_PERIOD -T $DEADLINE_RUNTIME -d 0"
 export HIGH_PRIO_KIND="nice"
 
+# This parameter is used to set the RT priority of the task if HIGH_PRIO_KIND="fifo"
+export FIFO_PRIORITY=10
+
+# These parameters are used if HIGH_PRIO_KIND="deadline", wrapping each task
+# inside a reservation with the following characteristics:
+#   DEADLINE_PERIOD     [in nanoseconds] is the period of the reservation (also equal to its deadline);
+#   DEADLINE_RUNTIME    [in nanoseconds] is the runtime of the reservation.
+#
+export DEADLINE_PERIOD=10000000000 # In nanoseconds
+export DEADLINE_RUNTIME=4000000000 # In nanoseconds
+
 # Base names of the two files that will be outputed, for time and power
 # measurements respectively
-export FILENAME_OUT_TIME="measure_pmc_${PMC_CURRENT_EXP_INDEX}"
-export FILENAME_OUT_POWER=""
+export FILENAME_OUT_TIME="measure_time"
+export FILENAME_OUT_POWER="measure_power"
+
+# Reset lists of forced policies
+export EXP_FREQ_FORCED_LIST=()
+export EXP_POLICY_FORCED_LIST=()

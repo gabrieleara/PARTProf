@@ -67,7 +67,7 @@ function install_deps_apt() {
 
     mkdir -p "$BUILD_PATH"
     cmake -S "$ORIGINAL_PATH" -B "$BUILD_PATH"
-    make -C "$BUILD_PATH"
+    cmake --build "$BUILD_PATH"
 
     # NOTE: final executable locations
     # ${BUILD_PATH}/cacheapp/cachekiller
