@@ -52,6 +52,13 @@ contain a 'PARTProf' folder with the desired components installed.
 
 List of options (all optional):
   -h, --help        Prints this help message and returns with an error.
+  -n, --dry-run     Prints out all commands but does not execute them.
+  -D, --install-deps
+                    Install dependencies before copying files. This option
+                    installs dependencies both on the local and the remote host
+                    using apt. Enabled by default.
+  -d, --skip-deps   Do not install dependencies, neither on the local nor the
+                    remote host.
   -s, --ssh HOSTNAME
                     A valid location to ssh into. You may be prompted one or
                     multiple times for credentials during the process.
@@ -62,7 +69,7 @@ List of options (all optional):
                     Enables the installation of the host component. See Notes.
 
 Notes:
-    If neither '-E' nor '-H' options are provided, it is equivalent as providing
+    If neither '-E' nor '-H' options are provided, it is equivalent to providing
     both (because installing no component makes little sense).
 EOF
 }
@@ -72,17 +79,11 @@ pos_args=()
 
 function toshortopts() {
     while [ $# -gt 0 ]; do
-        # if ! [[ "$1" == "--*" ]]; then
-        #     echo -E "$1"
-        #     shift
-        #     continue
-        # fi
-
         case "$1" in
         --install-deps)
             printf ' %s' "-D"
             ;;
-        --dont-install-deps)
+        --skip-deps)
             printf ' %s' "-d"
             ;;
         --install-embedded)
@@ -93,6 +94,9 @@ function toshortopts() {
             ;;
         --help)
             printf ' %s' "-h"
+            ;;
+        --dry-run)
+            printf ' %s' "-n"
             ;;
         --ssh)
             printf ' %s' "-s"
@@ -118,9 +122,7 @@ function separate_args() {
         unset OPTIND
         unset OPTARG
         unset OPTION
-
         while getopts ":$optstring" OPTION; do
-            echo "DBG: OPTION: $OPTION"
             if [ "$OPTION" != : ]; then
                 opt_args+=("-$OPTION")
             else
@@ -134,13 +136,9 @@ function separate_args() {
             unset OPTARG
         done
 
-        echo "DBG: AAAARGS  $@"
         shift $((OPTIND - 1)) || true
-        echo "DBG: AAAARGS2 $@"
         pos_args+=($1)
-        echo "DBG: POSARGS $pos_args"
         shift || true
-        echo "DBG: AAAARGS3 $@"
     done
 }
 
@@ -152,9 +150,7 @@ function parse_opt_args() {
     unset OPTIND
     unset OPTARG
     unset OPTION
-    echo "DBG: ARGS $@"
     while getopts "$optstring" OPTION; do
-        echo "DBG: " $OPTION
         case $OPTION in
         E)
             install_neither=0
@@ -165,7 +161,7 @@ function parse_opt_args() {
             install_host=1
             ;;
         h)
-            usage >/dev/stderr
+            usage >&2
             return 1
             ;;
         D)
@@ -174,15 +170,18 @@ function parse_opt_args() {
         d)
             install_deps=0
             ;;
+        n)
+            dry_run=1
+            ;;
         s)
             if [ -z "$OPTARG" ]; then
-                usage >/dev/stderr
+                usage >&2
                 return 1
             fi
             ssh_host="$OPTARG"
             ;;
         *)
-            usage >/dev/stderr
+            usage >&2
             return 1
             ;;
         esac
@@ -192,12 +191,11 @@ function parse_opt_args() {
     # Too many options/unrecognized options
     shift $((OPTIND - 1)) || true
     if [ "$#" -gt 0 ]; then
-        usage >/dev/stderr
+        usage >&2
         return 1
     fi
 
     if [ "$install_neither" = 1 ]; then
-        echo "NEITHER!"
         install_embedded=1
         install_host=1
     fi
@@ -206,71 +204,70 @@ function parse_opt_args() {
 function parse_pos_args() {
     dest_path="${pos_args[0]}"
     if [ -z "$dest_path" ]; then
-        usage >/dev/stderr
+        usage >&2
         return 1
     fi
 }
 
-# function check_prog_args() {
-#     if [ $# -lt 1 ]; then
-#         echo "Please provide a valid ssh host as first argument!" \
-#             >/dev/stderr
-#         return 1
-#     fi
+function echo_step() {
+    printf '\n >>> %s\n\n' "$1"
+}
 
-#     if [ $# -lt 2 ]; then
-#         echo "Please provide a valid destination for rsync as first argument!" \
-#             >/dev/stderr
-#         return 1
-#     fi
+function run_or_dry_run() {
+    local the_command
+    the_command="$@"
 
-#     # TODO: check whether argument is an okay path
-# }
-
-# Builds arguments for the rsync command
-#
-# Usage: addparam <include/exclude> args...
-#
-# Arguments:
-#  1. <include/exclude>     indicates what to do with following args (only 1)
-#  2. args...               list of directories (with subdirectories)
-function addparam() {
-    include_rules=""
-    for p in "${@:2}"; do
-        include_rules+=" --$1='${p}/**'"
-    done
-    echo "$include_rules"
+    # Note: must use bash -c to avoid problems with quoting
+    if [ "$dry_run" = 1 ]; then
+        echo "(DRY RUN) Command: $the_command"
+    else
+        bash -c "$the_command"
+    fi
 }
 
 function test_ssh() {
     [ -z "$ssh_host" ] && return 0
 
-    if ! ssh -T "$ssh_host" </dev/null >/dev/null 2>&1 ; then
-        echo "ERR: could not establish a connection with '$ssh_host'!" \
-            >/dev/stderr
+    local ssh_test_cmd
+    ssh_test_cmd="ssh -T '$ssh_host' </dev/null >/dev/null 2>&1"
+
+    echo_step "TESTING SSH CONNECTION..."
+
+    if ! run_or_dry_run $ssh_test_cmd; then
+        echo "ERR: could not establish a connection with '$ssh_host'!" >&2
         return 1
     fi
 }
 
 function install_dep() {
+    local idp_fname
+    local local_dep_file
+    local remote_dep_file
+    local local_install_cmd
+    local remote_copy_cmd
+    local remote_install_cmd
+
     idp_fname="install-dep.sh"
-    install_dep_file="$(realpath "$path_proj")/install/${idp_fname}"
+    local_dep_file="$(realpath "$path_proj")/install/${idp_fname}"
+    remote_dep_file="/tmp/${idp_fname}"
+    local_install_cmd="'$local_dep_file'"
+    remote_copy_cmd="scp -p '$local_dep_file' '${ssh_host}:${remote_dep_file}' >/dev/null"
+    remote_install_cmd="ssh '$ssh_host' '${remote_dep_file}'"
 
-    echo ">> INSTALLING LOCAL DEPENDENCIES..."
-    "$install_dep_file"
+    echo_step "INSTALLING DEPENDENCIES ON LOCAL HOST..."
+    run_or_dry_run $local_install_cmd
 
-    if [ ! -z "$ssh_host" ] ; then
-        echo ">> INSTALLING REMOTE DEPENDENCIES..."
-        scp -p "$install_dep_file" "${ssh_host}:/tmp/${idp_fname}"
-        ssh "$ssh_host" '/tmp/${idp_fname}'
+    if [ ! -z "$ssh_host" ]; then
+        echo_step "INSTALLING DEPENDENCIES ON REMOTE HOST..."
+        run_or_dry_run $remote_copy_cmd
+        run_or_dry_run $remote_install_cmd
     fi
 }
 
 (
     set -e
-    # set -x
 
-    optstring="DdEHhs:"
+    optstring="DdEHhns:"
 
     # Optional arguments
     ssh_host=
@@ -278,14 +275,12 @@ function install_dep() {
     install_embedded=0
     install_host=0
     install_deps=1
+    dry_run=0
 
     # Required arguments (in order)
     dest_path=
 
     OPTERR=0
-
-    echo "DBG: ALL " $(toshortopts "$@")
-    echo "DBG: TOSHORT " $(toshortopts "$@")
 
     # Separate optional from positional arguments, then parse them
     separate_args "$optstring" $(toshortopts "$@")
@@ -303,104 +298,33 @@ function install_dep() {
 
     # Build rsync parameters putting includes first and excludes last
     include_rules=''
-    # include_rules+=" '--include=*/'"
 
-    # # Directories to exclude
+    # Directories to exclude
     for d in build bin .devcontainer .git .vscode '*results' tables; do
         include_rules+=" '--exclude=$d/**'"
     done
     include_rules+=" '--exclude=.gitignore'"
 
-    # LIST_OF_DIRECTORIES_TO_EXCLUDE=(build bin obj 'post-processing*' .git)
-    # for d in ${LIST_OF_DIRECTORIES_TO_EXCLUDE[@]}; do
-    #     include_rules+=" --exclude=$d"
-    # done
+    # Exclude unwanted directories from this install
+    # TODO: Bad solution, fix later?
+    [ "$install_embedded" != 1 ] &&
+        include_rules+=" '--exclude=embedded'"
+    [ "$install_host" != 1 ] &&
+        include_rules+=" '--exclude=host'"
 
-    # LIST_OF_DIRECTORIES_TO_INCLUDE=()
-    # include_rules+=$(addparam include "${LIST_OF_DIRECTORIES_TO_INCLUDE[@]}")
-
-    # # Directories to include
-    # include_rules+=" '--include=$path_proj'"
-    # include_rules+=" '--include=$path_proj/install'"
-
-    # DOES NOT WORK MAREMMA MAIALA
-    echo "$install_embedded"
-    echo "$install_host"
-    [ "$install_embedded" != 1 ] && \
-        include_rules+=" '--exclude=$path_embedded'"
-    [ "$install_host"     != 1 ] && \
-        include_rules+=" '--exclude=$path_host'"
-
-    # Rule to exclude everything
-    # include_rules+=" '--exclude=*'"
-    #include_rules+=" '--exclude=*'"
-
-    # Build installation command
+    # Common flags for the installation command
     rsync_flags=" -aviz --delete --prune-empty-dirs"
-    rsync_flags+=" -n "
 
+    # Force SSH if --ssh/-s is used
     if [ ! -z "$ssh_host" ]; then
         rsync_flags+=" -e ssh"
         dest_path="${ssh_host}:${dest_path}"
     fi
 
-    command="rsync ${rsync_flags} ${include_rules} '${path_proj}' '$dest_path'"
+    install_cmd="rsync ${rsync_flags} ${include_rules} '${path_proj}' '$dest_path'"
 
-    # Necessary not to mess with the quotes and everything
-    echo ">> INSTALLING USING: ${command}"
-    bash -c "${command}"
-
-# # Build parameters from list, first the generic */ include rule,
-# # then specific exclude directories,
-# # then include directories,
-# # and finally the *.
-# # Notice that order matters!
-# include_rules=''
-# include_rules+=" --include='*/'"
-#
-# include_rules+=$(addparam include "${LIST_OF_DIRECTORIES_TO_INCLUDE[@]}")
-# include_rules+=" --exclude='*'"
-
-
-
-
-
-
-
-
-
-
-
+    # Finally, print and run
+    echo_step "INSTALLING..."
+    # printf "%s\n\n%s\n\n" "About to run the following command:" "$install_cmd"
+    run_or_dry_run $install_cmd
 )
-
-# LIST_OF_DIRECTORIES_TO_INCLUDE=(apps script)
-# LIST_OF_DIRECTORIES_TO_EXCLUDE=(bin obj 'post-processing*' .git)
-# DESTINATION="$1"
-
-# # Build parameters from list, first the generic */ include rule,
-# # then specific exclude directories,
-# # then include directories,
-# # and finally the *.
-# # Notice that order matters!
-# include_rules=''
-# include_rules+=" --include='*/'"
-# include_rules+=$(addparam exclude "${LIST_OF_DIRECTORIES_TO_EXCLUDE[@]}")
-# include_rules+=$(addparam include "${LIST_OF_DIRECTORIES_TO_INCLUDE[@]}")
-# include_rules+=" --exclude='*'"
-
-# if [ -z "$DESTINATION" ]; then
-#     echo "Missing destination (remote) directory argument!"
-#     exit 1
-# fi
-
-# echo "DESTINATION: $DESTINATION"
-
-# # Building installation command
-# command="rsync -avzi -e ssh --delete --prune-empty-dirs $include_rules ${_PROJECTPATH} ${DESTINATION}"
-
-# echo "Executing installation command:"
-# echo "--> $command"
-
-# # MUST USE BASH BECAUSE OTHERWISE IT MESSES UP WITH THE QUOTES IN PARAMETERS
-# # If command 'rsync' not found on destination, please install 'rsync' on destination first!"
-# bash -c "${command}"

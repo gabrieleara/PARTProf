@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo apt update && sudo apt install -y rsync pv
+sudo apt-get update && sudo apt-get install -y rsync pv
