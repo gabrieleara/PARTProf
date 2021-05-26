@@ -16,10 +16,10 @@ export EXP_TASK_MIN_DURATION=2
 # Number of seconds for which each single test (comprising potentially multiple
 # task runs) should roughly execute at least.
 # Absolute value, invariant to frequency
-export EXP_TEST_DURATION=20
+export EXP_TEST_DURATION=40
 
 # Cooldown period between consecutive test tries
-export EXP_SLEEP_INTERVAL=10
+export EXP_SLEEP_INTERVAL=100
 
 # The command to execute to measure elapsed time
 export TIME_CMD="${APPSDIR}/forever/forever"

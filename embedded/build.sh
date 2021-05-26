@@ -3,7 +3,7 @@
 # -------------------------------------------------------- #
 
 function jump_and_print_path() {
-    cd -P "$(dirname "$_SOURCE")" >/dev/null 2>&1 && pwd
+    cd -P "$(dirname "$1")" >/dev/null 2>&1 && pwd
 }
 
 function get_script_path() {
@@ -24,7 +24,6 @@ function get_script_path() {
     done
 
     _PATH="$(jump_and_print_path "$_SOURCE")"
-
     echo "${_PATH}"
 }
 
@@ -35,8 +34,7 @@ function get_project_path() {
     local _PROJPATH
 
     _PATH=$(get_script_path)
-    _PROJPATH=$(jump_and_print_path "${_PATH}/$1")
-
+    _PROJPATH=$(realpath "${_PATH}/$1")
     echo "${_PROJPATH}"
 }
 
@@ -51,8 +49,8 @@ function install_deps_apt() {
 (
     set -e
 
-    if ! type cmake >/dev/null; then
-        if type apt >/dev/null; then
+    if ! type cmake &>/dev/null; then
+        if type apt &>/dev/null; then
             install_deps_apt
         else
             echo "ERROR! Not a supported distro detected!"

@@ -5,7 +5,7 @@
 # -------------------------------------------------------- #
 
 function jump_and_print_path() {
-    cd -P "$(dirname "$_SOURCE")" >/dev/null 2>&1 && pwd
+    cd -P "$(dirname "$1")" >/dev/null 2>&1 && pwd
 }
 
 function get_script_path() {
@@ -26,7 +26,6 @@ function get_script_path() {
     done
 
     _PATH="$(jump_and_print_path "$_SOURCE")"
-
     echo "${_PATH}"
 }
 
@@ -37,14 +36,96 @@ function get_project_path() {
     local _PROJPATH
 
     _PATH=$(get_script_path)
-    _PROJPATH=$(jump_and_print_path "${_PATH}/$1")
-
+    _PROJPATH=$(realpath "${_PATH}/$1")
     echo "${_PROJPATH}"
 }
 
 # -------------------------------------------------------- #
 #                          output                          #
 # -------------------------------------------------------- #
+
+# Format
+FBold='\e[1m'
+FDim='\e[2m'
+FUnderlined='\e[4m'
+FBlink='\e[5m'
+FNormalInverted='\e[7m'
+FHidden='\e[8m'
+
+# Reset formatting
+RNormal='\e[0m'
+RBold='\e[21m'
+RDim='\e[22m'
+RUnder='\e[24m'
+RBlink='\e[25m'
+RInverted='\e[27m'
+RHidden='\e[28m'
+
+# Colors
+CDefault='\e[39m'
+CBlack='\e[30m'
+CRed='\e[31m'
+CGreen='\e[32m'
+CYellow='\e[33m'
+CBlue='\e[34m'
+CMagenta='\e[35m'
+CCyan='\e[36m'
+CLGray='\e[37m'
+CGray='\e[90m'
+CLRed='\e[91m'
+CLGreen='\e[92m'
+CLYellow='\e[93m'
+CLBlue='\e[94m'
+CLMagenta='\e[95m'
+CLCyan='\e[96m'
+CWhite='\e[97m'
+
+# Background colors not used
+
+# DISABLE ALL FORMATTING IF OUTPUTING TO A NON-TERMINAL
+if [ ! -t 1 ]; then
+
+    # Format
+    FBold=''
+    FDim=''
+    FUnderlined=''
+    FBlink=''
+    FNormalInverted=''
+    FHidden=''
+
+    # Reset formatting
+    RNormal=''
+    RBold=''
+    RDim=''
+    RUnder=''
+    RBlink=''
+    RInverted=''
+    RHidden=''
+
+    # Colors
+    CDefault=''
+    CBlack=''
+    CRed=''
+    CGreen=''
+    CYellow=''
+    CBlue=''
+    CMagenta=''
+    CCyan=''
+    CLGray=''
+    CGray=''
+    CLRed=''
+    CLGreen=''
+    CLYellow=''
+    CLBlue=''
+    CLMagenta=''
+    CLCyan=''
+    CWhite=''
+fi
+
+CInfo="${CBlue}"
+CDebug="${CGreen}"
+CError="${CRed}"
+CWarn="${CYellow}"
 
 function print_msg() {
     printf '%s\n' "$*"
@@ -62,22 +143,54 @@ function delline() {
 }
 
 function pinfo() {
+    printf "${CInfo}"
     print_msg "$@"
+    printf "${CDefault}"
 }
 
-function pinfo_say() {
-    print_msg "$@"
-    say "$@"
+function pinfosay() {
+    pinfo "$@"
+    say "$@" 2>/dev/null || true
+}
+
+LEVEL_1='==>'
+LEVEL_2='---->'
+
+function pinfo1() {
+    pinfo "${LEVEL_1}" "$@"
+}
+
+function pinfo2() {
+    pinfo "${LEVEL_2}" "$@"
+}
+
+function pinfosay1() {
+    pinfosay "${LEVEL_1}" "$@"
+}
+
+function pinfosay2() {
+    pinfosay "${LEVEL_2}" "$@"
 }
 
 function perr() {
-    print_msg 'ERR:' "$@" >&2
-    say 'ERROR:' "$@"
+    printf "    ${CError}${FBold}ERROR${RNormal}${CError}: "
+    print_msg "$@" >&2
+    printf "${CDefault}"
+    say 'ERROR:' "$@" 2>/dev/null || true
 }
 
 function pwarn() {
-    print_msg 'WARN:' "$@" >&2
-    say 'ERROR:' "$@"
+    printf "    ${CWarn}${FBold}WARN${RNormal}${CWarn}: "
+    print_msg "$@" >&2
+    printf "${CDefault}"
+    say 'ERROR:' "$@" 2>/dev/null || true
+}
+
+function pdebug() {
+    printf "    ${CDebug}${FBold}DEBUG${RNormal}${CDebug}: "
+    print_msg "$@" >&2
+    print_msg '' >&2
+    printf "${CDefault}"
 }
 
 function pinfo_newline() {
@@ -88,24 +201,19 @@ function perr_newline() {
     print_msg '' >&2
 }
 
-function pwarn_newline() [
-print_msg '' >&2
-]
-
-# Env variables:
-#  - freq
-function pinfo_frequency() {
-    pinfo_say "Selecting frequency $(bc <<<"$freq / 1000") MHz..."
-    pinfo_newline
+function pwarn_newline() {
+    print_msg '' >&2
 }
 
-# Env variables:
-#  - policy
-#  - policy_other
-function pinfo_cpupolicy() {
-    pinfo_say "Current CPU Island is ${policy}"
-    pinfo_say "Other   CPU Island is ${policy_other}"
-    pinfo_newline
+function format_frequency() {
+    while [ $# -gt 0 ]; do
+        echo -n "$(bc <<<"$1 / 1000")MHz"
+        shift
+        if [ $# -gt 0 ]; then
+            echo -n ' '
+        fi
+    done
+
 }
 
 # -------------------------------------------------------- #
@@ -304,11 +412,10 @@ function single_test_run() {
 
     # Print progress status
     delline
-    pinfo \
-        "-->" \
+    pinfo2 \
         "[Task $((task_index + 1))/${#TASKS_NAME[@]}]" \
         "Running '${task_name}'" \
-        "[run ${task_rep}/${HOWMANY_TIMES}"
+        "[run ${task_rep}/${HOWMANY_TIMES}] ..."
 
     # Create current test output directory
     mkdir -p "$(this_test_directory)/${task_rep}"
@@ -395,8 +502,8 @@ function single_test_run() {
             # - start time measuring
             # - actual command to run
             taskset -c "$task_core" \
-                $HIGH_PRIO_CMD \
                 $TIME_CMD \
+                $HIGH_PRIO_CMD \
                 $task_cmd \
                 >/dev/null 2>"$task_time_file" &
 
@@ -543,14 +650,18 @@ function should_skip_policy() {
     if [ "${#EXP_POLICY_FORCED_LIST[@]}" -gt 0 ]; then
         # It is, then the policy must be in the list
         for policy_forced in "${EXP_POLICY_FORCED_LIST[@]}"; do
-            [ "$policy" = "$policy_forced" ] && return 0
+            if [ "$policy" = "$policy_forced" ]; then
+                # Should not skip!
+                return 1
+            fi
         done
 
-        # Not in the list
-        return 1
+        # Should skip
+        return 0
     fi
 
-    return 0
+    # Should not skip
+    return 1
 }
 
 # Returns whether the frequency should be skipped (i.e. not
@@ -558,30 +669,41 @@ function should_skip_policy() {
 #
 # Env variables:
 #  - freq
-function should_skip_policy() {
+function should_skip_frequency() {
     local freq_forced
 
     # First check if the list is provided
     if [ "${#EXP_FREQ_FORCED_LIST[@]}" -gt 0 ]; then
         # It is, then the frequency must be in the list
         for freq_forced in "${EXP_FREQ_FORCED_LIST[@]}"; do
-            [ "$freq" = "$freq_forced" ] && return 0
+            if [ "$freq" = "$freq_forced" ]; then
+                # Should not skip!
+                return 1
+            fi
         done
 
-        # Not in the list
-        return 1
+        # Should skip
+        return 0
     fi
 
-    return 0
+    # Should not skip
+    return 1
 }
 
 function load_conf_files() {
     for arg in "$@"; do
-        [ ! -f "$arg" ] && continue
+        if [ ! -f "$arg" ] ; then
+            pwarn "$arg is not a file! Skipping..."
+            continue
+        fi
 
-        pinfo "--> Loading file $arg"
+        pinfo2 "Loading file $arg"
         . "$arg"
     done
+}
+
+function sort_and_lineup() {
+    sort -n | tr '\n' ' '
 }
 
 (
@@ -607,10 +729,11 @@ function load_conf_files() {
 
     # The tasks to be run typically are these, but they can
     # be overwritten with files in parameters
-    . "${CONFDIR}/tasks/simple.bash"
+    . "${CONFDIR}/tasks/simple.sh"
 
     # Load custom parameters to substitute the ones in
     # base.sh from the specified file, if any
+    pinfo1 "About to load configuration files provided via command line..."
     load_conf_files "$@"
 
     # Jump into output directory.
@@ -620,18 +743,14 @@ function load_conf_files() {
     # NOTE: this will NOT delete old data, old data is
     # overwritten only new data is actually written on top!
 
-    pinfo_newline
-    pinfo '--> Printing experiment metadata'
-    pinfo_newline
+    pinfo1 'Printing experiment metadata'
 
     # Save experiment metadata and print them on the screen too
     # TODO: SAVE MORE METADATA!
     experiment_save_metadata "exp_metadata-${EXP_TITLE}.txt"
     cat "exp_metadata-${EXP_TITLE}.txt"
 
-    pinfo_newline
-    pinfo '--> Rebuilding applications'
-    pinfo_newline
+    pinfo1 'Rebuilding applications'
 
     # Rebuild binaries if necessary
     "${PROJPATH}/embedded/build.sh"
@@ -644,27 +763,22 @@ function load_conf_files() {
     HIGH_PRIO_CMD=$(high_prio_kind_to_cmd)
 
     pinfo_newline
-    pinfo '--> Generating fake data for the experiment'
-    pinfo_newline
+    pinfo1 'Generating fake data for the experiment'
     generate_fakedata_ondisk
     create_fakedata_inram /fakedata 2048
 
     activate_pwm_fans
 
-    pinfo_newline
-    pinfo '--> Experiment will begin in 30 seconds...'
-    pinfo_newline
+    pinfo1 'Experiment will begin in 30 seconds...'
 
     # Unplug everything now
-    sleep 30s
+    # sleep 30s
 
-    pinfo_newline
-    pinfo '--> Experiment will begin NOW!'
-    pinfo_newline
+    pinfo1 'Experiment will begin NOW!'
 
-    policy_list=$(cpufreq_policy_list | sort -n)
+    policy_list=$(cpufreq_policy_list | sort_and_lineup)
 
-    pinfo '--> List of policies available:' "$policy_list"
+    pinfo2 'List of policies available:' "$policy_list"
 
     #------------------------------------------------------#
     #------------------- FOREACH POLICY -------------------#
@@ -674,7 +788,7 @@ function load_conf_files() {
     policy_other=
     for policy in $policy_list; do
         if should_skip_policy; then
-            pinfo "--> Skipping policy $policy"
+            pinfo1 "Skipping policy $policy"
             continue
         fi
 
@@ -685,40 +799,37 @@ function load_conf_files() {
             policy_other=$(cpufreq_policy_find_another "$policy")
         fi
 
-        pinfo_cpupolicy
+        pinfosay1 "Selected CPU Island is ${policy}"
+        pinfosay2 "Other CPU Island is ${policy_other}"
 
         #--------------------------------------------------#
         #-------- TASKSET SCRIPT AND POWER SAMPLER --------#
         #--------------------------------------------------#
 
-        # If no other policy is present, use last core for both power and
-        # script, even if this will make everything messier, they should affect
-        # only execution time of the last command on a multi-core test. It is
-        # inevitable...
-        if [ "$policy_other" = "$policy" ]; then
-            CPU_CORE_POWER_SAMPLER=${CPU_OTHER_LIST[${#CPU_OTHER_LIST[@]} - 1]}
-            CPU_CORE_EXP_SCRIPT=${CPU_OTHER_LIST[${#CPU_OTHER_LIST[@]} - 1]}
-        else
-            # NOTE: we no longer start stress tasks on the other policy
+        # NOTE: using a core on the same island if the system has only one
+        # island available (it is inevitable). In that case, only the last core
+        # of that island will be used (should not affect significantly
+        # experiments with less concurrent tasks than the number of cores per
+        # island...)
 
-            # Select the core on which the power sensor will run
-            # as the last one in policy_other.
-            readarray -t CPU_OTHER_LIST <<<"$(cpufreq_policy_cpu_list "$policy_other")"
-            CPU_CORE_POWER_SAMPLER=${CPU_OTHER_LIST[0]}
-            CPU_CORE_EXP_SCRIPT=${CPU_OTHER_LIST[1]}
+        # NOTE: we no longer start stress tasks on the other policy
 
-            # TODO: how about having a "fake" policy that instead includes all cores
-            # that are NOT in the current policy?
+        # Select the core on which the power sensor will run
+        # as the last one in policy_other.
+        readarray -t CPU_OTHER_LIST <<<"$(cpufreq_policy_cpu_list "$policy_other")"
+        CPU_CORE_POWER_SAMPLER=${CPU_OTHER_LIST[${#CPU_OTHER_LIST[@]} - 1]}
+        CPU_CORE_EXP_SCRIPT=$CPU_CORE_POWER_SAMPLER
 
-            # Fix in the remote case the CPU_OTHER_LIST has only one core:
-            if [ "${#CPU_OTHER_LIST[@]}" -lt 2 ]; then
-                CPU_CORE_EXP_SCRIPT=$CPU_CORE_POWER_SAMPLER
-            fi
+        # TODO: how about having a "fake" policy that instead includes all cores
+        # that are NOT in the current policy?
+
+        # There is room for more use it
+        if [ "$policy_other" != "$policy" ] && [ "${#CPU_OTHER_LIST[@]}" -gt 1 ]; then
+            CPU_CORE_EXP_SCRIPT=${CPU_OTHER_LIST[${#CPU_OTHER_LIST[@]} - 2]}
         fi
 
         if [ "$CPU_CORE_EXP_SCRIPT" = "$CPU_CORE_POWER_SAMPLER" ]; then
-            pwarn "Running the original script on the same core as the power sampler!"
-            pwarn_newline
+            pwarn "Running the experiment script on the same core as the power sampler!"
         fi
 
         # Move the current script to another core
@@ -747,8 +858,9 @@ function load_conf_files() {
         cpufreq_policy_frequency_minall
         # cpufreq_policy_frequency_maxall
 
-        policy_frequencies="$(cpufreq_policy_frequency_list "$policy" | sort -n)"
-        pinfo "--> Policy $policy supported frequencies: $policy_frequencies"
+        policy_frequencies="$(cpufreq_policy_frequency_list "$policy" | sort_and_lineup)"
+
+        pinfo1 "Policy $policy supported frequencies: $(format_frequency $policy_frequencies)"
 
         #--------------------------------------------------#
         #--------------- FOREACH FREQUENCY ----------------#
@@ -757,11 +869,11 @@ function load_conf_files() {
         # For each frequency available for all its cores at once
         for freq in $policy_frequencies; do
             if should_skip_frequency; then
-                pinfo "--> Skipping frequency $freq"
+                pinfo1 "Skipping frequency $(format_frequency $freq)"
                 continue
             fi
 
-            pinfo_frequency
+            pinfosay1 "Selected frequency $(format_frequency $freq)"
 
             # Set the desired frequency for the given policy
             cpufreq_policy_frequency_set "$policy" "$freq"
@@ -819,7 +931,7 @@ function load_conf_files() {
 
                     # Restore content of fakedata after each run
                     rm -rf /fakedata/*
-                    copy_fakedata_inram /fakedata/fakedata "$fakefile_size"
+                    copy_fakedata_inram /fakedata/fakedata "$fakefile_size" -s
                     sync
                     echo 1 >/proc/sys/vm/drop_caches
 
@@ -841,4 +953,4 @@ function load_conf_files() {
     done             # FOREACH POLICY
 )
 
-pinfo_say "Experiment terminated!"
+pinfosay "Experiment terminated!"

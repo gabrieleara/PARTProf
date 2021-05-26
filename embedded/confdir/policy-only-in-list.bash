@@ -1,3 +1,3 @@
 #!/bin/bash
 
-export EXP_POLICY_FORCED_LIST=( "$@" )
+export EXP_POLICY_FORCED_LIST=( 0 )

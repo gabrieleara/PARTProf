@@ -3,7 +3,7 @@
 # -------------------------------------------------------- #
 
 function jump_and_print_path() {
-    cd -P "$(dirname "$_SOURCE")" >/dev/null 2>&1 && pwd
+    cd -P "$(dirname "$1")" >/dev/null 2>&1 && pwd
 }
 
 function get_script_path() {
@@ -24,7 +24,6 @@ function get_script_path() {
     done
 
     _PATH="$(jump_and_print_path "$_SOURCE")"
-
     echo "${_PATH}"
 }
 
@@ -35,8 +34,7 @@ function get_project_path() {
     local _PROJPATH
 
     _PATH=$(get_script_path)
-    _PROJPATH=$(jump_and_print_path "${_PATH}/$1")
-
+    _PROJPATH=$(realpath "${_PATH}/$1")
     echo "${_PROJPATH}"
 }
 
@@ -248,7 +246,7 @@ function install_dep() {
     local remote_install_cmd
 
     idp_fname="install-dep.sh"
-    local_dep_file="$(realpath "$path_proj")/install/${idp_fname}"
+    local_dep_file="${path_proj}/install/${idp_fname}"
     remote_dep_file="/tmp/${idp_fname}"
     local_install_cmd="'$local_dep_file'"
     remote_copy_cmd="scp -p '$local_dep_file' '${ssh_host}:${remote_dep_file}' >/dev/null"

@@ -19,7 +19,7 @@ function test_file_size_mb() {
     expected_bytes=$((filesize * 1024 * 1024))
     filesize_bytes=$(stat --printf="%s" "$filepath")
 
-    [ expected_bytes = filesize_bytes ]
+    [ $expected_bytes = $filesize_bytes ]
 }
 
 # Create fakedata files on disk in the designated directory if they do not exist
@@ -32,6 +32,7 @@ function test_file_size_mb() {
 function generate_fakedata_ondisk() {
     local task_index
     local task_name
+    local task_fileratio
     local filesize
     local filename
     local filediskpath
@@ -41,7 +42,8 @@ function generate_fakedata_ondisk() {
 
     # For each task in the taskset
     for ((task_index = 0; task_index < ${#TASKS_NAME[@]}; task_index++)); do
-        task_name=${TASKS_NAME[$task_index]}
+        task_name="${TASKS_NAME[$task_index]}"
+        task_fileratio="${TASKS_FILESIZE_RATIO[task_index]}"
 
         # We create a file on disk (which will then be copied in /tmp later).
         # Files are created only once and then reused for future experiments.
@@ -49,9 +51,9 @@ function generate_fakedata_ondisk() {
         # Files like this are used to force certain tasks to have something to
         # process for a while.
 
-        filesize=$((EXP_TASK_MIN_DURATION * TASKS_FILESIZE_RATIO[task_index]))
+        filesize=$((EXP_TASK_MIN_DURATION * task_fileratio))
         filename="fakedata-$filesize"
-        filediskpath="$FAKEDATA_DIR/filename"
+        filediskpath="$FAKEDATA_DIR/$filename"
 
         # File exists?
         if [ -f "$filediskpath" ]; then
@@ -66,13 +68,9 @@ function generate_fakedata_ondisk() {
         fi
 
         if [ "$should_create_file" != 1 ]; then
-            printf "---> File %s already exists with the right size!" \
-                "$filediskpath"
-            printf "Skipping...\n"
+            pinfo2 "File $filediskpath already exists with the right size!"
         else
-            printf "---> Creating a %s MB file in %s" \
-                "$filesize" "$filediskpath"
-
+            pinfo2 "Creating a $filesizeMB file in $filediskpath"
             head -c "${filesize}M" /dev/urandom >"$filediskpath"
         fi
     done
@@ -89,9 +87,9 @@ function create_fakedata_inram() {
     fakedata_rampath="$1"
     fakedata_ramsize="$2"M
 
-    mkdir -p "$fakedatarampath"
-    umount "$fakedatarampath" &>/dev/null || true
-    mount -t tmpfs -o size="$fakedata_ramsize" tmpfs "$fakedatarampath"
+    mkdir -p "$fakedata_rampath"
+    umount "$fakedata_rampath" &>/dev/null || true
+    mount -t tmpfs -o size="$fakedata_ramsize" tmpfs "$fakedata_rampath"
 }
 
 # Copies files from disk to ram (but only if needed)
@@ -105,9 +103,11 @@ function copy_fakedata_inram() {
     local file_ondisk
     local file_desired_size
     local should_copy
+    local silent
 
     file_inram="$1"
     file_desired_size="$2"
+    silent=$3
 
     if [ -f $file_inram ]; then
         if test_file_size_mb "$file_inram" "$file_desired_size"; then
@@ -120,11 +120,15 @@ function copy_fakedata_inram() {
     fi
 
     if [ $should_copy = 1 ]; then
-        printf "---> Copying a %sMB file in ramfs...\n" "$file_desired_size"
+        if [ -z $silent ]; then
+            pinfo2 "Copying a ${file_desired_size}MB file in ramfs..."
+        fi
         file_ondisk="${FAKEDATA_DIR}/fakedata-${file_desired_size}"
         cp "$file_ondisk" "$file_inram"
     else
-        printf "\n"
+        if [ -z $silent]; then
+            pinfo "\n"
+        fi
     fi
 }
 
@@ -136,7 +140,7 @@ function prepare_fakedata() {
     FILESIZE=$((EXP_TASK_MIN_DURATION * TASKS_FILESIZE_RATIO[task_index]))
     if [ "$FILESIZE" -ne "$FILESIZE_PREVIOUS" ]; then
         tput cuu 1 && tput el
-        echo "-----> Copying a ${FILESIZE}M file in /fakedata/fakedata "
+        pinfo2 "Copying a ${FILESIZE}M file in /fakedata/fakedata "
         cp "${FAKEDATA_DIR}/fakedata-${FILESIZE}" /fakedata/fakedata
         # pv "${FAKEDATA_DIR}/fakedata-${FILESIZE}" >/fakedata/fakedata
         tput cuu 1 && tput el
@@ -168,7 +172,7 @@ function prepare_fakedata() {
 #         FILESIZE=$((EXP_TASK_MIN_DURATION * TASKS_FILESIZE_RATIO[task_index]))
 #         if [ "$FILESIZE" -ne "$FILESIZE_PREVIOUS" ]; then
 #             tput cuu 1 && tput el
-#             echo "-----> Creating a ${FILESIZE}M file in ${FAKEDATA_DIR}/fakedata-${FILESIZE} "
+#             echo "----> Creating a ${FILESIZE}M file in ${FAKEDATA_DIR}/fakedata-${FILESIZE} "
 #             if [ -f "${FAKEDATA_DIR}/fakedata-${FILESIZE}" ]; then
 #                 # File already exists, checking if file size matches
 #                 EXISTING_FILE_SIZE=$(stat --printf="%s" "${FAKEDATA_DIR}/fakedata-${FILESIZE}")
