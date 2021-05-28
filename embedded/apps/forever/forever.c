@@ -32,8 +32,11 @@ static inline void time_diff(struct timespec *tdest, const struct timespec *t2,
 static inline void terminate(int signum __attribute((unused)),
                              siginfo_t *info __attribute((unused)),
                              void *ptr __attribute((unused))) {
-    // Abruptly terminate child pid if run at least one, otherwise let it finish
-    // undisturbed
+    // Abruptly terminate child pid if run at least once,
+    // otherwise let it finish undisturbed
+
+    // TODO: change maybe so that it always waits for the
+    // child to finish and just avoids starting a new one?
     if (pid > 0 && runcount > 0)
         kill(pid, SIGKILL);
     stop = true;

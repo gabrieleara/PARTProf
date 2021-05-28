@@ -298,7 +298,7 @@ function install_dep() {
     include_rules=''
 
     # Directories to exclude
-    for d in build bin .devcontainer .git .vscode '*results' tables; do
+    for d in build bin .devcontainer .git .vscode '*results*' '*tables*'; do
         include_rules+=" '--exclude=$d/**'"
     done
     include_rules+=" '--exclude=.gitignore'"
