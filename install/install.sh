@@ -159,8 +159,8 @@ function parse_opt_args() {
             install_host=1
             ;;
         h)
-            usage >&2
-            return 1
+            usage
+            return 0
             ;;
         D)
             install_deps=1
@@ -173,13 +173,14 @@ function parse_opt_args() {
             ;;
         s)
             if [ -z "$OPTARG" ]; then
-                usage >&2
+                usage
                 return 1
             fi
             ssh_host="$OPTARG"
             ;;
         *)
-            usage >&2
+            printf "ERR: unrecognized option '-%s'.\n\n" "$OPTION" >&2
+            usage
             return 1
             ;;
         esac
@@ -189,7 +190,8 @@ function parse_opt_args() {
     # Too many options/unrecognized options
     shift $((OPTIND - 1)) || true
     if [ "$#" -gt 0 ]; then
-        usage >&2
+        printf "ERR: unrecognized options.\n\n" >&2
+        usage
         return 1
     fi
 
@@ -202,7 +204,8 @@ function parse_opt_args() {
 function parse_pos_args() {
     dest_path="${pos_args[0]}"
     if [ -z "$dest_path" ]; then
-        usage >&2
+        printf "ERR: missing required argument.\n\n" >&2
+        usage
         return 1
     fi
 }
