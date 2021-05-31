@@ -10,7 +10,7 @@ TASKS_CMD=()
 TASKS_FILESIZE_RATIO=()
 
 TASKS_NAME+=("hash")
-TASKS_CMD+=("sha256sum /fakedata/fakedata")
+TASKS_CMD+=("sha256sum INFILE")
 TASKS_FILESIZE_RATIO+=(90)
 
 ### Brief Explanation

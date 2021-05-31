@@ -88,7 +88,7 @@ fi
 
 # --------------- Configuration variables ---------------- #
 
-CInfo="${CBlue}"
+CInfo="${CLBlue}"
 CDebug="${CGreen}"
 CError="${CRed}"
 CWarn="${CYellow}"
@@ -141,24 +141,23 @@ function pinfosay2() {
 }
 
 function perr() {
-    printf "    ${CError}${FBold}ERROR${RNormal}${CError}: "
+    printf "    ${CError}${FBold}ERROR${RNormal}${CError}: " >&2
     print_msg "$@" >&2
-    printf "${CDefault}"
+    printf "${CDefault}" >&2
     say 'ERROR:' "$@" 2>/dev/null || true
 }
 
 function pwarn() {
-    printf "    ${CWarn}${FBold}WARN${RNormal}${CWarn}: "
+    printf "    ${CWarn}${FBold}WARN${RNormal}${CWarn}: " >&2
     print_msg "$@" >&2
-    printf "${CDefault}"
+    printf "${CDefault}" >&2
     say 'ERROR:' "$@" 2>/dev/null || true
 }
 
 function pdebug() {
-    printf "    ${CDebug}${FBold}DEBUG${RNormal}${CDebug}: "
+    printf "    ${CDebug}${FBold}DEBUG${RNormal}${CDebug}: " >&2
     print_msg "$@" >&2
-    print_msg '' >&2
-    printf "${CDefault}"
+    printf "${CDefault}" >&2
 }
 
 function pinfo_newline() {
@@ -170,6 +169,10 @@ function perr_newline() {
 }
 
 function pwarn_newline() {
+    print_msg '' >&2
+}
+
+function pdebug_newline() {
     print_msg '' >&2
 }
 

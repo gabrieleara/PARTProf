@@ -57,7 +57,7 @@ export DEADLINE_RUNTIME=4000000000 # In nanoseconds
 
 # Base names of the two files that will be outputed, for time and power
 # measurements respectively
-export FILENAME_OUT_TIME="measure_pmc_${PMC_CURRENT_EXP_INDEX}"
+export FILENAME_OUT_TIME="measure_pmc_${PMC_CURRENT_EXP_INDEX}.txt"
 export FILENAME_OUT_POWER=""
 
 # Reset lists of forced policies

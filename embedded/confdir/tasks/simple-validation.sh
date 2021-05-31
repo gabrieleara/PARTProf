@@ -9,20 +9,22 @@ TASKS_NAME=()
 TASKS_CMD=()
 TASKS_FILESIZE_RATIO=()
 
+# TODO: infile/outfile shenanigans
+
 TASKS_NAME+=("hash")
-TASKS_CMD+=("sha256sum /fakedata/fakedata")
+TASKS_CMD+=("sha256sum INFILE")
 TASKS_FILESIZE_RATIO+=(90)
 
 TASKS_NAME+=("gzip-9")
-TASKS_CMD+=("gzip -kqf -9 /fakedata/fakedata -S .gzip.tmp")
+TASKS_CMD+=("gzip -kqf -9 INFILE -S .OUTFILE_EXT")
 TASKS_FILESIZE_RATIO+=(90)
 
 TASKS_NAME+=("encrypt")
-TASKS_CMD+=("openssl des3 -e -in /fakedata/fakedata -out /fakedata/fakedata.enc.tmp -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
+TASKS_CMD+=("openssl des3 -e -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
 TASKS_FILESIZE_RATIO+=(90)
 
 TASKS_NAME+=("decrypt")
-TASKS_CMD+=("openssl des3 -d -in /fakedata/fakedata.tmp -out /fakedata/fakedata.dec.tmp -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
+TASKS_CMD+=("openssl des3 -d -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
 TASKS_FILESIZE_RATIO+=(90)
 
 ### Brief Explanation

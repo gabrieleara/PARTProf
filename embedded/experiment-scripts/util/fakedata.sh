@@ -80,16 +80,16 @@ function generate_fakedata_ondisk() {
 # Arguments:
 #  1. Path in which the ramfs will be mounted
 #  2. Size in MB (only number)
-function create_fakedata_inram() {
-    local fakedata_rampath
-    local fakedata_ramsize
+function create_ramfs() {
+    local ramfs_path
+    local ramfs_size
 
-    fakedata_rampath="$1"
-    fakedata_ramsize="$2"M
+    ramfs_path="$1"
+    ramfs_size="$2"M
 
-    mkdir -p "$fakedata_rampath"
-    umount "$fakedata_rampath" &>/dev/null || true
-    mount -t tmpfs -o size="$fakedata_ramsize" tmpfs "$fakedata_rampath"
+    mkdir -p "$ramfs_path"
+    umount "$ramfs_path" &>/dev/null || true
+    mount -t tmpfs -o size="$ramfs_size" tmpfs "$ramfs_path"
 }
 
 # Copies files from disk to ram (but only if needed)
@@ -107,9 +107,9 @@ function copy_fakedata_inram() {
 
     file_inram="$1"
     file_desired_size="$2"
-    silent=$3
+    silent="$3"
 
-    if [ -f $file_inram ]; then
+    if [ -f "$file_inram" ]; then
         if test_file_size_mb "$file_inram" "$file_desired_size"; then
             should_copy=0
         else
@@ -119,15 +119,15 @@ function copy_fakedata_inram() {
         should_copy=1
     fi
 
-    if [ $should_copy = 1 ]; then
-        if [ -z $silent ]; then
+    if [ "$should_copy" = 1 ]; then
+        if [ -z "$silent" ]; then
             pinfo2 "Copying a ${file_desired_size}MB file in ramfs..."
         fi
         file_ondisk="${FAKEDATA_DIR}/fakedata-${file_desired_size}"
         cp "$file_ondisk" "$file_inram"
     else
-        if [ -z $silent]; then
-            pinfo "\n"
+        if [ -z "$silent" ]; then
+            pinfo_newline
         fi
     fi
 }

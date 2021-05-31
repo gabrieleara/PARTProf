@@ -61,8 +61,8 @@ export DEADLINE_RUNTIME=4000000000 # In nanoseconds
 
 # Base names of the two files that will be outputed, for time and power
 # measurements respectively
-export FILENAME_OUT_TIME="measure_time"
-export FILENAME_OUT_POWER="measure_power"
+export FILENAME_OUT_TIME="measure_time.txt"
+export FILENAME_OUT_POWER="measure_power.txt"
 
 # Reset lists of forced policies
 export EXP_FREQ_FORCED_LIST=()

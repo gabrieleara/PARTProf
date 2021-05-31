@@ -74,49 +74,14 @@ EOF
 #                     task management                      #
 # -------------------------------------------------------- #
 
-# Uses a few patterns to generate the command to run (namely substitutes input
-# and output files).
-#
-# Env variables:
-#  - TASKS_CMD
-#  - task_index
-#
+# Get the command to execute from the given command index and the number of
+# the current task to be started
 # Arguments:
-#  1. infile path (the outfile is the infile followed by the out extension)
-function task_command() {
-    local infile_pattern="INFILE"
-    local outext_pattern="OUTFILE_EXT"
-    local task
-
-    local infile=$1
-
-    task=${TASKS_CMD[$task_index]}
-
-    local safe_sed_separator_list=("/" "#" "@" "£" "€" "")
-    local safe_sed_separator
-    for safe_sed_separator in ${safe_sed_separator_list[@]}; do
-        # Checking if the separator is okay or sed will
-        # wrongly interpret the regex
-
-        [[ "${infile_pattern}" == *"${safe_sed_separator}"* ]] && continue
-        [[ "${outfile_pattern}" == *"${safe_sed_separator}"* ]] && continue
-        [[ "${infile}" == *"${safe_sed_separator}"* ]] && continue
-        [[ "${outfile_ext}" == *"${safe_sed_separator}"* ]] && continue
-
-        break
-    done
-
-    if [ -z "$safe_sed_separator" ]; then
-        perr "Could not find a safe separator to substitute! Terminating!"
-        false
-    fi
-
-    local _SSS_=${safe_sed_separator}
-
-    task=$(echo $task | sed -e "s${_SSS_}${infile_pattern}${_SSS_}${infile}${_SSS_}")
-    task=$(echo $task | sed -e "s${_SSS_}${outext_pattern}${_SSS_}${outfile_ext}${_SSS_}")
-
-    echo $task
+#  1. command index
+#  2. task index (depends on how many concurrent runs you launch)
+function tasks_get_command_index() {
+    task=${TASKS_CMD[$1]}
+    echo "${task//fakedata\/fakedata/fakedata\/fakedata${2}}"
 }
 
 function task_is_running() {
@@ -129,8 +94,7 @@ function task_is_running() {
 #
 # Arguments:
 #  1. Timeout in seconds
-#  2. Check interval in seconds
-#  3. List task PIDs to check
+#  2. Check interval in seconds 3+. List task PIDs to check
 function terminate_all() {
     local timeout
     local check_interval
@@ -174,67 +138,33 @@ function terminate_all() {
 #  - policy
 #  - freq
 #  - task_name
-#  - task_rep
 function this_test_directory() {
-    echo "policy_${policy}/freq_${freq}/task_${task_name}/${task_rep}"
+    echo "policy_${policy}/freq_${freq}/task_${task_name}"
 }
 
 # Env variables:
-#  - FILENAME_OUT_TIME
+#  - task_rep
 #
 # Arguments:
 #  1. task instance index (depends on how many concurrent runs you launch)
-function logfile_time() {
-    local basename="debug.txt"
+function this_test_file_time() {
     local count="$1"
 
-    if [ ! -z "${FILENAME_OUT_TIME}" ]; then
-        basename="${FILENAME_OUT_TIME}"
+    if [ -n "${FILENAME_OUT_TIME}" ]; then
+        echo "$(this_test_directory)/${task_rep}/${FILENAME_OUT_TIME}_${count}.txt"
+    else
+        echo "$(this_test_directory)/${task_rep}/debug.txt"
     fi
-
-    echo "${basename}.${count}"
 }
 
-function logfile_power() {
-    echo "${FILENAME_OUT_POWER}"
-}
-
-function logfile_power_err() {
-    echo "${FILENAME_OUT_POWER}.err"
-}
-
-ramfs_size=2048
-ramfs_path="/ramfs"
-ramfs_logpath="${ramfs_path}/log"
-ramfs_datapath="${ramfs_path}/data"
-ramfs_infile="${ramfs_datapath}/data"
-
-outfile_ext="out"
-
-# Argument
-#  1. task count
-function ramfs_current_infile() {
-    echo "${ramfs_infile}.$1"
-}
-
-# Argument
-#  1. task count
-function ramfs_current_outfile() {
-    echo "${ramfs_current_infile}.${outfile_ext}"
-}
-
-# Argument
-#  1. task count
-function ramfs_current_logfile_time() {
-    echo "${ramfs_logpath}/$(logfile_time $1)"
-}
-
-function ramfs_current_logfile_power() {
-    echo "${ramfs_logpath}/$(logfile_power)"
-}
-
-function ramfs_current_logfile_power_err() {
-    echo "${ramfs_logpath}/$(logfile_power_err)"
+# Env variables:
+#  - task_rep
+function this_test_file_power() {
+    if [ -n "${FILENAME_OUT_POWER}" ]; then
+        echo "$(this_test_directory)/${task_rep}/${FILENAME_OUT_POWER}_.txt"
+    else
+        echo "/dev/null"
+    fi
 }
 
 # -------------------------------------------------------- #
@@ -270,25 +200,28 @@ function high_prio_kind_to_cmd() {
 #                          Body of a Single Test Run                           #
 # ============================================================================ #
 
-# If you need something more sophisticated, change this function
-function wait_cooldown() {
-    # sleep "$EXP_SLEEP_INTERVAL"
-    :
-}
-
-function wait_test_duration() {
-    sleep "${EXP_TEST_DURATION}"
-}
-
-# Env variables:
+# Arguments: none.
 #
-#  - HOWMANY_TIMES
-#  - TASKS_NAME
-#
+# Accessed env variables:
+#  - freq
+#  - policy
+#  - rep
 #  - task_index
 #  - task_name
 #  - task_rep
-function run_a_test() {
+#  - CPU_CORE_POWER_SAMPLER
+#  - EXP_SLEEP_INTERVAL
+#  - EXP_TEST_DURATION
+#  - FILENAME_OUT_POWER
+#  - FILENAME_OUT_TIME
+#  - HIGH_PRIO_CMD
+#  - HOWMANY_TIMES
+#  - POWERSAMPLER_CMD
+#  - SECONDS
+#  - TASKS_CMD
+#  - TASKS_NAME
+#  - TIME_CMD
+function single_test_run() {
     # Print progress status
     delline
     pinfo2 \
@@ -296,132 +229,225 @@ function run_a_test() {
         "Running '${task_name}'" \
         "[run ${task_rep}/${HOWMANY_TIMES}] ..."
 
+    # Create current test output directory
+    mkdir -p "$(this_test_directory)/${task_rep}"
+
     # Variables that hold data for the actual runs
     local tasks_cmds=()
     local tasks_cores=()
-    local tasks_logfile=()
-    local tasks_infile=()
-    local tasks_outfile=()
+    local tasks_time_file=()
+    local tasks_grep_pattern=
+    local tasks_ppid_pattern=
+    local tasks_pids=()
+    local power_file
+
+    # Same for all tasks
+    power_file=$(this_test_file_power "${task_rep}")
 
     # Local variables for the following loop
     local tasks_count=0
     local task_cmd=
     local task_core=
-    local task_logfile=
-    local task_infile=
-    local task_outfile=
-    local task_core=
+    local task_time_file=
+    local cpu_core=
 
     # For each CPU, but no more tasks than requested,
     # prepare parameters for all tasks to start before
     # actually starting them
-    for task_core in $(cpufreq_policy_cpu_list "$policy"); do
+    for cpu_core in $(cpufreq_policy_cpu_list "$policy"); do
         if [ "$tasks_count" -ge "$HOWMANY_TASKS" ]; then
             break
         fi
         tasks_count=$((tasks_count + 1))
 
-        task_infile="$(ramfs_current_infile ${tasks_count})"
-        task_outfile="$(ramfs_current_outfile ${tasks_count})"
-        task_logfile="$(ramfs_current_logfile_time ${tasks_count})"
-
-        # Input files are all numbered symbolic links to the same input file.
-        # This assumes homogeneous runs, for heterogeneous runs modify this.
-        ln -fs "${ramfs_infile}" "${task_infile}"
-
-        # Save lists of files managed in this run
-        tasks_logfile+=("$task_logfile")
-        tasks_infile+=("$task_infile")
-        tasks_outfile+=("$task_outfile")
+        # Input files are all symbolic links to the same
+        # file (assumes homogeneous runs)
+        ln -fs /fakedata/fakedata /fakedata/fakedata"$tasks_count"
 
         # Command to execute
-        task_cmd=$(task_command "${task_infile}")
+        task_cmd=$(tasks_get_command_index "$task_index" $tasks_count)
         tasks_cmds+=("$task_cmd")
 
         # On which core
-        tasks_cores+=("$task_core")
+        tasks_cores+=("$cpu_core")
+
+        # Outputing where
+        tasks_time_file+=("$(this_test_file_time "$task_rep" $tasks_count)")
 
         # How to grep all running tasks
-        # tasks_grep_pattern="$tasks_grep_pattern\|$task_cmd"
+        tasks_grep_pattern="$tasks_grep_pattern\|$task_cmd"
     done # foreach CPU
 
-    # Cooldown between a test and the consecutive one
-    # TODO: move at the bottom?
-    wait_cooldown
+    # Remove first two characters, they are extra \| at the
+    # beginning of the string
+    tasks_grep_pattern=${tasks_grep_pattern:2}
 
-    # Start the power sampler
-    local sampler_logfile=
-    local sampler_logfile_err=
-    local sampler_pid
+    # Runs may not finish smoothly if not enough tasks are "seen" concurrently
+    # running at the same time. This loops repeats the actual experiment until
+    # that happens (for at most 20 times!).
+    local test_tries_count=0
+    local test_ran_smoothly=0
+    while [ "$test_ran_smoothly" = "0" -a "$test_tries_count" -lt 20 ]; do
+        # Start tasks_count parallel executions
+        tasks_pids=()
+        tasks_ppid_pattern=
+        test_tries_count=$((test_tries_count + 1))
 
-    sampler_logfile="$(ramfs_current_logfile_power)"
-    sampler_logfile_err="$(ramfs_current_logfile_power_err)"
+        # Cooldown between a test and the consecutive one
+        sleep "$EXP_SLEEP_INTERVAL"
 
-    # NOTE: do not move these commands to a function, it
-    # will mess up the waits later!
-    taskset -c "${POWERSAMPLER_CPUCORE}" \
-        chrt -f 99 \
-        ${POWERSAMPLER_CMD} \
-        >"${sampler_logfile}" 2>"${sampler_logfile_err}" &
+        # Start the tasks and save a pattern based on the pids to look for them
+        # later
 
-    sampler_pid="$!"
+        # Start the tasks and save the patterns to use to search them later
+        local index
+        for ((index = 0; index < $tasks_count; ++index)); do
+            task_cmd="${tasks_cmds[$index]}"
+            task_core="${tasks_cores[$index]}"
+            task_time_file="${tasks_time_file[$index]}"
 
-    # Start one by one all tasks
-    local tasks_pids=()
-    local index
-    for ((index = 0; index < $tasks_count; ++index)); do
-        task_cmd="${tasks_cmds[$index]}"
-        task_core="${tasks_cores[$index]}"
-        task_logfile="${tasks_logfile[$index]}"
+            # NOTE: assumes the time measuring command prints to stderr
 
-        # NOTE: Assumes the time measuring command prints to stderr. The order
-        # of these commands must remain like this in order for all experiments
-        # to work (including the ones using SCHED_DEADLINE).
-        taskset -c "$task_core" \
-            $TIME_CMD \
-            $HIGH_PRIO_CMD \
-            $task_cmd \
-            >/dev/null 2>"$task_logfile" &
+            # Order of operations:
+            # - set the cpu
+            # - set the priority (WARN: DEADLINE WILL NOT WORK LIKE THIS)
+            # - start time measuring
+            # - actual command to run
+            taskset -c "$task_core" \
+                $TIME_CMD \
+                $HIGH_PRIO_CMD \
+                $task_cmd \
+                >/dev/null 2>"$task_time_file" &
 
-        tasks_pids+=("$!")
+            # Save pids for later
+            tasks_pids+=($!)
+            tasks_ppid_pattern="${tasks_ppid_pattern}\|$!"
+        done
+
+        # Remove first two characters, they are extra \| at
+        # the beginning of the string
+        tasks_ppid_pattern=${tasks_ppid_pattern:2}
+
+        # NOTE: see old implementation (commits before
+        # 6ca464a) for what to do when no power estimation
+        # is running
+
+        # Assuming we are measuring the power consumption as well
+
+        # The following loop exits in three cases:
+        # 1. at least one of the tasks is already
+        #    terminated; this is an erroneous condition!
+        #    test_ran_smoothly = 0
+        # 2. more than 20 seconds elapsed and the tasks are
+        #    not ready yet; this is an erroneous condition!
+        #    test_ran_smoothly = 0
+        # 3. all tasks started one sub-process each; this is
+        #    a good condition and if verified we start the
+        #    power sampling application as soon as we exit
+        #    the loop. test_ran_smoothly = 1
+
+        # Using Bash builtin variable to roughly track elapsed time
+        SECONDS=0
+        # While condition: test (1)
+        while kill -0 "${tasks_pids[@]}" 2>/dev/null; do
+            # They are still all running. Since
+            # taskset/nice/chrt do not spawn processes, the
+            # time measuring is the father and the actual
+            # task is the child. Hence, check if each top
+            # process has each one sub-process.
+
+            # MAGIC TRICK, DO NOT TOUCH. Brief explanation, line per line:
+            # - output all tasks by pid and list of arguments
+            # - filter the ones with the correct arguments
+            # - filter the ones with the right PARENT pid
+            # - filter OUT grep itself, which happens to match both filters
+            # - filter OUT perf, which happens to match both filters
+
+            # TODO: PMC?
+
+            # set +e
+            ps_out=$(ps -e -o ppid,args |
+                grep --color=never "${tasks_grep_pattern}" |
+                grep --color=never "${tasks_ppid_pattern}" |
+                grep --color=never -v grep |
+                grep --color=never -v perf || true)
+            # set -e
+
+            # Output has exactly one line per desired task
+            if [ -z "${ps_out}" ]; then
+                tasks_running=0
+            else
+                tasks_running=$(wc -l <<<"${ps_out}")
+            fi
+
+            # Uncomment this for debugging the script
+            # echo "${tasks_running}=${tasks_count}?"
+            # echo ""
+
+            # Number of tasks: test (3)
+            if [ "$tasks_running" = "$tasks_count" ]; then
+                # Great! The test can run smoothly!
+                test_ran_smoothly="1"
+                break
+            fi
+
+            # Timeout: test (2)
+            if [ $SECONDS -ge 20 ]; then
+                # Not great at all! 20 seconds and still no good match!
+                # Exit to avoid infinite loop
+                break
+            fi
+        done
+
+        if [ "$test_ran_smoothly" = "1" ]; then
+            local power_task
+
+            # Tasks reached a steady condition, start
+            # tracing sensors data now!
+            taskset -c "${CPU_CORE_POWER_SAMPLER}" \
+                chrt -f 99 \
+                "$POWERSAMPLER_CMD" \
+                >"${power_file}" 2>"${power_file}.ERRORS" &
+            power_task=$!
+
+            # Run for a certain amount of time
+            sleep "${EXP_TEST_DURATION}"
+
+            # Stop tracing sensors data (sending a SIGINT=2 signal)
+            kill -2 $power_task &>/dev/null
+            wait $power_task 2>/dev/null
+        else
+            print_warn "===> TEST DID NOT RUN SMOOTHLY!! REPEATING! <==="
+            err_extra_line
+        fi
+
+        terminate_all "300" "10" "${tasks_pids[@]}"
+
+        # NOTE: If you ever notice tasks waiting for far too
+        # long and TIME_CMD is `forever`, open a separate
+        # shell and type one of the following (first one
+        # preferred):
+        #  - pkill -2 forever
+        #  - pkill -9 forever
+
+        # Final check, script should NEVER hang here
+        wait "${tasks_pids[@]}" || true # 2>/dev/null
     done
+    # until test ran smoothly
 
-    # Wait a predetermined time
-    wait_test_duration
+    if [ "$test_ran_smoothly" = "0" ]; then
+        err_extra_line
+        print_error 'was not able to perform correctly a test!'
+        print_error 'test parameters:'
+        print_error "POLICY ${policy}"
+        print_error "HOWMANY ${tasks_count}"
+        print_error "TASK ${task_name}"
+        print_error "REP ${task_rep}"
+        err_extra_line
+        err_extra_line
+    fi
 
-    # Signal the power sampler to stop sending a SIGINT=2 signal
-    kill -2 ${sampler_pid} &>/dev/null
-    wait ${sampler_pid} # 2>/dev/null
-
-    # Signal all tasks to stop
-    terminate_all "300" "10" "${tasks_pids[@]}"
-
-    # NOTE: If you ever notice tasks waiting for far too long and TIME_CMD is
-    # `forever`, open a separate shell and type one of the following (first one
-    # preferred):
-    #  - pkill -2 forever
-    #  - pkill -9 forever
-
-    # Final check, script should NEVER hang here
-    wait "${tasks_pids[@]}" || true # 2>/dev/null
-
-    # Now all logfiles are still in the ramfs, we need to copy them back to disk
-
-    # Create current test output directory
-    local testdir="$(this_test_directory)"
-    rm -rf "$testdir"
-    mkdir -p "$testdir"
-
-    # Copy back log files to disk
-    cp "${sampler_logfile}" \
-        "${sampler_logfile_err}" \
-        "${tasks_logfile[@]}" \
-        "$testdir"
-
-    # Delete all output files
-    # NOTE: Input files are assumed not to be modified! Is this always true??
-    rm -f "${sampler_logfile}" "${sampler_logfile_err}" "${tasks_logfile[@]}" \
-        "${tasks_outfile[@]}"
+    sleep 2s
 }
 
 # Returns whether the policy should be skipped (i.e. not
@@ -478,7 +504,7 @@ function should_skip_frequency() {
 
 function load_conf_files() {
     for arg in "$@"; do
-        if [ ! -f "$arg" ]; then
+        if [ ! -f "$arg" ] ; then
             pwarn "$arg is not a file! Skipping..."
             continue
         fi
@@ -552,11 +578,7 @@ function sort_and_lineup() {
     pinfo_newline
     pinfo1 'Generating fake data for the experiment'
     generate_fakedata_ondisk
-    create_ramfs "$ramfs_path" "$ramfs_size"
-
-    # Create necessary directories
-    mkdir -p "$ramfs_datapath"
-    mkdir -p "$ramfs_logpath"
+    create_fakedata_inram /fakedata 2048
 
     activate_pwm_fans
 
@@ -608,34 +630,34 @@ function sort_and_lineup() {
         # Select the core on which the power sensor will run
         # as the last one in policy_other.
         readarray -t CPU_OTHER_LIST <<<"$(cpufreq_policy_cpu_list "$policy_other")"
-        POWERSAMPLER_CPUCORE=${CPU_OTHER_LIST[${#CPU_OTHER_LIST[@]} - 1]}
-        SCRIPT_CPUCORE=$POWERSAMPLER_CPUCORE
+        CPU_CORE_POWER_SAMPLER=${CPU_OTHER_LIST[${#CPU_OTHER_LIST[@]} - 1]}
+        CPU_CORE_EXP_SCRIPT=$CPU_CORE_POWER_SAMPLER
 
         # TODO: how about having a "fake" policy that instead includes all cores
         # that are NOT in the current policy?
 
         # There is room for more use it
         if [ "$policy_other" != "$policy" ] && [ "${#CPU_OTHER_LIST[@]}" -gt 1 ]; then
-            SCRIPT_CPUCORE=${CPU_OTHER_LIST[${#CPU_OTHER_LIST[@]} - 2]}
+            CPU_CORE_EXP_SCRIPT=${CPU_OTHER_LIST[${#CPU_OTHER_LIST[@]} - 2]}
         fi
 
-        if [ "$SCRIPT_CPUCORE" = "$POWERSAMPLER_CPUCORE" ]; then
+        if [ "$CPU_CORE_EXP_SCRIPT" = "$CPU_CORE_POWER_SAMPLER" ]; then
             pwarn "Running the experiment script on the same core as the power sampler!"
         fi
 
         # Move the current script to another core
         # NOTICE: USING BOTH $BASHPID AND $$ BECAUSE THIS SCRIPT IS TECHNICALLY
         # INSIDE A SUBSHELL!
-        taskset -c -p "${SCRIPT_CPUCORE}" $$ &>/dev/null
-        taskset -c -p "${SCRIPT_CPUCORE}" ${BASHPID} &>/dev/null
+        taskset -c -p "${CPU_CORE_EXP_SCRIPT}" $$ &>/dev/null
+        taskset -c -p "${CPU_CORE_EXP_SCRIPT}" ${BASHPID} &>/dev/null
 
         #--------------------------------------------------#
         #--------- PREPARE POLICY AND FREQURENCY ----------#
         #--------------------------------------------------#
 
         # Prepare CPU policies for manual frequency switching
-        pwarn "If you see an error message here, but the script keeps going," \
-            "don't panic. It's all good."
+        pwarn "If you see an error message here," \
+            "but the script keeps going, don't panic. It's all good."
         (
             cpufreq_governor_setall "performance" || cpufreq_governor_setall "userspace"
         ) 2>/dev/null || (
@@ -677,38 +699,71 @@ function sort_and_lineup() {
             #----------------------------------------------#
             for ((task_index = 0; task_index < ${#TASKS_CMD[@]}; ++task_index)); do
                 task_name=${TASKS_NAME[$task_index]}
-                infile_size=$((EXP_TASK_MIN_DURATION * TASKS_FILESIZE_RATIO[task_index]))
+                fakefile_size=$((EXP_TASK_MIN_DURATION * TASKS_FILESIZE_RATIO[task_index]))
 
-                # Create the directory to hold the data in the ramfs
-                mkdir -p "${ramfs_datapath}"
-
-                # Copy if necessary a new (fake) data file in the desired path
-                # from disk
-                copy_fakedata_inram "${ramfs_infile}" "${infile_size}"
-
-                # FIXME: some commands may require the data as input to be a
-                # certain format! If so, make a call here to support that!
-
-                # Drop caches before the 0-execution only, then keep the data in
-                # ram for all subsequent runs
+                # Copy if necessary a new fakedata file in /fakedata from the
+                # fakedata directory created beforehand
+                copy_fakedata_inram /fakedata/fakedata "$fakefile_size"
                 sync
                 echo 1 >/proc/sys/vm/drop_caches
 
-                # Repeat the test multiple times (with a 0 run too, which shall
-                # be ignored later!)
-                for ((task_rep = 0; task_rep <= "${HOWMANY_TIMES}"; ++task_rep)); do
-                    run_a_test
+                # FIXME: This whole parade here is needed only for the
+                # encrypt/decrypt application pair, maybe it would be useful to
+                # do a single run at the beginning and store the results
+                # somewhere only for those applications!
 
-                    # FIXME: if for certain commands some restoration actions
-                    # are to be performed on the input file, do it here. But
-                    # restoation means that the command modifies its input file,
-                    # that is a much bigger issue for the way we handle
-                    # homogeneous tests (all the input files are the same file
-                    # with multiple symbolic links)!
+                # # If power sampling test, make a dry run using another time command
+                # if [ -n "$POWERSAMPLER_CMD" ]; then
+                #     case $task_name in
+                #     encrypt | decrypt)
+                #         TIME_CMD_BKP="$TIME_CMD"
+                #         TIME_CMD="$TIME_CMD_DRY"
+                #         POWERSAMPLER_CMD_BKP="$POWERSAMPLER_CMD"
+                #         POWERSAMPLER_CMD=""
+                #         # Dry run, used to create custom data like for the encrypt and decrypt commands
+                #         task_rep=0
+                #         single_test_run
+                #         # Copy the whole content of /fakedata back to another
+                #         # directory, before it gets corrupted by interrupted jobs
+                #         rm -rf "$HOME/.fakedata-tmp"
+                #         mkdir -p "$HOME/.fakedata-tmp"
+                #         cp /fakedata/* "$HOME/.fakedata-tmp"
+                #         # Drop system cache, it fills up when copying the directory
+                #         sync
+                #         echo 1 >/proc/sys/vm/drop_caches
+                #         TIME_CMD="$TIME_CMD_BKP"
+                #         POWERSAMPLER_CMD="$POWERSAMPLER_CMD_BKP"
+                #         ;;
+                #     *) ;;
+                #     esac
+                # fi
+
+                # Repeat the test multiple times
+                for ((task_rep = 1; task_rep <= "${HOWMANY_TIMES}"; ++task_rep)); do
+                    single_test_run
+
+                    # Restore content of fakedata after each run
+                    rm -rf /fakedata/*
+                    copy_fakedata_inram /fakedata/fakedata "$fakefile_size" -s
+                    sync
+                    echo 1 >/proc/sys/vm/drop_caches
+
+                    # if [ -n "$POWERSAMPLER_CMD" ]; then
+                    #     case $task_name in
+                    #     encrypt | decrypt)
+                    #         rm -rf /fakedata/*
+                    #         cp "$HOME/.fakedata-tmp/"* /fakedata
+                    #         # Drop system cache, it fills up when copying the directory
+                    #         sync
+                    #         echo 1 >/proc/sys/vm/drop_caches
+                    #         ;;
+                    #     *) ;;
+                    #     esac
+                    # fi
                 done # FOREACH REPETITION
             done     # FOREACH TASK
         done         # FOREACH FREQUENCY
     done             # FOREACH POLICY
+)
 
-    pinfosay1 "Experiment terminated correctly!"
-) || echo "Experiment terminated prematurely!"
+pinfosay "Experiment terminated!"

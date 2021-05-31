@@ -10,23 +10,23 @@ TASKS_CMD=()
 TASKS_FILESIZE_RATIO=()
 
 TASKS_NAME+=("hash")
-TASKS_CMD+=("sha256sum /fakedata/fakedata")
+TASKS_CMD+=("sha256sum INFILE")
 TASKS_FILESIZE_RATIO+=(90)
 
 # TODO: I can change the compression level!
 for ((i = 1; i <= 9; i += 4)); do
     TASKS_NAME+=("gzip-$i")
-    TASKS_CMD+=("gzip -kqf -$i /fakedata/fakedata -S .tmp")
+    TASKS_CMD+=("gzip -kqf -$i INFILE -S .OUTFILE_EXT")
     TASKS_FILESIZE_RATIO+=(13)
 done
 
-TASKS_NAME+=("encrypt")
-TASKS_CMD+=("openssl des3 -e -in /fakedata/fakedata -out /fakedata/fakedata.tmp -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
-TASKS_FILESIZE_RATIO+=(14)
+# TASKS_NAME+=("encrypt")
+# TASKS_CMD+=("openssl des3 -e -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
+# TASKS_FILESIZE_RATIO+=(14)
 
-TASKS_NAME+=("decrypt")
-TASKS_CMD+=("openssl des3 -d -in /fakedata/fakedata.tmp -out /fakedata/fakedata.tmp.tmp -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
-TASKS_FILESIZE_RATIO+=(14)
+# TASKS_NAME+=("decrypt")
+# TASKS_CMD+=("openssl des3 -d -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
+# TASKS_FILESIZE_RATIO+=(14)
 
 CACHEKILLER_IT=$((22000000 * EXP_TASK_MIN_DURATION))
 
