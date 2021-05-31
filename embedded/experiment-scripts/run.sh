@@ -222,18 +222,6 @@ function high_prio_kind_to_cmd() {
 #  - TASKS_NAME
 #  - TIME_CMD
 function single_test_run() {
-    # local task_num
-    # local task_index
-    # local task_rep
-    # local task_name
-    # local policy
-
-    # task_index="$1"
-    # task_rep="$2"
-    # policy="$3"
-    # task_name="${TASKS_NAME[$task_index]}"
-    # task_num=
-
     # Print progress status
     delline
     pinfo2 \
