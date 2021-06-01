@@ -1,0 +1,32 @@
+[Event-to-counter mappings]
+pmc1=data_mem_access
+pmc2=data_read_retired
+pmc3=data_write_retired
+pmc4=dtlb_misses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   6519       tick      52337072             0             0           952 
+      2   6519       tick      52924159             0             0            78 
+      3   6519       tick      52901041             0             0            78 
+      4   6519       tick      52900682             0             0            81 
+      5   6519       tick      52870780             0             0            93 
+      6   6519       tick      52936123             0             0            86 
+      7   6519       tick      52952023             0             0            81 
+      8   6519       tick      52948607             0             0            81 
+      9   6519       tick      52974782             0             0            78 
+     10   6519       tick      52967655             0             0            81 
+     11   6519       tick      52965416             0             0            81 
+     12   6519       tick      52959829             0             0            81 
+     13   6519       tick      52927946             0             0            81 
+     14   6519       tick      52943108             0             0            81 
+     15   6519       tick      52931038             0             0            81 
+     16   6519       tick      52961316             0             0            81 
+     17   6519       tick      52961780             0             0            78 
+     18   6519       tick      52950419             0             0            81 
+     19   6519       tick      52966392             0             0            81 
+     20   6519       tick      52967454             0             0            81 
+     21   6519       tick      52966022             0             0            78 
+     22   6519       tick      52950550             0             0            81 
+     23   6519       tick      52962810             0             0            81 
+     24   6519       tick      52861668             0             0            81 
+     25   6519       exit      50059158             0             0           103 

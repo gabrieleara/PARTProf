@@ -1,0 +1,27 @@
+[Event-to-counter mappings]
+pmc1=data_mem_access
+pmc2=data_read_retired
+pmc3=data_write_retired
+pmc4=dtlb_misses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  30078       tick        160796             0             0          2015 
+      2  30078       tick             0             0             0             0 
+      3  30078       tick             0             0             0             0 
+      4  30078       tick             0             0             0             0 
+      5  30078       tick             0             0             0             0 
+      6  30078       tick             0             0             0             0 
+      7  30078       tick             0             0             0             0 
+      8  30078       tick             0             0             0             0 
+      9  30078       tick             0             0             0             0 
+     10  30078       tick             0             0             0             0 
+     11  30078       tick             0             0             0             0 
+     12  30078       tick             0             0             0             0 
+     13  30078       tick             0             0             0             0 
+     14  30078       tick             0             0             0             0 
+     15  30078       tick             0             0             0             0 
+     16  30078       tick             0             0             0             0 
+     17  30078       tick             0             0             0             0 
+     18  30078       tick             0             0             0             0 
+     19  30078       tick             0             0             0             0 
+     20  30078       exit          1246             0             0            50 

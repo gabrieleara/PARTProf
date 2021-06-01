@@ -1,0 +1,48 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1    973       tick          5210          1194           341          5210 
+      2    973       tick           109             1             1           109 
+      3    973       tick           106             0             0           106 
+      4    973       tick           121             0             0           121 
+      5    973       tick           107             0             0           107 
+      6    973       tick           114             0             0           114 
+      7    973       tick           108             0             0           108 
+      8    973       tick           107             0             0           107 
+      9    973       tick           126             0             0           126 
+     10    973       tick           108             0             0           108 
+     11    973       tick           122             1             0           122 
+     12    973       tick           101             0             0           101 
+     13    973       tick           106             0             0           106 
+     14    973       tick           110             0             0           110 
+     15    973       tick           103             0             0           103 
+     16    973       tick           121             0             0           121 
+     17    973       tick           100             0             0           100 
+     18    973       tick           113             0             0           113 
+     19    973       tick           108             0             1           108 
+     20    973       tick           105             0             0           105 
+     21    973       tick           126             0             1           126 
+     22    973       tick           108             0             0           108 
+     23    973       tick           100             0             0           100 
+     24    973       tick           100             0             0           100 
+     25    973       tick           106             0             0           106 
+     26    973       tick           109             0             0           109 
+     27    973       tick           105             0             0           105 
+     28    973       tick           114             0             0           114 
+     29    973       tick           116             0             0           116 
+     30    973       tick           103             0             0           103 
+     31    973       tick           132             1             1           132 
+     32    973       tick           103             0             0           103 
+     33    973       tick            91             0             0            91 
+     34    973       tick           106             0             0           106 
+     35    973       tick           108             0             0           108 
+     36    973       tick           121             0             0           121 
+     37    973       tick           109             0             0           109 
+     38    973       tick           113             0             0           113 
+     39    973       tick           102             0             0           102 
+     40    973       tick           116             0             0           116 
+     41    973       exit           368           110             4           368 

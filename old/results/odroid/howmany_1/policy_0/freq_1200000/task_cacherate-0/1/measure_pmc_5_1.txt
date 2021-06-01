@@ -1,0 +1,48 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1    937       tick          5187          1312           338          5187 
+      2    937       tick            87             0             1            87 
+      3    937       tick            84             0             0            84 
+      4    937       tick            85             0             1            85 
+      5    937       tick            92             0             0            92 
+      6    937       tick            86             0             0            86 
+      7    937       tick           103             0             0           103 
+      8    937       tick            88             0             0            88 
+      9    937       tick            93             1             1            93 
+     10    937       tick            93             0             0            93 
+     11    937       tick           109             0             0           109 
+     12    937       tick           107             0             0           107 
+     13    937       tick           130             0             1           130 
+     14    937       tick            92             0             0            92 
+     15    937       tick            81             0             0            81 
+     16    937       tick            91             1             0            91 
+     17    937       tick           110             0             0           110 
+     18    937       tick            92             0             0            92 
+     19    937       tick            88             0             0            88 
+     20    937       tick            84             0             0            84 
+     21    937       tick            95             0             0            95 
+     22    937       tick            98             0             0            98 
+     23    937       tick            99             0             0            99 
+     24    937       tick            75             1             0            75 
+     25    937       tick            77             0             0            77 
+     26    937       tick            90             1             0            90 
+     27    937       tick            91             0             0            91 
+     28    937       tick            88             0             0            88 
+     29    937       tick            80             0             0            80 
+     30    937       tick            74             0             0            74 
+     31    937       tick            88             0             0            88 
+     32    937       tick            94             0             0            94 
+     33    937       tick            82             0             0            82 
+     34    937       tick            83             0             0            83 
+     35    937       tick            88             0             0            88 
+     36    937       tick            78             0             0            78 
+     37    937       tick            83             0             0            83 
+     38    937       tick            98             0             0            98 
+     39    937       tick            89             0             0            89 
+     40    937       tick            85             0             0            85 
+     41    937       exit           365           118             4           365 

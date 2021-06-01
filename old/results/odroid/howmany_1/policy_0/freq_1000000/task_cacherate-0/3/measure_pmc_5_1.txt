@@ -1,0 +1,56 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   4732       tick          5303          1223           307          5303 
+      2   4732       tick           113             2             0           113 
+      3   4732       tick           110             1             1           110 
+      4   4732       tick           103             0             0           103 
+      5   4732       tick           124             0             1           124 
+      6   4732       tick           103             0             0           103 
+      7   4732       tick           118             1             0           118 
+      8   4732       tick           104             1             0           104 
+      9   4732       tick           100             0             0           100 
+     10   4732       tick           104             0             0           104 
+     11   4732       tick            97             0             0            97 
+     12   4732       tick            98             0             0            98 
+     13   4732       tick           100             0             0           100 
+     14   4732       tick           101             0             0           101 
+     15   4732       tick           109             0             0           109 
+     16   4732       tick            90             0             0            90 
+     17   4732       tick           106             0             0           106 
+     18   4732       tick            91             0             0            91 
+     19   4732       tick           116             0             0           116 
+     20   4732       tick            89             0             0            89 
+     21   4732       tick           101             0             0           101 
+     22   4732       tick            94             0             0            94 
+     23   4732       tick            90             0             0            90 
+     24   4732       tick            97             0             0            97 
+     25   4732       tick           120             0             0           120 
+     26   4732       tick            92             0             0            92 
+     27   4732       tick           101             0             0           101 
+     28   4732       tick            98             0             0            98 
+     29   4732       tick           107             0             0           107 
+     30   4732       tick            94             0             0            94 
+     31   4732       tick           103             0             0           103 
+     32   4732       tick            97             0             0            97 
+     33   4732       tick           105             0             0           105 
+     34   4732       tick           104             0             0           104 
+     35   4732       tick           116             0             0           116 
+     36   4732       tick            87             0             0            87 
+     37   4732       tick            95             0             0            95 
+     38   4732       tick            95             0             0            95 
+     39   4732       tick           109             0             0           109 
+     40   4732       tick            92             0             0            92 
+     41   4732       tick            98             0             0            98 
+     42   4732       tick            92             0             1            92 
+     43   4732       tick            94             0             0            94 
+     44   4732       tick           107             0             0           107 
+     45   4732       tick            94             0             0            94 
+     46   4732       tick            92             0             0            92 
+     47   4732       tick            95             0             0            95 
+     48   4732       tick            93             0             0            93 
+     49   4732       exit           397           105            11           397 

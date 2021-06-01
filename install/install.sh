@@ -55,6 +55,10 @@ List of options (all optional):
                     Install dependencies before copying files. This option
                     installs dependencies both on the local and the remote host
                     using apt. Enabled by default.
+  -l, --skip-deps-local
+                    Do not install dependencies on the local host.
+  -r, --skip-deps-remote
+                    Do not install dependencies on the remote host.
   -d, --skip-deps   Do not install dependencies, neither on the local nor the
                     remote host.
   -s, --ssh HOSTNAME
@@ -80,6 +84,12 @@ function toshortopts() {
         case "$1" in
         --install-deps)
             printf ' %s' "-D"
+            ;;
+        --skip-deps-local)
+            printf ' %s' "-l"
+            ;;
+        --skip-deps-remote)
+            printf ' %s' "-r"
             ;;
         --skip-deps)
             printf ' %s' "-d"
@@ -163,10 +173,18 @@ function parse_opt_args() {
             return 0
             ;;
         D)
-            install_deps=1
+            install_deps_remote=1
+            install_deps_local=1
+            ;;
+        l)
+            install_deps_local=0
+            ;;
+        r)
+            install_deps_remote=0
             ;;
         d)
-            install_deps=0
+            install_deps_remote=0
+            install_deps_local=0
             ;;
         n)
             dry_run=1
@@ -255,10 +273,12 @@ function install_dep() {
     remote_copy_cmd="scp -p '$local_dep_file' '${ssh_host}:${remote_dep_file}' >/dev/null"
     remote_install_cmd="ssh '$ssh_host' '${remote_dep_file}'"
 
-    echo_step "INSTALLING DEPENDENCIES ON LOCAL HOST..."
-    run_or_dry_run $local_install_cmd
+    if [ $install_deps_local = 1 ]; then
+        echo_step "INSTALLING DEPENDENCIES ON LOCAL HOST..."
+        run_or_dry_run $local_install_cmd
+    fi
 
-    if [ ! -z "$ssh_host" ]; then
+    if [ ! -z "$ssh_host" ] && [ $install_deps_remote = 1 ] ; then
         echo_step "INSTALLING DEPENDENCIES ON REMOTE HOST..."
         run_or_dry_run $remote_copy_cmd
         run_or_dry_run $remote_install_cmd
@@ -268,14 +288,15 @@ function install_dep() {
 (
     set -e
 
-    optstring="DdEHhns:"
+    optstring="DdrlEHhns:"
 
     # Optional arguments
     ssh_host=
     install_neither=1
     install_embedded=0
     install_host=0
-    install_deps=1
+    install_deps_local=1
+    install_deps_remote=1
     dry_run=0
 
     # Required arguments (in order)
@@ -293,7 +314,9 @@ function install_dep() {
     path_host="$(realpath "${path_proj}/host")"
 
     test_ssh
-    [ "$install_deps" = 1 ] && install_dep
+    if [ "$install_deps_local" = 1 ] || [ "$install_deps_remote" = 1 ]; then
+        install_dep
+    fi
 
     # TODO: DRY RUN
 
@@ -301,7 +324,7 @@ function install_dep() {
     include_rules=''
 
     # Directories to exclude
-    for d in build bin .devcontainer .git .vscode '*results*' '*tables*'; do
+    for d in build bin .devcontainer .git .vscode old __pycache__ '*results*' '*tables*'; do
         include_rules+=" '--exclude=$d/**'"
     done
     include_rules+=" '--exclude=.gitignore'"

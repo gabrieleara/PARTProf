@@ -1,0 +1,19 @@
+DEBUG: !
+DEBUG: FNAME: /sys/class/hwmon/hwmon0/name
+DEBUG: CMP: cpu_thermal ina226_u76
+DEBUG: CMP: cpu_thermal ina226_u77
+DEBUG: CMP: cpu_thermal ina226_u78
+DEBUG: CMP: cpu_thermal ina226_u87
+DEBUG: CMP: cpu_thermal ina226_u85
+DEBUG: CMP: cpu_thermal ina226_u86
+DEBUG: CMP: cpu_thermal ina226_u93
+DEBUG: CMP: cpu_thermal ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon1/name
+DEBUG: CMP: rpi_volt ina226_u76
+DEBUG: CMP: rpi_volt ina226_u77
+DEBUG: CMP: rpi_volt ina226_u78
+DEBUG: CMP: rpi_volt ina226_u87
+DEBUG: CMP: rpi_volt ina226_u85
+DEBUG: CMP: rpi_volt ina226_u86
+DEBUG: CMP: rpi_volt ina226_u93
+DEBUG: CMP: rpi_volt ina226_u92

@@ -1,0 +1,52 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  12599       tick          5112           366           110          5112 
+      2  12599       tick            60             0             0            60 
+      3  12599       tick            67             1             0            67 
+      4  12599       tick            58             0             0            58 
+      5  12599       tick            64             0             0            64 
+      6  12599       tick            62             0             0            62 
+      7  12599       tick            58             0             0            58 
+      8  12599       tick            60             0             0            60 
+      9  12599       tick            58             0             0            58 
+     10  12599       tick            56             0             0            56 
+     11  12599       tick            58             0             0            58 
+     12  12599       tick            76             0             0            76 
+     13  12599       tick            57             0             0            57 
+     14  12599       tick            59             0             0            59 
+     15  12599       tick            57             0             0            57 
+     16  12599       tick            60             0             0            60 
+     17  12599       tick            61             0             0            61 
+     18  12599       tick            58             0             0            58 
+     19  12599       tick            57             0             0            57 
+     20  12599       tick            56             0             0            56 
+     21  12599       tick            59             0             0            59 
+     22  12599       tick            57             0             0            57 
+     23  12599       tick            57             0             0            57 
+     24  12599       tick            58             0             0            58 
+     25  12599       tick            57             0             0            57 
+     26  12599       tick            59             0             0            59 
+     27  12599       tick            59             0             0            59 
+     28  12599       tick            58             0             0            58 
+     29  12599       tick            59             0             0            59 
+     30  12599       tick            57             0             0            57 
+     31  12599       tick            59             0             0            59 
+     32  12599       tick            70             0             0            70 
+     33  12599       tick            59             0             0            59 
+     34  12599       tick            57             0             0            57 
+     35  12599       tick            57             0             0            57 
+     36  12599       tick            62             0             0            62 
+     37  12599       tick            57             0             0            57 
+     38  12599       tick            59             0             0            59 
+     39  12599       tick            57             0             0            57 
+     40  12599       tick            58             0             0            58 
+     41  12599       tick            57             0             0            57 
+     42  12599       tick            57             0             0            57 
+     43  12599       tick            59             0             0            59 
+     44  12599       tick            56             0             0            56 
+     45  12599       exit           327            34             4           327 

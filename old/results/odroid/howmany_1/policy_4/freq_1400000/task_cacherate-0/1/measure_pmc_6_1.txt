@@ -1,0 +1,35 @@
+[Event-to-counter mappings]
+pmc1=llc_misses
+pmc2=mispred_branches
+pmc3=potentially_predicted_branches
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3
+      1    721       tick           680          2354      30451419 
+      2    721       tick             0             8      30859948 
+      3    721       tick             0             7      30869248 
+      4    721       tick             0             2      30854948 
+      5    721       tick             0             1      30870414 
+      6    721       tick             0             2      30860230 
+      7    721       tick             0             0      30877128 
+      8    721       tick             0             3      30856930 
+      9    721       tick             0             2      30873133 
+     10    721       tick             0             2      30885244 
+     11    721       tick             0             1      30844342 
+     12    721       tick             0             2      29983212 
+     13    721       tick             0             3      31762455 
+     14    721       tick             0             0      30888978 
+     15    721       tick             0             1      30893789 
+     16    721       tick             0             1      30883958 
+     17    721       tick             0             5      30887347 
+     18    721       tick             0             1      30891854 
+     19    721       tick             0             2      30841269 
+     20    721       tick             0             0      30866212 
+     21    721       tick             0             3      30876252 
+     22    721       tick             0             2      30873744 
+     23    721       tick             0             1      30878090 
+     24    721       tick             0             1      30878027 
+     25    721       tick             0             1      30887011 
+     26    721       tick             0             1      30874839 
+     27    721       tick             0             2      30885577 
+     28    721       tick             0             2      30887913 
+     29    721       exit            53            84      15989446 

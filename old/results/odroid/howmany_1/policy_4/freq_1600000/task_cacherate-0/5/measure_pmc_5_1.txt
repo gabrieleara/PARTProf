@@ -1,0 +1,32 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  31968       tick          5464           261            64          5464 
+      2  31968       tick           120             0             0           120 
+      3  31968       tick           108             0             0           108 
+      4  31968       tick           110             0             0           110 
+      5  31968       tick           108             0             0           108 
+      6  31968       tick           110             0             0           110 
+      7  31968       tick           110             0             0           110 
+      8  31968       tick           108             0             0           108 
+      9  31968       tick           112             0             0           112 
+     10  31968       tick           110             0             0           110 
+     11  31968       tick           111             0             0           111 
+     12  31968       tick           138             0             0           138 
+     13  31968       tick           108             0             0           108 
+     14  31968       tick           110             0             0           110 
+     15  31968       tick           108             0             0           108 
+     16  31968       tick           108             0             0           108 
+     17  31968       tick           110             0             0           110 
+     18  31968       tick           104             0             0           104 
+     19  31968       tick           110             0             0           110 
+     20  31968       tick           110             0             0           110 
+     21  31968       tick           111             0             0           111 
+     22  31968       tick           108             0             0           108 
+     23  31968       tick           112             0             0           112 
+     24  31968       tick           116             0             0           116 
+     25  31968       exit           403            21             2           403 

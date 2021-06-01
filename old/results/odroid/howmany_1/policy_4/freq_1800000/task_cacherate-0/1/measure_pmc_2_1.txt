@@ -1,0 +1,30 @@
+[Event-to-counter mappings]
+pmc1=data_mem_access
+pmc2=data_read_retired
+pmc3=data_write_retired
+pmc4=dtlb_misses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  25912       tick      58896977             0             0           942 
+      2  25912       tick      59560717             0             0            87 
+      3  25912       tick      59592441             0             0            78 
+      4  25912       tick      59567909             0             0            81 
+      5  25912       tick      59590411             0             0            81 
+      6  25912       tick      59588182             0             0            81 
+      7  25912       tick      59587743             0             0            78 
+      8  25912       tick      59565023             0             0            81 
+      9  25912       tick      59557774             0             0            81 
+     10  25912       tick      59574687             0             0            81 
+     11  25912       tick      59586446             0             0            78 
+     12  25912       tick      59592238             0             0            81 
+     13  25912       tick      59587325             0             0            81 
+     14  25912       tick      59575549             0             0            81 
+     15  25912       tick      59593972             0             0            78 
+     16  25912       tick      59594872             0             0            81 
+     17  25912       tick      59573524             0             0            81 
+     18  25912       tick      59577259             0             0            81 
+     19  25912       tick      59575941             0             0            78 
+     20  25912       tick      59569052             0             0            81 
+     21  25912       tick      59574604             0             0            78 
+     22  25912       tick      59560582             0             0            89 
+     23  25912       exit      10004710             0             0            44 

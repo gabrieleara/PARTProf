@@ -1,0 +1,251 @@
+DEBUG: !
+DEBUG: FNAME: /sys/class/hwmon/hwmon16/name
+DEBUG: CMP: ina226_u74 ina226_u76
+DEBUG: CMP: ina226_u74 ina226_u77
+DEBUG: CMP: ina226_u74 ina226_u78
+DEBUG: CMP: ina226_u74 ina226_u87
+DEBUG: CMP: ina226_u74 ina226_u85
+DEBUG: CMP: ina226_u74 ina226_u86
+DEBUG: CMP: ina226_u74 ina226_u93
+DEBUG: CMP: ina226_u74 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon14/name
+DEBUG: CMP: ina226_u16 ina226_u76
+DEBUG: CMP: ina226_u16 ina226_u77
+DEBUG: CMP: ina226_u16 ina226_u78
+DEBUG: CMP: ina226_u16 ina226_u87
+DEBUG: CMP: ina226_u16 ina226_u85
+DEBUG: CMP: ina226_u16 ina226_u86
+DEBUG: CMP: ina226_u16 ina226_u93
+DEBUG: CMP: ina226_u16 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon8/name
+DEBUG: CMP: ina226_u15 ina226_u76
+DEBUG: CMP: ina226_u15 ina226_u77
+DEBUG: CMP: ina226_u15 ina226_u78
+DEBUG: CMP: ina226_u15 ina226_u87
+DEBUG: CMP: ina226_u15 ina226_u85
+DEBUG: CMP: ina226_u15 ina226_u86
+DEBUG: CMP: ina226_u15 ina226_u93
+DEBUG: CMP: ina226_u15 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon12/name
+DEBUG: CMP: ina226_u80 ina226_u76
+DEBUG: CMP: ina226_u80 ina226_u77
+DEBUG: CMP: ina226_u80 ina226_u78
+DEBUG: CMP: ina226_u80 ina226_u87
+DEBUG: CMP: ina226_u80 ina226_u85
+DEBUG: CMP: ina226_u80 ina226_u86
+DEBUG: CMP: ina226_u80 ina226_u93
+DEBUG: CMP: ina226_u80 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon6/name
+DEBUG: CMP: ina226_u93 ina226_u76
+DEBUG: CMP: ina226_u93 ina226_u77
+DEBUG: CMP: ina226_u93 ina226_u78
+DEBUG: CMP: ina226_u93 ina226_u87
+DEBUG: CMP: ina226_u93 ina226_u85
+DEBUG: CMP: ina226_u93 ina226_u86
+DEBUG: CMP: ina226_u93 ina226_u93
+DEBUG: CMP TRUE!
+DEBUG: EXISTS? /sys/class/hwmon/hwmon6/curr1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon6/curr2_input
+DEBUG: EXISTS? /sys/class/hwmon/hwmon6/in1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon6/in2_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon6/power1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon6/power2_input
+DEBUG: CMP: ina226_u93 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon10/name
+DEBUG: CMP: ina226_u79 ina226_u76
+DEBUG: CMP: ina226_u79 ina226_u77
+DEBUG: CMP: ina226_u79 ina226_u78
+DEBUG: CMP: ina226_u79 ina226_u87
+DEBUG: CMP: ina226_u79 ina226_u85
+DEBUG: CMP: ina226_u79 ina226_u86
+DEBUG: CMP: ina226_u79 ina226_u93
+DEBUG: CMP: ina226_u79 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon4/name
+DEBUG: CMP: ina226_u85 ina226_u76
+DEBUG: CMP: ina226_u85 ina226_u77
+DEBUG: CMP: ina226_u85 ina226_u78
+DEBUG: CMP: ina226_u85 ina226_u87
+DEBUG: CMP: ina226_u85 ina226_u85
+DEBUG: CMP TRUE!
+DEBUG: EXISTS? /sys/class/hwmon/hwmon4/curr1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon4/curr2_input
+DEBUG: EXISTS? /sys/class/hwmon/hwmon4/in1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon4/in2_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon4/power1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon4/power2_input
+DEBUG: CMP: ina226_u85 ina226_u86
+DEBUG: CMP: ina226_u85 ina226_u93
+DEBUG: CMP: ina226_u85 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon2/name
+DEBUG: CMP: ina226_u78 ina226_u76
+DEBUG: CMP: ina226_u78 ina226_u77
+DEBUG: CMP: ina226_u78 ina226_u78
+DEBUG: CMP TRUE!
+DEBUG: EXISTS? /sys/class/hwmon/hwmon2/curr1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon2/curr2_input
+DEBUG: EXISTS? /sys/class/hwmon/hwmon2/in1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon2/in2_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon2/power1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon2/power2_input
+DEBUG: CMP: ina226_u78 ina226_u87
+DEBUG: CMP: ina226_u78 ina226_u85
+DEBUG: CMP: ina226_u78 ina226_u86
+DEBUG: CMP: ina226_u78 ina226_u93
+DEBUG: CMP: ina226_u78 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon17/name
+DEBUG: CMP: ina226_u75 ina226_u76
+DEBUG: CMP: ina226_u75 ina226_u77
+DEBUG: CMP: ina226_u75 ina226_u78
+DEBUG: CMP: ina226_u75 ina226_u87
+DEBUG: CMP: ina226_u75 ina226_u85
+DEBUG: CMP: ina226_u75 ina226_u86
+DEBUG: CMP: ina226_u75 ina226_u93
+DEBUG: CMP: ina226_u75 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon0/name
+DEBUG: CMP: ina226_u76 ina226_u76
+DEBUG: CMP TRUE!
+DEBUG: EXISTS? /sys/class/hwmon/hwmon0/curr1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon0/curr2_input
+DEBUG: EXISTS? /sys/class/hwmon/hwmon0/in1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon0/in2_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon0/power1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon0/power2_input
+DEBUG: CMP: ina226_u76 ina226_u77
+DEBUG: CMP: ina226_u76 ina226_u78
+DEBUG: CMP: ina226_u76 ina226_u87
+DEBUG: CMP: ina226_u76 ina226_u85
+DEBUG: CMP: ina226_u76 ina226_u86
+DEBUG: CMP: ina226_u76 ina226_u93
+DEBUG: CMP: ina226_u76 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon15/name
+DEBUG: CMP: ina226_u65 ina226_u76
+DEBUG: CMP: ina226_u65 ina226_u77
+DEBUG: CMP: ina226_u65 ina226_u78
+DEBUG: CMP: ina226_u65 ina226_u87
+DEBUG: CMP: ina226_u65 ina226_u85
+DEBUG: CMP: ina226_u65 ina226_u86
+DEBUG: CMP: ina226_u65 ina226_u93
+DEBUG: CMP: ina226_u65 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon9/name
+DEBUG: CMP: ina226_u92 ina226_u76
+DEBUG: CMP: ina226_u92 ina226_u77
+DEBUG: CMP: ina226_u92 ina226_u78
+DEBUG: CMP: ina226_u92 ina226_u87
+DEBUG: CMP: ina226_u92 ina226_u85
+DEBUG: CMP: ina226_u92 ina226_u86
+DEBUG: CMP: ina226_u92 ina226_u93
+DEBUG: CMP: ina226_u92 ina226_u92
+DEBUG: CMP TRUE!
+DEBUG: EXISTS? /sys/class/hwmon/hwmon9/curr1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon9/curr2_input
+DEBUG: EXISTS? /sys/class/hwmon/hwmon9/in1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon9/in2_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon9/power1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon9/power2_input
+DEBUG: FNAME: /sys/class/hwmon/hwmon13/name
+DEBUG: CMP: ina226_u84 ina226_u76
+DEBUG: CMP: ina226_u84 ina226_u77
+DEBUG: CMP: ina226_u84 ina226_u78
+DEBUG: CMP: ina226_u84 ina226_u87
+DEBUG: CMP: ina226_u84 ina226_u85
+DEBUG: CMP: ina226_u84 ina226_u86
+DEBUG: CMP: ina226_u84 ina226_u93
+DEBUG: CMP: ina226_u84 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon7/name
+DEBUG: CMP: ina226_u88 ina226_u76
+DEBUG: CMP: ina226_u88 ina226_u77
+DEBUG: CMP: ina226_u88 ina226_u78
+DEBUG: CMP: ina226_u88 ina226_u87
+DEBUG: CMP: ina226_u88 ina226_u85
+DEBUG: CMP: ina226_u88 ina226_u86
+DEBUG: CMP: ina226_u88 ina226_u93
+DEBUG: CMP: ina226_u88 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon11/name
+DEBUG: CMP: ina226_u81 ina226_u76
+DEBUG: CMP: ina226_u81 ina226_u77
+DEBUG: CMP: ina226_u81 ina226_u78
+DEBUG: CMP: ina226_u81 ina226_u87
+DEBUG: CMP: ina226_u81 ina226_u85
+DEBUG: CMP: ina226_u81 ina226_u86
+DEBUG: CMP: ina226_u81 ina226_u93
+DEBUG: CMP: ina226_u81 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon5/name
+DEBUG: CMP: ina226_u86 ina226_u76
+DEBUG: CMP: ina226_u86 ina226_u77
+DEBUG: CMP: ina226_u86 ina226_u78
+DEBUG: CMP: ina226_u86 ina226_u87
+DEBUG: CMP: ina226_u86 ina226_u85
+DEBUG: CMP: ina226_u86 ina226_u86
+DEBUG: CMP TRUE!
+DEBUG: EXISTS? /sys/class/hwmon/hwmon5/curr1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon5/curr2_input
+DEBUG: EXISTS? /sys/class/hwmon/hwmon5/in1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon5/in2_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon5/power1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon5/power2_input
+DEBUG: CMP: ina226_u86 ina226_u93
+DEBUG: CMP: ina226_u86 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon3/name
+DEBUG: CMP: ina226_u87 ina226_u76
+DEBUG: CMP: ina226_u87 ina226_u77
+DEBUG: CMP: ina226_u87 ina226_u78
+DEBUG: CMP: ina226_u87 ina226_u87
+DEBUG: CMP TRUE!
+DEBUG: EXISTS? /sys/class/hwmon/hwmon3/curr1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon3/curr2_input
+DEBUG: EXISTS? /sys/class/hwmon/hwmon3/in1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon3/in2_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon3/power1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon3/power2_input
+DEBUG: CMP: ina226_u87 ina226_u85
+DEBUG: CMP: ina226_u87 ina226_u86
+DEBUG: CMP: ina226_u87 ina226_u93
+DEBUG: CMP: ina226_u87 ina226_u92
+DEBUG: FNAME: /sys/class/hwmon/hwmon1/name
+DEBUG: CMP: ina226_u77 ina226_u76
+DEBUG: CMP: ina226_u77 ina226_u77
+DEBUG: CMP TRUE!
+DEBUG: EXISTS? /sys/class/hwmon/hwmon1/curr1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon1/curr2_input
+DEBUG: EXISTS? /sys/class/hwmon/hwmon1/in1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon1/in2_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon1/power1_input
+DEBUG: EXISTS? TRUE
+DEBUG: EXISTS? /sys/class/hwmon/hwmon1/power2_input
+DEBUG: CMP: ina226_u77 ina226_u78
+DEBUG: CMP: ina226_u77 ina226_u87
+DEBUG: CMP: ina226_u77 ina226_u85
+DEBUG: CMP: ina226_u77 ina226_u86
+DEBUG: CMP: ina226_u77 ina226_u93
+DEBUG: CMP: ina226_u77 ina226_u92

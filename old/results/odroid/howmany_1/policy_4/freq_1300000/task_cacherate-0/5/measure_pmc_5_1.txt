@@ -1,0 +1,38 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   5157       tick          5187           213            63          5187 
+      2   5157       tick            16             0             0            16 
+      3   5157       tick             8             0             0             8 
+      4   5157       tick            12             0             0            12 
+      5   5157       tick            10             0             0            10 
+      6   5157       tick             3             0             0             3 
+      7   5157       tick            13             0             0            13 
+      8   5157       tick             6             0             0             6 
+      9   5157       tick             6             0             0             6 
+     10   5157       tick             5             0             0             5 
+     11   5157       tick             5             0             0             5 
+     12   5157       tick             9             0             0             9 
+     13   5157       tick             4             0             0             4 
+     14   5157       tick            13             0             0            13 
+     15   5157       tick             3             0             0             3 
+     16   5157       tick             8             0             0             8 
+     17   5157       tick             7             0             0             7 
+     18   5157       tick            18             0             0            18 
+     19   5157       tick             5             0             0             5 
+     20   5157       tick             3             0             0             3 
+     21   5157       tick             3             0             0             3 
+     22   5157       tick             3             0             0             3 
+     23   5157       tick            11             0             0            11 
+     24   5157       tick             7             0             0             7 
+     25   5157       tick             3             0             0             3 
+     26   5157       tick            11             0             0            11 
+     27   5157       tick             9             0             0             9 
+     28   5157       tick             5             0             0             5 
+     29   5157       tick             5             0             0             5 
+     30   5157       tick             3             0             0             3 
+     31   5157       exit           298            21             6           298 

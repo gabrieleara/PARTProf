@@ -1,0 +1,38 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   5085       tick          5513           661           212          5513 
+      2   5085       tick            54             0             0            54 
+      3   5085       tick            79             0             0            79 
+      4   5085       tick            57             0             0            57 
+      5   5085       tick            59             0             0            59 
+      6   5085       tick            57             0             0            57 
+      7   5085       tick            63             0             0            63 
+      8   5085       tick            63             0             0            63 
+      9   5085       tick            56             0             0            56 
+     10   5085       tick            57             0             0            57 
+     11   5085       tick            59             0             0            59 
+     12   5085       tick            56             0             0            56 
+     13   5085       tick            57             0             0            57 
+     14   5085       tick            57             0             0            57 
+     15   5085       tick            55             0             0            55 
+     16   5085       tick            55             0             0            55 
+     17   5085       tick            56             0             0            56 
+     18   5085       tick            53             0             0            53 
+     19   5085       tick            57             0             0            57 
+     20   5085       tick            55             0             0            55 
+     21   5085       tick            55             0             0            55 
+     22   5085       tick            57             0             0            57 
+     23   5085       tick            78             0             0            78 
+     24   5085       tick            55             0             0            55 
+     25   5085       tick            56             0             0            56 
+     26   5085       tick            57             0             0            57 
+     27   5085       tick            58             0             0            58 
+     28   5085       tick            57             0             0            57 
+     29   5085       tick            60             0             0            60 
+     30   5085       tick            55             0             0            55 
+     31   5085       exit           378            56            14           378 

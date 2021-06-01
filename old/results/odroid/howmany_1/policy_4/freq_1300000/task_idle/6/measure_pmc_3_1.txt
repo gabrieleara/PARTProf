@@ -1,0 +1,27 @@
+[Event-to-counter mappings]
+pmc1=inmediate_branches_retired
+pmc2=instr
+pmc3=instr_arch_executed
+pmc4=instr_cache_access
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  11107       tick             0        462579        462579        223844 
+      2  11107       tick             0             0             0             0 
+      3  11107       tick             0             0             0             0 
+      4  11107       tick             0             0             0             0 
+      5  11107       tick             0             0             0             0 
+      6  11107       tick             0             0             0             0 
+      7  11107       tick             0             0             0             0 
+      8  11107       tick             0             0             0             0 
+      9  11107       tick             0             0             0             0 
+     10  11107       tick             0             0             0             0 
+     11  11107       tick             0             0             0             0 
+     12  11107       tick             0             0             0             0 
+     13  11107       tick             0             0             0             0 
+     14  11107       tick             0             0             0             0 
+     15  11107       tick             0             0             0             0 
+     16  11107       tick             0             0             0             0 
+     17  11107       tick             0             0             0             0 
+     18  11107       tick             0             0             0             0 
+     19  11107       tick             0             0             0             0 
+     20  11107       exit             0          2090          2090          3543 

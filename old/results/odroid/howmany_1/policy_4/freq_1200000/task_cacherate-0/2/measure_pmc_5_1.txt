@@ -1,0 +1,41 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1   6975       tick          5348           386            89          5348 
+      2   6975       tick           110             0             0           110 
+      3   6975       tick           107             0             0           107 
+      4   6975       tick           106             0             0           106 
+      5   6975       tick           155             0             0           155 
+      6   6975       tick           113             2             0           113 
+      7   6975       tick           111             0             0           111 
+      8   6975       tick           109             0             0           109 
+      9   6975       tick           111             0             0           111 
+     10   6975       tick           112             0             0           112 
+     11   6975       tick           113             0             0           113 
+     12   6975       tick           109             0             0           109 
+     13   6975       tick           109             0             0           109 
+     14   6975       tick           106             0             0           106 
+     15   6975       tick           109             0             0           109 
+     16   6975       tick           111             0             0           111 
+     17   6975       tick           111             0             0           111 
+     18   6975       tick           108             0             0           108 
+     19   6975       tick           109             0             0           109 
+     20   6975       tick           109             0             0           109 
+     21   6975       tick           111             0             0           111 
+     22   6975       tick           106             0             0           106 
+     23   6975       tick           109             0             0           109 
+     24   6975       tick           109             0             0           109 
+     25   6975       tick           135             0             0           135 
+     26   6975       tick           107             0             0           107 
+     27   6975       tick           109             0             0           109 
+     28   6975       tick           111             0             0           111 
+     29   6975       tick           111             0             0           111 
+     30   6975       tick           106             0             0           106 
+     31   6975       tick           111             0             0           111 
+     32   6975       tick           109             0             0           109 
+     33   6975       tick           111             0             0           111 
+     34   6975       exit           375            35             5           375 

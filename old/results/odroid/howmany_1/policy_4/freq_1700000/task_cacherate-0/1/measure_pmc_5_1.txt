@@ -1,0 +1,31 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  28510       tick          5448           642           208          5448 
+      2  28510       tick           118             0             0           118 
+      3  28510       tick           112             0             0           112 
+      4  28510       tick           108             0             0           108 
+      5  28510       tick           108             0             0           108 
+      6  28510       tick           114             0             0           114 
+      7  28510       tick           108             0             0           108 
+      8  28510       tick           108             0             0           108 
+      9  28510       tick           110             0             0           110 
+     10  28510       tick           110             0             0           110 
+     11  28510       tick           108             0             0           108 
+     12  28510       tick           111             0             0           111 
+     13  28510       tick           116             0             0           116 
+     14  28510       tick           110             0             0           110 
+     15  28510       tick           110             0             0           110 
+     16  28510       tick           111             0             0           111 
+     17  28510       tick           108             0             0           108 
+     18  28510       tick           110             0             0           110 
+     19  28510       tick           112             0             0           112 
+     20  28510       tick           110             0             0           110 
+     21  28510       tick           112             0             0           112 
+     22  28510       tick           114             0             0           114 
+     23  28510       tick           112             0             0           112 
+     24  28510       exit           378            55            18           378 

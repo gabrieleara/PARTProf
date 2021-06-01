@@ -1,0 +1,29 @@
+[Event-to-counter mappings]
+pmc1=l2_cache_accesses
+pmc2=l2_cache_refills
+pmc3=l2_cache_writebacks
+pmc4=llc_accesses
+[Event counts]
+nsample    pid      event          pmc1          pmc2          pmc3          pmc4
+      1  23287       tick          5500           409            97          5500 
+      2  23287       tick            54             0             0            54 
+      3  23287       tick            60             0             0            60 
+      4  23287       tick            54             0             0            54 
+      5  23287       tick            56             0             0            56 
+      6  23287       tick            54             0             0            54 
+      7  23287       tick            60             0             0            60 
+      8  23287       tick            54             0             0            54 
+      9  23287       tick            52             0             0            52 
+     10  23287       tick            56             0             0            56 
+     11  23287       tick            60             0             0            60 
+     12  23287       tick            55             0             0            55 
+     13  23287       tick            54             0             0            54 
+     14  23287       tick            57             0             0            57 
+     15  23287       tick            61             0             0            61 
+     16  23287       tick            55             0             0            55 
+     17  23287       tick            54             0             0            54 
+     18  23287       tick            61             0             0            61 
+     19  23287       tick            59             0             0            59 
+     20  23287       tick            53             0             0            53 
+     21  23287       tick           366            35             7           366 
+     22  23287       exit             0             0             0             0 

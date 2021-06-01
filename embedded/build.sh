@@ -64,7 +64,11 @@ function install_deps_apt() {
     BUILD_PATH="${PROJ_PATH}/build/embedded"
 
     mkdir -p "$BUILD_PATH"
-    cmake -S "$ORIGINAL_PATH" -B "$BUILD_PATH"
+    # cmake -S "$ORIGINAL_PATH" -B "$BUILD_PATH"
+    (
+        cd "$BUILD_PATH"
+        cmake "$ORIGINAL_PATH"
+    )
     cmake --build "$BUILD_PATH"
 
     # NOTE: final executable locations
