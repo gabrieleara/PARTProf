@@ -278,7 +278,7 @@ function install_dep() {
         run_or_dry_run $local_install_cmd
     fi
 
-    if [ ! -z "$ssh_host" ] && [ $install_deps_remote = 1 ] ; then
+    if [ ! -z "$ssh_host" ] && [ $install_deps_remote = 1 ]; then
         echo_step "INSTALLING DEPENDENCIES ON REMOTE HOST..."
         run_or_dry_run $remote_copy_cmd
         run_or_dry_run $remote_install_cmd
@@ -324,7 +324,8 @@ function install_dep() {
     include_rules=''
 
     # Directories to exclude
-    for d in build bin .devcontainer .git .vscode old __pycache__ '*results*' '*tables*'; do
+    for d in build bin .devcontainer .git .vscode old __pycache__ '*results*' \
+        '*images*' '*tables*'; do
         include_rules+=" '--exclude=$d/**'"
     done
     include_rules+=" '--exclude=.gitignore'"

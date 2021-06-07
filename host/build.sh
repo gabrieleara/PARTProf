@@ -315,6 +315,7 @@ function touch_power() {
     dry_run=0
     use_jobs=1
     njobs=
+    help_exit=
     default_results_dir="$path_proj/results"
     results_dir="$default_results_dir"
 

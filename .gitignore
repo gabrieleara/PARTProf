@@ -67,3 +67,6 @@ dkms.conf
 
 # Python stuff
 __pycache__
+*results*
+*tables*
+*images*
