@@ -1,12 +1,36 @@
 #!/bin/bash
 
-# -------------------------------------------------------- #
-#                     path management                      #
-# -------------------------------------------------------- #
+success_file="$(mktemp)"
 
 function hostname_waddress() {
     echo "$(hostname) ($(hostname -I | cut -d' ' -f1))"
 }
+
+function notify_termination() {
+    pinfosay1 "Experiment terminated correctly!"
+    telegram_notify "Your experiment on $(hostname_waddress) terminated correctly!"
+    echo OK >"$success_file"
+}
+
+function notify_premature_termination() {
+    echo "Experiment terminated prematurely!" >&2
+
+    local PROJPATH
+    local SCRIPT_PATH
+
+    PROJPATH="$(get_project_path '../..')"
+    SCRIPT_PATH="$(get_script_path)"
+
+    . "${SCRIPT_PATH}/util/telegram-tokens.sh" 2>/dev/null || true
+    . "${SCRIPT_PATH}/util/telegram.sh"
+
+
+    telegram_notify "Your experiment on $(hostname_waddress) terminated prematurely!"
+}
+
+# -------------------------------------------------------- #
+#                     path management                      #
+# -------------------------------------------------------- #
 
 function jump_and_print_path() {
     cd -P "$(dirname "$1")" >/dev/null 2>&1 && pwd
@@ -499,10 +523,10 @@ function sort_and_lineup() {
 (
     set -e
 
-    export PROJPATH
-    export SCRIPT_PATH
-    export CONFDIR
-    export APPSDIR
+    # export PROJPATH
+    # export SCRIPT_PATH
+    # export CONFDIR
+    # export APPSDIR
 
     PROJPATH="$(get_project_path '../..')"
     SCRIPT_PATH="$(get_script_path)"
@@ -519,7 +543,7 @@ function sort_and_lineup() {
     # chatID to get notified about the completion of your
     # runs! See
     # https://blog.bj13.us/2016/09/06/how-to-send-yourself-a-telegram-message-from-bash.html
-    . "${SCRIPT_PATH}/util/telegram-tokens.sh" || true
+    . "${SCRIPT_PATH}/util/telegram-tokens.sh" 2>/dev/null || true
     . "${SCRIPT_PATH}/util/telegram.sh"
 
     # Load base parameters
@@ -724,9 +748,13 @@ function sort_and_lineup() {
         done         # FOREACH FREQUENCY
     done             # FOREACH POLICY
 
-    pinfosay1 "Experiment terminated correctly!"
-    telegram_notify "Your experiment on $(hostname_waddress) terminated correctly!"
-) || (
-    echo "Experiment terminated prematurely!"
-    telegram_notify "Your experiment on $(hostname_waddress) terminated prematurely!"
+    notify_termination
 )
+
+if [ "$(cat "$success_file")" != 'OK' ]; then
+    notify_premature_termination
+    rm "$success_file"
+    false
+else
+    rm "$success_file"
+fi
