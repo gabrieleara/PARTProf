@@ -193,7 +193,7 @@ function parse_opt_args() {
         return 1
     fi
 
-    if [ $default_outfile = 1 ] && [ $compress = 1 ]; then
+    if [ "$default_outfile" = 1 ] && [ "$compress" = 1 ]; then
         outfile="$outfile".xz
     fi
 }
@@ -203,7 +203,9 @@ function parse_pos_args() {
     cmd_to_run="${pos_args[0]}"
     disk_path="${pos_args[1]}"
 
-    if [ -z "$cmd_to_run" ] || [ -z "$disk_path" ]; then
+    if [ "$cmd_to_run" = 'help' ]; then
+        usage_exitcode=0
+    elif [ -z "$cmd_to_run" ] || [ -z "$disk_path" ]; then
         printf "ERR: missing required argument.\n\n" >&2
         cmd_to_run=help
         usage_exitcode=1
@@ -264,27 +266,27 @@ function burn_sd() {
     printf '%s\n' 'Beginning to write to disk.'
     printf '%s\n' 'Please wait, this takes some time, a progress will be shown...'
 
-    if [ $compress = 1 ]; then
+    if [ "$compress" = 1 ]; then
         printf '%s\n' 'NOTE: you enabled compression.'
 
         if [ "$dry_run" = 1 ]; then
             printf '(DRY RUN) Command: %s\n' \
-                "xzcat '$infile' | sudo dd of='$disk_path' bs=4m status=progress"
+                "xzcat '$infile' | sudo dd of='$disk_path' bs=4M status=progress"
         else
             time (
                 sync
-                xzcat "$infile" | sudo dd of="$disk_path" bs=4m status=progress
+                xzcat "$infile" | sudo dd of="$disk_path" bs=4M status=progress
                 sync
             )
         fi
     else
         if [ "$dry_run" = 1 ]; then
             printf '(DRY RUN) Command: %s\n' \
-                "sudo dd if='$infile' of='$disk_path' bs=4m status=progress"
+                "sudo dd if='$infile' of='$disk_path' bs=4M status=progress"
         else
             time (
                 sync
-                sudo dd if="$infile" of="$disk_path" bs=4m status=progress
+                sudo dd if="$infile" of="$disk_path" bs=4M status=progress
                 sync
             )
         fi
@@ -292,7 +294,7 @@ function burn_sd() {
 
     sync
 
-    printf 'Write completed successfully, saved to %s.\n' "$outfile"
+    printf 'Write completed successfully, burned on %s.\n' "$disk_path"
 }
 
 function backup_sd() {
@@ -304,17 +306,17 @@ function backup_sd() {
 
         if [ "$dry_run" = 1 ]; then
             printf '(DRY RUN) Command: %s\n' \
-                "sudo dd if='$disk_path' bs=4m status=progress | xz >'$outfile'"
+                "sudo dd if='$disk_path' bs=4M status=progress | xz >'$outfile'"
         else
-            time sudo dd if="$disk_path" bs=4m status=progress | xz >"$outfile"
+            time sudo dd if="$disk_path" bs=4M status=progress | xz >"$outfile"
         fi
 
     else
         if [ "$dry_run" = 1 ]; then
             printf '(DRY RUN) Command: %s\n' \
-                "sudo dd if='$disk_path' bs=4m status=progress"
+                "sudo dd if='$disk_path' bs=4M status=progress"
         else
-            time sudo dd if="$disk_path" bs=4m status=progress
+            time sudo dd if="$disk_path" bs=4M status=progress
         fi
     fi
 
@@ -411,7 +413,7 @@ function backup_sd() {
 # diskutil unmountDisk /dev/$DSK
 # echo please wait - This takes some time
 # echo Ctl+T to show progress!
-# time sudo dd if=/dev/r$DSK bs=4m | gzip -9 >$OUTDIR/Piback.img.gz
+# time sudo dd if=/dev/r$DSK bs=4M | gzip -9 >$OUTDIR/Piback.img.gz
 
 # #rename to current date
 # echo compressing completed - now renaming

@@ -94,10 +94,11 @@ function extract_file() {
     domain=odroid.in
     os=ubuntu
     variant=20.04lts
-    board=n2
+    boardurl=XU3_XU4_MC1_HC1_HC2
+    board=xu4
     type=minimal
-    version=20.04-4.9
-    date=20210202
+    version=20.04.1-5.4
+    date=20200812
 
     basefname="${os}-${version}-${type}-odroid-${board}-${date}"
     imagename="$basefname.img"
@@ -105,7 +106,7 @@ function extract_file() {
     hashname="${imagename}.md5sum"
     hashxzname="${xzname}.md5sum"
 
-    baseurl="https://${domain}/${os}_${variant}/${board}/"
+    baseurl="https://${domain}/${os}_${variant}/${boardurl}/"
 
     # imageurl="${baseurl}/${imagename}"
     xzurl="${baseurl}/${xzname}"

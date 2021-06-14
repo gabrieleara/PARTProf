@@ -4,6 +4,10 @@
 #                     path management                      #
 # -------------------------------------------------------- #
 
+function hostname_waddress() {
+    echo "$(hostname) ($(hostname -I | cut -d' ' -f1))"
+}
+
 function jump_and_print_path() {
     cd -P "$(dirname "$1")" >/dev/null 2>&1 && pwd
 }
@@ -511,6 +515,13 @@ function sort_and_lineup() {
     . "${SCRIPT_PATH}/util/fix-trip-points.sh"
     . "${SCRIPT_PATH}/util/fakedata.sh"
 
+    # Put tokens for default Telegram channel and your
+    # chatID to get notified about the completion of your
+    # runs! See
+    # https://blog.bj13.us/2016/09/06/how-to-send-yourself-a-telegram-message-from-bash.html
+    . "${SCRIPT_PATH}/util/telegram-tokens.sh" || true
+    . "${SCRIPT_PATH}/util/telegram.sh"
+
     # Load base parameters
     . "${CONFDIR}/base/base.sh"
 
@@ -636,13 +647,16 @@ function sort_and_lineup() {
         # Prepare CPU policies for manual frequency switching
         pwarn "If you see an error message here, but the script keeps going," \
             "don't panic. It's all good."
-        (
-            cpufreq_governor_setall "performance" || cpufreq_governor_setall "userspace"
-        ) 2>/dev/null || (
+
+        if cpufreq_governor_setall "performance" ||
+            cpufreq_governor_setall "userspace"; then
+            # All good
+            :
+        else
             perr 'NEITHER performance NOR userspace GOVERNORS SUPPORTED!'
             perr 'Run will terminate now.'
             false
-        )
+        fi
 
         # Use the commented command to set the other policies to the maximum
         # instead of the minimum frequency.
@@ -711,4 +725,8 @@ function sort_and_lineup() {
     done             # FOREACH POLICY
 
     pinfosay1 "Experiment terminated correctly!"
-) || echo "Experiment terminated prematurely!"
+    telegram_notify "Your experiment on $(hostname_waddress) terminated correctly!"
+) || (
+    echo "Experiment terminated prematurely!"
+    telegram_notify "Your experiment on $(hostname_waddress) terminated prematurely!"
+)

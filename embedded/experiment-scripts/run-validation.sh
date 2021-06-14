@@ -335,13 +335,13 @@ function run_single_test() {
                 # Get the actual number of sub-processes of the given tasks that
                 # are running (that is, that have been started by the
                 # ${TIME_CMD} already!)
-                set +e
+                # set +e
                 ps_out=$(ps -e -o ppid,args |
                     grep --color=never "${tasks_grep_pattern}" |
                     grep --color=never "${tasks_ppid_pattern}" |
                     grep --color=never -v grep |
                     grep --color=never -v perf)
-                set -e
+                # set -e
 
                 if [ -z "${ps_out}" ]; then
                     tasks_running=0

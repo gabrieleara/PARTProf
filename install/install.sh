@@ -170,7 +170,8 @@ function parse_opt_args() {
             ;;
         h)
             usage
-            return 0
+            # exit_code="0"
+            return 1
             ;;
         D)
             install_deps_remote=1

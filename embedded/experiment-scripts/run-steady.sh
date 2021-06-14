@@ -365,13 +365,11 @@ function single_test_run() {
 
             # TODO: PMC?
 
-            # set +e
             ps_out=$(ps -e -o ppid,args |
                 grep --color=never "${tasks_grep_pattern}" |
                 grep --color=never "${tasks_ppid_pattern}" |
                 grep --color=never -v grep |
                 grep --color=never -v perf || true)
-            # set -e
 
             # Output has exactly one line per desired task
             if [ -z "${ps_out}" ]; then
