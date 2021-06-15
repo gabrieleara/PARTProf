@@ -176,9 +176,13 @@ function pdebug_newline() {
     print_msg '' >&2
 }
 
+function calculator() {
+    awk 'BEGIN { printf "%s\n", '"$1"' }'
+}
+
 function format_frequency() {
     while [ $# -gt 0 ]; do
-        echo -n "$(bc <<<"$1 / 1000")MHz"
+        echo -n "$(calculator "$1 / 1000")MHz"
         shift
         if [ $# -gt 0 ]; then
             echo -n ' '
