@@ -25,10 +25,13 @@ function activate_pwm_fans() {
     # Set maximum speed for integrated PWM fan if available
     if [ -d /sys/devices/platform/pwm-fan/hwmon/hwmon0/ ]; then
         (
+            set +e
+
             echo "252 253 254 255" >/sys/devices/platform/pwm-fan/hwmon/hwmon0/fan_speed
             echo "0" >/sys/devices/platform/pwm-fan/hwmon/hwmon0/automatic
+            echo "1" >/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1_enable
             echo "255" >/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1
-        ) || true
+        ) 2>/dev/null
     fi
 }
 
