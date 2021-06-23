@@ -56,8 +56,8 @@ function trip_points_force_fan() {
         # constantly at the same speed.
 
         set +e
-        echo '0' >/sys/devices/platform/pwm-fan/hwmon/hwmon0/automatic
-        echo '255' >/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1
+        echo '0' >/sys/devices/platform/pwm-fan/hwmon/hwmon0/automatic 2>/dev/null
+        echo '255' >/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1 2>/dev/null
     )
 
     # Since we want always the fan to be active, we will modify its trip points
@@ -99,7 +99,7 @@ function trip_points_force_fan() {
 
             if [ "$tp_type_v" = 'passive' ]; then
                 tp_type_v='active'
-                echo "$tp_type_v" >"${tp_prefix}${i}${tp_type}"
+                echo "$tp_type_v" >"${tp_prefix}${i}${tp_type}" 2>/dev/null || true
             fi
 
             tp_type_v=$(cat ${tp_prefix}${i}${tp_type} 2>/dev/null || echo '')
@@ -107,7 +107,7 @@ function trip_points_force_fan() {
             # Set trip temperatures as increasing values from 10°C as the trip temperature
             if [ "$tp_type_v" = 'active' ]; then
                 tp_temp_v=$((10000 + i * 1000))
-                echo "$tp_temp_v" >"${tp_prefix}${i}${tp_temp}"
+                echo "$tp_temp_v" >"${tp_prefix}${i}${tp_temp}" 2>/dev/null || true
             fi
         done
     done
