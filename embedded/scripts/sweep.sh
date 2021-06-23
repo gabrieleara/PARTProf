@@ -63,8 +63,6 @@ function sweep() {
     max_cpus=$(get_max_cpus)
 
     for ((i = 1; i <= $max_cpus; i += 1)); do
-        "${run}" "${test_conf}" "${confdir}/howmany_${i}.bash" "${@:2}"
-
         time "${RUN_CMD}" \
             "${CONF_PATH}/base/timepower.sh" \
             "${CONF_PATH}/tasks/simple.sh" \
