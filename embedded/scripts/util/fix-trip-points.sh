@@ -50,15 +50,12 @@ function trip_points_force_fan() {
     # This first operation does not require a reboot, but it is supported only
     # on kernel 4.14.20 or higher, and not on kernel 5.4.
     # We run it anyway and if it fails, oh well.
-    (
-        # Using this method, the fan ignores written scaling
-        # files (trip points and fan speed) and runs
-        # constantly at the same speed.
 
-        set +e
-        echo '0' >/sys/devices/platform/pwm-fan/hwmon/hwmon0/automatic 2>/dev/null
-        echo '255' >/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1 2>/dev/null
-    )
+    # Using this method, the fan ignores written scaling
+    # files (trip points and fan speed) and runs
+    # constantly at the same speed.
+    echo '0' >/sys/devices/platform/pwm-fan/hwmon/hwmon0/automatic 2>/dev/null || true
+    echo '255' >/sys/devices/platform/pwm-fan/hwmon/hwmon0/pwm1 2>/dev/null || true
 
     # Since we want always the fan to be active, we will modify its trip points
     # so that they will fire up immediately
