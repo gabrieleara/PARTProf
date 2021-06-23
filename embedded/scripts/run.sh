@@ -299,8 +299,7 @@ function high_prio_kind_to_cmd() {
 
 # If you need something more sophisticated, change this function
 function wait_cooldown() {
-    # sleep "$EXP_SLEEP_INTERVAL"
-    :
+    sleep "$EXP_SLEEP_INTERVAL"
 }
 
 function wait_test_duration() {
