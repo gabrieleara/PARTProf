@@ -24,7 +24,6 @@ function notify_premature_termination() {
     . "${SCRIPT_PATH}/util/telegram-tokens.sh" 2>/dev/null || true
     . "${SCRIPT_PATH}/util/telegram.sh"
 
-
     telegram_notify "Your experiment on $(hostname_waddress) terminated prematurely!"
 }
 
@@ -593,7 +592,7 @@ function sort_and_lineup() {
     mkdir -p "$ramfs_datapath"
     mkdir -p "$ramfs_logpath"
 
-    activate_pwm_fans
+    trip_points_force_fan
 
     pinfo1 'Experiment will begin in 30 seconds...'
 

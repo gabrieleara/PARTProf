@@ -352,5 +352,11 @@ function install_dep() {
     # Finally, print and run
     echo_step "INSTALLING..."
     # printf "%s\n\n%s\n\n" "About to run the following command:" "$install_cmd"
-    run_or_dry_run $install_cmd
+
+    if [ "$dry_run" = 1 ]; then
+        bash -c "$install_cmd --dry-run"
+    else
+        bash -c "$install_cmd"
+    fi
+    # run_or_dry_run $install_cmd
 )
