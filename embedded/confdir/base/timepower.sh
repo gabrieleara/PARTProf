@@ -19,7 +19,7 @@ export EXP_TASK_MIN_DURATION=2
 export EXP_TEST_DURATION=40
 
 # Cooldown period between consecutive test tries
-export EXP_SLEEP_INTERVAL=100
+export EXP_SLEEP_INTERVAL=120
 
 # The command to execute to measure elapsed time
 export TIME_CMD="${APPSDIR}/forever/forever"
