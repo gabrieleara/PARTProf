@@ -56,7 +56,7 @@ function get_max_cpus() {
     echo "$max_cpus"
 }
 
-function sweep_number_cpus() {
+function sweep() {
     local max_cpus=
     local i=
 
