@@ -60,10 +60,16 @@ function find_all_runs() {
 function find_all_deps() {
     local cur_path="$1"
 
-    find "${cur_path}" -type f -name 'measure_power.txt' \
-        -or -name 'measure_time_*.txt' |
+    # Power
+    find "${cur_path}" -type f -name 'measure_power.txt' |
         grep -v '/0/' |
-        sed -e 's#\(.\+\)/measure_\(.\+\)\.txt#\1/raw_measure_\2.csv#'
+        sed -e 's#\(.\+\)/measure_power.txt#\1/raw_measure_power.csv#'
+
+    # For time, there may be multiple files now
+    find "${cur_path}" -type f -name 'measure_time.txt*' |
+        grep -v '/0/' |
+        sed -e 's#\(.\+\)/measure_time.txt\(.*\)#\1/raw_measure_time\2.csv#'
+
 }
 
 (

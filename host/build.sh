@@ -242,7 +242,7 @@ function build() {
 
     printf ' --> Generating Dependencies for %s ...\n' "$cur_dir"
     "${path_host}/gen_deps.sh" "$cur_dir" >"${deps_makefile}"
-    cat "${deps_makefile}"
+    # cat "${deps_makefile}"
 
     args=" -r -C ${cur_dir} -f $base_makefile GENERATED_DEPS=$deps_makefile"
 
@@ -313,7 +313,7 @@ function touch_power() {
 
     # Optional arguments
     dry_run=0
-    use_jobs=1
+    use_jobs=0
     njobs=
     help_exit=
     default_results_dir="$path_proj/results"
