@@ -61,7 +61,7 @@ int main() {
 
     // Select the minimum update period among them all
     struct sensor *pos;
-    long period_us = 100000L; // Maximum 10 times a second, in useconds
+    long period_us = 50000L; // Maximum 20 times a second, in useconds
 
     list_for_each_entry(pos, &sensors_list, list) {
         if (pos->period_us > 0 && pos->period_us < period_us)

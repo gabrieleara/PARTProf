@@ -113,30 +113,66 @@ static inline int fork_and_wait(char **args, struct timespec *start,
     return EXIT_FAILURE;
 }
 
+const char SEP = ',';
+const char default_prefix[] = "time ";
+const char default_prefix_runcount[] = "runcount ";
+const size_t num_separators = 8; // TODO: parse perf arguments and determine how many columns there are
+
+static inline const char *build_prefix_or_default(
+    const char *pname, const char *thedefault, const size_t howmany_seps) {
+    if (strcmp(pname, "perf") == 0) {
+        char *str = calloc(howmany_seps + 1, sizeof(char));
+        for (size_t i = 0; i < howmany_seps; ++i) {
+            str[i] = SEP;
+        }
+        return str;
+    } else {
+        // String is automatically freed by exiting the program
+        return thedefault;
+    }
+}
+
+static inline const char *build_prefix_string(const char* pname) {
+    return build_prefix_or_default(pname, default_prefix, num_separators);
+}
+
+static inline const char *build_prefix_runcount_string(const char *pname) {
+    return build_prefix_or_default(pname, default_prefix_runcount,
+        num_separators + 1);
+}
+
 int main(int argc, char **argv) {
     int exit_status = EXIT_SUCCESS;
     struct timespec diff = {0};
     struct timespec start = {0};
     struct timespec end = {0};
+    const char *prefix = NULL;
+    const char *prefix_runcount = NULL;
 
     if (argc < 2) {
         fprintf(stderr, "ERROR: no program to run provided!");
         exit_status = EXIT_FAILURE;
     }
 
+    prefix = build_prefix_string(argv[1]);
+    prefix_runcount = build_prefix_runcount_string(argv[1]);
+
     init_sigkill_action();
+
+    // TODO: do I need the double newline?
 
     for (runcount = 0; (runcount < 1 || !stop) && !exit_status; ++runcount) {
         exit_status = fork_and_wait(argv + 1, &start, &end);
         if (!exit_status) {
             time_diff(&diff, &end, &start);
-            fprintf(stderr, "\ntime %ld.%09ld\n", diff.tv_sec, diff.tv_nsec);
+            fprintf(stderr, "\n%s%ld.%09ld\n", prefix, diff.tv_sec,
+                diff.tv_nsec);
         }
     }
 
     if (exit_status)
         --runcount;
 
-    fprintf(stderr, "\nruncount %d\n", runcount);
+    fprintf(stderr, "\n%s%d\n", prefix_runcount, runcount);
     return exit_status;
 }

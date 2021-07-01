@@ -11,7 +11,7 @@ export EXP_DESCRIPTION="This experiment runs a set of tasks multiple times for e
 
 # Number of seconds for which a single task run should roughly execute at least
 # (when running on the fastest core at the fastest frequency)
-export EXP_TASK_MIN_DURATION=2
+export EXP_TASK_MIN_DURATION=4
 
 # Number of seconds for which each single test (comprising potentially multiple
 # task runs) should roughly execute at least.
@@ -19,7 +19,7 @@ export EXP_TASK_MIN_DURATION=2
 export EXP_TEST_DURATION=40
 
 # Cooldown period between consecutive test tries
-export EXP_SLEEP_INTERVAL=120
+export EXP_SLEEP_INTERVAL=40
 
 # The command to execute to measure elapsed time
 export TIME_CMD="${APPSDIR}/forever/forever"
@@ -33,7 +33,7 @@ export TIME=$'\ntime %e\n'
 export POWERSAMPLER_CMD="${APPSDIR}/sampler/sampler"
 
 # The number of repetitions to run for each test
-export HOWMANY_TIMES=5
+export HOWMANY_TIMES=10
 
 # The number of instances to run in parallel on the same policy
 # (at most one per cpu, may be less than this number if the number of cpus is

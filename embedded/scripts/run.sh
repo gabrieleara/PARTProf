@@ -230,6 +230,14 @@ function logfile_power_err() {
     echo "${FILENAME_OUT_POWER}.err"
 }
 
+function logfile_power_cooldown() {
+    echo "${FILENAME_OUT_POWER}.cooldown"
+}
+
+function logfile_power_err_cooldown() {
+    echo "${FILENAME_OUT_POWER}.cooldown.err"
+}
+
 ramfs_size=2048
 ramfs_path="/ramfs"
 ramfs_logpath="${ramfs_path}/log"
@@ -262,6 +270,14 @@ function ramfs_current_logfile_power() {
 
 function ramfs_current_logfile_power_err() {
     echo "${ramfs_logpath}/$(logfile_power_err)"
+}
+
+function ramfs_current_logfile_power_cooldown() {
+    echo "${ramfs_logpath}/$(logfile_power_cooldown)"
+}
+
+function ramfs_current_logfile_power_err_cooldown() {
+    echo "${ramfs_logpath}/$(logfile_power_err_cooldown)"
 }
 
 # -------------------------------------------------------- #
@@ -327,7 +343,7 @@ function run_a_test() {
     local tasks_cores=()
     local tasks_logfile=()
     local tasks_infile=()
-    local tasks_outfile=()
+    # local tasks_outfile=()
 
     # Local variables for the following loop
     local tasks_count=0
@@ -335,7 +351,7 @@ function run_a_test() {
     local task_core=
     local task_logfile=
     local task_infile=
-    local task_outfile=
+    # local task_outfile=
     local task_core=
 
     # For each CPU, but no more tasks than requested,
@@ -348,7 +364,7 @@ function run_a_test() {
         tasks_count=$((tasks_count + 1))
 
         task_infile="$(ramfs_current_infile ${tasks_count})"
-        task_outfile="$(ramfs_current_outfile ${tasks_count})"
+        # task_outfile="$(ramfs_current_outfile ${tasks_count})"
         task_logfile="$(ramfs_current_logfile_time ${tasks_count})"
 
         # Input files are all numbered symbolic links to the same input file.
@@ -358,7 +374,7 @@ function run_a_test() {
         # Save lists of files managed in this run
         tasks_logfile+=("$task_logfile")
         tasks_infile+=("$task_infile")
-        tasks_outfile+=("$task_outfile")
+        # tasks_outfile+=("$task_outfile")
 
         # Command to execute
         task_cmd=$(task_command "${task_infile}")
@@ -371,14 +387,10 @@ function run_a_test() {
         # tasks_grep_pattern="$tasks_grep_pattern\|$task_cmd"
     done # foreach CPU
 
-    # Cooldown between a test and the consecutive one
-    # TODO: move at the bottom?
-    wait_cooldown
-
     # Start the power sampler
     local sampler_logfile=
     local sampler_logfile_err=
-    local sampler_pid
+    local sampler_pid=
 
     sampler_logfile="$(ramfs_current_logfile_power)"
     sampler_logfile_err="$(ramfs_current_logfile_power_err)"
@@ -431,6 +443,34 @@ function run_a_test() {
     # Final check, script should NEVER hang here
     wait "${tasks_pids[@]}" || true # 2>/dev/null
 
+    # Cooldown between a test and the consecutive one
+
+    delline
+    pinfo2 \
+        "[Task $((task_index + 1))/${#TASKS_NAME[@]}]" \
+        "Running '${task_name}'" \
+        "[run ${task_rep}/${HOWMANY_TIMES}] cooling down ..."
+
+    # Start the power sampler
+    local cooldown_sampler_logfile=
+    local cooldown_sampler_logfile_err=
+    local cooldown_sampler_pid=
+
+    cooldown_sampler_logfile="$(ramfs_current_logfile_power_cooldown)"
+    cooldown_sampler_logfile_err="$(ramfs_current_logfile_power_err_cooldown)"
+
+    taskset -c "${POWERSAMPLER_CPUCORE}" \
+        chrt -f 99 \
+        ${POWERSAMPLER_CMD} \
+        >"${cooldown_sampler_logfile}" 2>"${cooldown_sampler_logfile_err}" &
+
+    cooldown_sampler_pid="$!"
+
+    wait_cooldown
+
+    kill -2 ${cooldown_sampler_pid} &>/dev/null
+    wait ${cooldown_sampler_pid} # 2>/dev/null
+
     # Now all logfiles are still in the ramfs, we need to copy them back to disk
 
     # Create current test output directory
@@ -441,13 +481,19 @@ function run_a_test() {
     # Copy back log files to disk
     cp "${sampler_logfile}" \
         "${sampler_logfile_err}" \
+        "${cooldown_sampler_logfile}" \
+        "${cooldown_sampler_logfile_err}" \
         "${tasks_logfile[@]}" \
         "$testdir"
 
     # Delete all output files
     # NOTE: Input files are assumed not to be modified! Is this always true??
-    rm -f "${sampler_logfile}" "${sampler_logfile_err}" "${tasks_logfile[@]}" \
-        "${tasks_outfile[@]}"
+    rm -f "${sampler_logfile}" \
+        "${sampler_logfile_err}" \
+        "${cooldown_sampler_logfile}" \
+        "${cooldown_sampler_logfile_err}" \
+        "${tasks_logfile[@]}" \
+        # "${tasks_outfile[@]}"
 }
 
 # Returns whether the policy should be skipped (i.e. not
@@ -610,9 +656,16 @@ function sort_and_lineup() {
 
     policy=
     policy_other=
+    policy_cpulist=
     for policy in $policy_list; do
         if should_skip_policy; then
             pinfo1 "Skipping policy $policy"
+            continue
+        fi
+
+        policy_cpulist=( $(cpufreq_policy_cpu_list "$policy") )
+        if [ "${#policy_cpulist[@]}" -lt "$HOWMANY_TASKS" ] ; then
+            pinfosay1 "Skipping CPU Island ${policy} because it has only $#_cpulist[@] cpus instead of the $HOWMANY_TASKS required!"
             continue
         fi
 

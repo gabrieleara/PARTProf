@@ -13,31 +13,37 @@ TASKS_NAME+=("hash")
 TASKS_CMD+=("sha256sum INFILE")
 TASKS_FILESIZE_RATIO+=(90)
 
-# TODO: I can change the compression level!
-for ((i = 1; i <= 9; i += 4)); do
-    TASKS_NAME+=("gzip-$i")
-    TASKS_CMD+=("gzip -kqf -$i INFILE -S .OUTFILE_EXT")
-    TASKS_FILESIZE_RATIO+=(13)
-done
+# for ((i = 1; i <= 9; i += 4)); do
+#     TASKS_NAME+=("gzip-$i")
+#     TASKS_CMD+=("gzip -kqf -$i INFILE -S .OUTFILE_EXT")
+#     TASKS_FILESIZE_RATIO+=(13)
+# done
 
-# TASKS_NAME+=("encrypt")
-# TASKS_CMD+=("openssl des3 -e -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
-# TASKS_FILESIZE_RATIO+=(14)
+TASKS_NAME+=("gzip")
+TASKS_CMD+=("gzip -kqf INFILE -S .OUTFILE_EXT")
+TASKS_FILESIZE_RATIO+=(13)
 
-# TASKS_NAME+=("decrypt")
-# TASKS_CMD+=("openssl des3 -d -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
-# TASKS_FILESIZE_RATIO+=(14)
+TASKS_NAME+=("encrypt")
+TASKS_CMD+=("openssl des3 -e -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
+TASKS_FILESIZE_RATIO+=(14)
 
-CACHEKILLER_IT=$((22000000 * EXP_TASK_MIN_DURATION))
+TASKS_NAME+=("decrypt")
+TASKS_CMD+=("openssl des3 -d -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
+TASKS_FILESIZE_RATIO+=(14)
 
-TASKS_NAME+=("cachekiller")
-TASKS_CMD+=("$APPSDIR/cacheapp/cachekiller ${CACHEKILLER_IT}")
-TASKS_FILESIZE_RATIO+=(0)
+# CACHEKILLER_IT=$((22000000 * EXP_TASK_MIN_DURATION))
+
+# TASKS_NAME+=("cachekiller")
+# TASKS_CMD+=("$APPSDIR/cacheapp/cachekiller ${CACHEKILLER_IT}")
+# TASKS_FILESIZE_RATIO+=(0)
 
 # Generate a command for each of these data cache miss percentages
 # These numbers are to be used for 1s experiments, they will be multiplied accordingly for longer durations
-MISS_PERCENTAGES=(0 20 40 60 80 100)
-MISS_ITERATIONS=(220000000 154000000 66000000 38000000 26200000 20000000)
+# MISS_PERCENTAGES=(0 20 40 60 80 100)
+# MISS_ITERATIONS=(220000000 154000000 66000000 38000000 26200000 20000000)
+
+MISS_PERCENTAGES=(0 50 100)
+MISS_ITERATIONS=(220000000 45000000 20000000)
 
 i=0
 for i in $(seq 1 ${#MISS_PERCENTAGES[@]}); do
