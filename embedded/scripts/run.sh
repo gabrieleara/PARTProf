@@ -140,8 +140,8 @@ function task_command() {
 
     local _SSS_=${safe_sed_separator}
 
-    task=$(echo $task | sed -e "s${_SSS_}${infile_pattern}${_SSS_}${infile}${_SSS_}")
-    task=$(echo $task | sed -e "s${_SSS_}${outext_pattern}${_SSS_}${outfile_ext}${_SSS_}")
+    task=$(echo $task | sed -e "s${_SSS_}${infile_pattern}${_SSS_}${infile}${_SSS_}g")
+    task=$(echo $task | sed -e "s${_SSS_}${outext_pattern}${_SSS_}${outfile_ext}${_SSS_}g")
 
     echo $task
 }
@@ -343,7 +343,7 @@ function run_a_test() {
     local tasks_cores=()
     local tasks_logfile=()
     local tasks_infile=()
-    # local tasks_outfile=()
+    local tasks_outfile=()
 
     # Local variables for the following loop
     local tasks_count=0
@@ -351,7 +351,7 @@ function run_a_test() {
     local task_core=
     local task_logfile=
     local task_infile=
-    # local task_outfile=
+    local task_outfile=
     local task_core=
 
     # For each CPU, but no more tasks than requested,
@@ -364,7 +364,7 @@ function run_a_test() {
         tasks_count=$((tasks_count + 1))
 
         task_infile="$(ramfs_current_infile ${tasks_count})"
-        # task_outfile="$(ramfs_current_outfile ${tasks_count})"
+        task_outfile="$(ramfs_current_outfile ${tasks_count})"
         task_logfile="$(ramfs_current_logfile_time ${tasks_count})"
 
         # Input files are all numbered symbolic links to the same input file.
@@ -374,7 +374,7 @@ function run_a_test() {
         # Save lists of files managed in this run
         tasks_logfile+=("$task_logfile")
         tasks_infile+=("$task_infile")
-        # tasks_outfile+=("$task_outfile")
+        tasks_outfile+=("$task_outfile")
 
         # Command to execute
         task_cmd=$(task_command "${task_infile}")
@@ -493,7 +493,7 @@ function run_a_test() {
         "${cooldown_sampler_logfile}" \
         "${cooldown_sampler_logfile_err}" \
         "${tasks_logfile[@]}" \
-        # "${tasks_outfile[@]}"
+        "${tasks_outfile[@]}"
 }
 
 # Returns whether the policy should be skipped (i.e. not

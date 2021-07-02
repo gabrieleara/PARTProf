@@ -27,9 +27,10 @@ TASKS_NAME+=("encrypt")
 TASKS_CMD+=("openssl des3 -e -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
 TASKS_FILESIZE_RATIO+=(14)
 
-TASKS_NAME+=("decrypt")
-TASKS_CMD+=("openssl des3 -d -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
-TASKS_FILESIZE_RATIO+=(14)
+## FIXME: decrypt does not work as of now!
+# TASKS_NAME+=("decrypt")
+# TASKS_CMD+=("openssl des3 -d -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk") # Not tested with deadline
+# TASKS_FILESIZE_RATIO+=(14)
 
 # CACHEKILLER_IT=$((22000000 * EXP_TASK_MIN_DURATION))
 
