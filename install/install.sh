@@ -325,7 +325,7 @@ function install_dep() {
     include_rules=''
 
     # Directories to exclude
-    for d in build bin .devcontainer .git .vscode old __pycache__ '*results*' \
+    for d in build bin .devcontainer .git .vscode old __pycache__ '*data*' '*results*' \
         '*images*' '*tables*'; do
         include_rules+=" '--exclude=$d/**'"
     done
