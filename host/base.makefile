@@ -8,6 +8,6 @@ all: outdata.csv
 	raw_to_csv.py -c $(col_opt) -o $@ $<
 
 raw_measure_time%.csv: measure_time.txt%
-	raw_to_csv.py -c $(col_opt) -o $@ $<
+	perf_csv_to_csv.py -o $@ $<
 
 -include $(GENERATED_DEPS)
