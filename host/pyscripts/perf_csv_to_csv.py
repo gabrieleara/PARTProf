@@ -20,16 +20,6 @@ options = [
         },
     },
     {
-        'short': '-c',
-        'long': '--col-map',
-        'opts': {
-            'help': 'The file that defines mappings between input labels '
-                'and output column names',
-            'type': str,
-            'default': '',
-        },
-    },
-    {
         'short': '-o',
         'long': '--out-file',
         'opts': {
@@ -84,54 +74,29 @@ def perf_file_to_csv(inf):
     # which is always the last row)
     maxrow = df['time'].last_valid_index()
     df = df.drop(range((maxrow+1), (len(df.index)-1)))
-    # print(df)
-    # exit(0)
 
-    # derived = df['derived'].dropna().unique()
-
-    cmap1 = getcolmap(df, 'cname', 'cvalue')
-    cmap2 = getcolmap(df, 'derived', 'derivedvalue')
-    cmap3 = {
+    cmap = {}
+    cmap = {**cmap, **getcolmap(df, 'cname', 'cvalue')}
+    cmap = {**cmap, **getcolmap(df, 'derived', 'derivedvalue')}
+    cmap = {**cmap,
         'time': df['time'].dropna().to_numpy(),
         'runcount': df['runcount'].dropna().to_numpy(),
     }
-    # cmap = cmap1 | cmap2 | cmap3
 
-    len1 = len(cmap1[list(cmap1.keys())[0]])
-    lentime = len(cmap3['time'])
-    lenruncount = len(cmap3['runcount'])
+    maxlen = 0
+    for k in cmap.keys():
+        l = len(cmap[k])
+        maxlen = l if l > maxlen else maxlen
 
-    print("len1:", len1)
-    print("lentime:", lentime)
-    print("lenruncount:", lenruncount)
-
-    if len1 < lentime:
-        # FIXME: fill cmap1 and cmap2 with nan
-        pass
-    else:
-        v = np.empty(len1)
+    for k in cmap.keys():
+        if (len(cmap[k]) == maxlen):
+            continue
+        v = np.empty(maxlen)
         v[:] = np.nan
-        v[np.arange(lentime)] = cmap3['time']
-        cmap3['time'] = v
+        v[np.arange(len(cmap[k]))] = cmap[k]
+        cmap[k] = v
 
-        v = np.empty(len1)
-        v[:] = np.nan
-        v[np.arange(lenruncount)] = cmap3['runcount']
-        cmap3['runcount'] = v
-
-    len1 = len(cmap1[list(cmap1.keys())[0]])
-    lentime = len(cmap3['time'])
-    lenruncount = len(cmap3['runcount'])
-    print("len1:", len1)
-    print("lentime:", lentime)
-    print("lenruncount:", lenruncount)
-
-    # cmap['time'] = np.pad(cmap['time'], (len1 - lentime) / 2, constant_values=np.nan)
-    # cmap['runcount'] = np.pad(cmap['runcount'], (len1 - lenruncount) / 2, constant_values=np.nan)
-
-    cmap = {**cmap1, **cmap2, **cmap3}
-    outdf = pd.DataFrame(cmap)
-    return outdf
+    return pd.DataFrame(cmap)
 #-- perf_file_to_csv
 
 
