@@ -25,7 +25,7 @@ function cpufreq_policy_set_attr_check() {
 
     # Optional arguments
     [[ $# -lt 4 ]] && interval="0.5s"
-    [[ $# -lt 5 ]] && maxcount="5"
+    [[ $# -lt 5 ]] && maxcount="20"
 
     local curr_value
     local counter=0
@@ -34,13 +34,14 @@ function cpufreq_policy_set_attr_check() {
     while [ "$curr_value" -ne "$value" ]; do
         # Could not set the desired value
         if [ "$counter" -gt "$maxcount" ]; then
+            echo "ERROR: Unable to set on policy $policy attribute $attr to value $value! Current value: $curr_value" >&2
             return 1
         fi
 
         # Write and check after an interval
         cpufreq_policy_set_attr "$policy" "$attr" "$value"
 
-        sleep $interval
+        sleep "$interval"
 
         curr_value=$(cpufreq_policy_get_attr "$policy" "$attr")
         counter=$((counter + 1))
