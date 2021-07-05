@@ -22,32 +22,46 @@
 #include "sensor_smartpower.h"
 #endif
 
-int stop_sampling = 1;
+sig_atomic_t keep_sampling = 1;
+sig_atomic_t mark_section = 0;
+
+void mark(int signum __attribute((unused)),
+          siginfo_t *info __attribute((unused)),
+          void *ptr __attribute((unused))) {
+    mark_section = 1;
+}
 
 void stop(int signum __attribute((unused)),
           siginfo_t *info __attribute((unused)),
           void *ptr __attribute((unused))) {
-    stop_sampling = 0;
+    keep_sampling = 0;
 }
 
-void init_sigkill_action() {
-    struct sigaction int_action;
+void init_signal_action() {
+    struct sigaction action_int;
+    struct sigaction action_usr1;
 
-    memset(&int_action, 0, sizeof(int_action));
+    memset(&action_int, 0, sizeof(action_int));
+    memset(&action_usr1, 0, sizeof(action_usr1));
 
-    int_action.sa_sigaction = stop;
-    int_action.sa_flags = SA_SIGINFO;
+    action_int.sa_sigaction = stop;
+    action_int.sa_flags = SA_SIGINFO;
 
-    sigaction(SIGINT, &int_action, NULL);
-    sigaction(SIGTERM, &int_action, NULL);
-    sigaction(SIGQUIT, &int_action, NULL);
+    action_usr1.sa_sigaction = mark;
+    action_usr1.sa_flags = SA_SIGINFO;
+
+    sigaction(SIGINT, &action_int, NULL);
+    sigaction(SIGTERM, &action_int, NULL);
+    sigaction(SIGQUIT, &action_int, NULL);
+
+    sigaction(SIGUSR1, &action_usr1, NULL);
 }
 
 int main() {
     LIST_HEAD(sensors_list);
 
-    // Register handler for SIGINT
-    init_sigkill_action();
+    // Register signal handlers
+    init_signal_action();
 
     list_splice_free(sensors_file_init(), &sensors_list);
     list_splice_free(sensors_hwmon_init(), &sensors_list);
@@ -78,7 +92,12 @@ int main() {
     rt_start_period(&at);
 
     // Until the user sends a SIGINT
-    while (stop_sampling) {
+    while (keep_sampling) {
+        if (mark_section) {
+            printf("--------------------------------------------\n\n");
+            mark_section = 0;
+        }
+
         // Read data from device and print it
         list_for_each_entry(pos, &sensors_list, list) {
             pos->read(pos);
