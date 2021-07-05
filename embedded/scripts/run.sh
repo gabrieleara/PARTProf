@@ -230,14 +230,6 @@ function logfile_power_err() {
     echo "${FILENAME_OUT_POWER}.err"
 }
 
-function logfile_power_cooldown() {
-    echo "${FILENAME_OUT_POWER}.cooldown"
-}
-
-function logfile_power_err_cooldown() {
-    echo "${FILENAME_OUT_POWER}.cooldown.err"
-}
-
 ramfs_size=2048
 ramfs_path="/ramfs"
 ramfs_logpath="${ramfs_path}/log"
@@ -270,14 +262,6 @@ function ramfs_current_logfile_power() {
 
 function ramfs_current_logfile_power_err() {
     echo "${ramfs_logpath}/$(logfile_power_err)"
-}
-
-function ramfs_current_logfile_power_cooldown() {
-    echo "${ramfs_logpath}/$(logfile_power_cooldown)"
-}
-
-function ramfs_current_logfile_power_err_cooldown() {
-    echo "${ramfs_logpath}/$(logfile_power_err_cooldown)"
 }
 
 # -------------------------------------------------------- #
@@ -427,9 +411,9 @@ function run_a_test() {
     # Wait a predetermined time
     wait_test_duration
 
-    # Signal the power sampler to stop sending a SIGINT=2 signal
-    kill -2 ${sampler_pid} &>/dev/null
-    wait ${sampler_pid} # 2>/dev/null
+    # Signal the power sampler to make print a marker using SIGUSR1.
+    # The marker is used to distinguish samples during activity from cooldowns.
+    kill -SIGUSR1 ${sampler_pid} &>/dev/null
 
     # Signal all tasks to stop
     terminate_all "300" "10" "${tasks_pids[@]}"
@@ -437,8 +421,8 @@ function run_a_test() {
     # NOTE: If you ever notice tasks waiting for far too long and TIME_CMD is
     # `forever`, open a separate shell and type one of the following (first one
     # preferred):
-    #  - pkill -2 forever
-    #  - pkill -9 forever
+    #  - pkill -SIGINT forever
+    #  - pkill -SIGTERM forever
 
     # Final check, script should NEVER hang here
     wait "${tasks_pids[@]}" || true # 2>/dev/null
@@ -451,25 +435,11 @@ function run_a_test() {
         "Running '${task_name}'" \
         "[run ${task_rep}/${HOWMANY_TIMES}] cooling down ..."
 
-    # Start the power sampler
-    local cooldown_sampler_logfile=
-    local cooldown_sampler_logfile_err=
-    local cooldown_sampler_pid=
-
-    cooldown_sampler_logfile="$(ramfs_current_logfile_power_cooldown)"
-    cooldown_sampler_logfile_err="$(ramfs_current_logfile_power_err_cooldown)"
-
-    taskset -c "${POWERSAMPLER_CPUCORE}" \
-        chrt -f 99 \
-        ${POWERSAMPLER_CMD} \
-        >"${cooldown_sampler_logfile}" 2>"${cooldown_sampler_logfile_err}" &
-
-    cooldown_sampler_pid="$!"
-
     wait_cooldown
 
-    kill -2 ${cooldown_sampler_pid} &>/dev/null
-    wait ${cooldown_sampler_pid} # 2>/dev/null
+    # Stop the sampler now that cooldown is over
+    kill -SIGINT ${sampler_pid} &>/dev/null
+    wait ${sampler_pid} # 2>/dev/null
 
     # Now all logfiles are still in the ramfs, we need to copy them back to disk
 
@@ -481,8 +451,6 @@ function run_a_test() {
     # Copy back log files to disk
     cp "${sampler_logfile}" \
         "${sampler_logfile_err}" \
-        "${cooldown_sampler_logfile}" \
-        "${cooldown_sampler_logfile_err}" \
         "${tasks_logfile[@]}" \
         "$testdir"
 
@@ -490,8 +458,6 @@ function run_a_test() {
     # NOTE: Input files are assumed not to be modified! Is this always true??
     rm -f "${sampler_logfile}" \
         "${sampler_logfile_err}" \
-        "${cooldown_sampler_logfile}" \
-        "${cooldown_sampler_logfile_err}" \
         "${tasks_logfile[@]}" \
         "${tasks_outfile[@]}"
 }
@@ -561,7 +527,7 @@ function load_conf_files() {
 }
 
 function sort_and_lineup() {
-    sort -n | tr '\n' ' '
+    sort -nr | tr '\n' ' '
 }
 
 (
