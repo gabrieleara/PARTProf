@@ -291,7 +291,7 @@ function touch_s() {
 }
 
 function touch_time() {
-    touch_s 'measure_time.txt'
+    touch_s 'measure_time.txt*'
 }
 
 function touch_power() {
