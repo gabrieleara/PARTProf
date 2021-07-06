@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import re
 from pathlib import Path
 import pandas as pd
 
@@ -29,6 +30,15 @@ options = [
             'default': 'a.out',
         },
     },
+    {
+        'short': '-c',
+        'long': '--corr-out-file',
+        'opts': {
+            'help': 'The cross-correlation output file',
+            'type': str,
+            'default': None,
+        },
+    },
 ]
 
 
@@ -52,11 +62,11 @@ ref_suffix = 'mean'
 
 suffixes = [
     'mean',
-    'min',
-    '25%',
-    '50%',
-    '75%',
-    'max',
+    # 'min',
+    # '25%',
+    # '50%',
+    # '75%',
+    # 'max',
 ]
 
 unit_to_field = {
@@ -72,10 +82,51 @@ base_fields = [
     'frequency',
 ]
 
+counter_fields = [
+    'branches',
+    'branch-misses',
+    'bus-cycles',
+    'cache-misses',
+    'cache-references',
+    'cycles',
+    'instructions',
+    'of all branches',
+    'of all cache refs',
+    'insn per cycle',
+]
+
+other_fields = [
+    # 'voltage',
+    # 'power'
+    'time',
+    'cpu_fan',
+    # 'cpu_freq0',
+    # 'cpu_freq1',
+    # 'cpu_freq2',
+    # 'cpu_freq3',
+    'cpu_freq4',
+    'cpu_freq5',
+    'cpu_freq6',
+    'cpu_freq7',
+    # 'sensor_cpu_uA',
+    # 'sensor_cpu_uV',
+    # 'sensor_cpu_uW', # power is autodetected
+    # 'thermal_zone_temp0',
+    # 'thermal_zone_temp1',
+    # 'thermal_zone_temp2',
+    # 'thermal_zone_temp3',
+    # 'thermal_zone_temp4',
+]
+
 interesting_fields = base_fields.copy()
 
 for s in suffixes:
-    interesting_fields += ['time' + '_' + s]
+    interesting_fields += [
+        i + '_' + s for i in counter_fields
+    ]
+    interesting_fields += [
+        i + '_' + s for i in other_fields
+    ]
 
 # ----------------------------------------------------------
 
@@ -199,12 +250,49 @@ def safe_save_to_csv(out_df, out_file):
 
 #----------------------------------------------------------#
 
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 
 def main():
     args = parse_cmdline_args()
     df = pd.read_csv(args.in_file, float_precision='high')
     out_df = collapse_table(df)
     safe_save_to_csv(out_df, args.out_file)
+
+    if args.corr_out_file:
+        # Removing suffix again (NOTE: CUSTOM!)
+        out_df = out_df.rename(
+            columns=lambda x: re.sub('_mean','',x)
+        )
+
+        # Filtering interesting columns for the auto-correlation
+        the_columns = counter_fields + base_fields + [
+            'time',
+            'time_rel',
+            'power',
+            # 'voltage',
+        ]
+        out_df = out_df[the_columns]
+        corr = out_df.corr()
+        safe_save_to_csv(corr, args.corr_out_file)
+
+        # sns.heatmap(corr,
+        #     vmin=-1, vmax=1, center=0,
+        #     cmap=sns.diverging_palette(20, 220, n=256),
+        #     square=True,
+        #     annot=True, fmt=".3f",
+        #     xticklabels=corr.columns.values,
+        #     yticklabels=corr.columns.values,
+        # )
+        # ax = plt.gca()
+        # ax.set_xticklabels(
+        #     ax.get_xticklabels(),
+        #     rotation=45, horizontalalignment='right', rotation_mode="anchor")
+        # ax.grid(False, 'major')
+        # ax.grid(True, 'minor')
+        # ax.set_xticks([t + 0.5 for t in ax.get_xticks()], minor=True)
+        # ax.set_yticks([t + 0.5 for t in ax.get_yticks()], minor=True)
+        # plt.show()
 
     return 0
 #-- main
