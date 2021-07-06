@@ -55,7 +55,7 @@ function get_project_path() {
     HOST_PATH="$PROJ_PATH/host"
     PYSCRIPTS_PATH="$HOST_PATH/pyscripts"
 
-    python3 -m compileall "${PYSCRIPTS_PATH}/*" >/dev/null
+    python3 -m compileall "${PYSCRIPTS_PATH}"/* >/dev/null
 
     # Argument: results dir, out_dir
     results_dir="$PROJ_PATH/results"
@@ -79,7 +79,7 @@ function get_project_path() {
     # 'single', 'true_regression', 'fixed_regression'
     power_method='fixed_regression'
 
-    error_tasks=("decrypt" "encrypt" "gzip-1" "gzip-5" "gzip-9" "hash")
+    error_tasks=("decrypt" "encrypt" "gzip" "gzip-1" "gzip-5" "gzip-9" "hash" "idle")
 
     list_of_error_files=()
 
@@ -92,22 +92,22 @@ function get_project_path() {
 
         # First produce the collapsed table
         progress "$dirname" "COLLAPSING DATA..."
-        ${PYSCRIPTS_PATH}/collapse.py \
+        "${PYSCRIPTS_PATH}"/collapse.py \
             "$f" \
             -o "${out_dir}/${collapsed}"
         progress_done "$dirname"
 
-        # # Expand to other smaller tables (for plotting purposes only)
-        # progress "$dirname" "EXPANDING DATA INTO SMALLER TABLES..."
-        # ${PYSCRIPTS_PATH}/prepare_tables.py                  \
-        #     "${out_dir}/${collapsed}"                       \
-        #     -o "${out_dir}/${dirname}"
-        # progress_done "$dirname"
+        # Expand to other smaller tables (for plotting purposes only)
+        progress "$dirname" "EXPANDING DATA INTO SMALLER TABLES..."
+        "${PYSCRIPTS_PATH}"/prepare_tables.py \
+            "${out_dir}/${collapsed}" \
+            -o "${out_dir}/${dirname}"
+        progress_done "$dirname"
 
         # Calculate the actual simulation table from the collapsed one
         # THIS IS THE TABLE THAT WILL BE USED BY RTSIM
         progress "$dirname" "PRODUCING SIMULATION TABLE..."
-        ${PYSCRIPTS_PATH}/simtable.py \
+        "${PYSCRIPTS_PATH}"/simtable.py \
             "${out_dir}/${collapsed}" \
             -p "${power_method}" -t "${time_method}" \
             -o "${out_dir}/${simtable}"
@@ -116,14 +116,14 @@ function get_project_path() {
         # Emulate RTSim by simulating homogeneous task executions in Python
         # TODO: add custom table for island-numcores association
         progress "$dirname" "USING SIMTABLE TO SIMULATE..."
-        ${PYSCRIPTS_PATH}/simulate.py \
+        "${PYSCRIPTS_PATH}"/simulate.py \
             "${out_dir}/${simtable}" \
             -o "${out_dir}/${simulation}"
         progress_done "$dirname"
 
         # Calculate errors
         progress "$dirname" "CALCULATING SIMULATION ACCURACY..."
-        ${PYSCRIPTS_PATH}/errors.py \
+        "${PYSCRIPTS_PATH}"/errors.py \
             "${out_dir}/${collapsed}" \
             "${out_dir}/${simulation}" \
             -o "${out_dir}/${errors}"
@@ -132,5 +132,5 @@ function get_project_path() {
         list_of_error_files+=("${out_dir}/${errors}")
     done
 
-    ${PYSCRIPTS_PATH}/describe_all_errors.py "${list_of_error_files[@]}" -t "${error_tasks[@]}"
+    "${PYSCRIPTS_PATH}"/describe_all_errors.py "${list_of_error_files[@]}" -t "${error_tasks[@]}"
 )

@@ -75,6 +75,8 @@ def perf_file_to_csv(inf):
     maxrow = df['time'].last_valid_index()
     df = df.drop(range((maxrow+1), (len(df.index)-1)))
 
+    df = df.replace(to_replace="<not counted>", value=0)
+
     cmap = {}
     cmap = {**cmap, **getcolmap(df, 'cname', 'cvalue')}
     cmap = {**cmap, **getcolmap(df, 'derived', 'derivedvalue')}
