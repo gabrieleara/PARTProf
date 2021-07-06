@@ -50,6 +50,10 @@ function get_project_path() {
     }
 
     set -e
+    export XDG_RUNTIME_DIR=/tmp/fakexdgruntime
+    export RUNLEVEL=3
+
+    mkdir -p "$XDG_RUNTIME_DIR"
 
     PROJ_PATH=$(get_project_path "..")
     HOST_PATH="$PROJ_PATH/host"
@@ -102,6 +106,66 @@ function get_project_path() {
         "${PYSCRIPTS_PATH}"/prepare_tables.py \
             "${out_dir}/${collapsed}" \
             -o "${out_dir}/${dirname}"
+        progress_done "$dirname"
+
+        # Plot all kinds of values, first for each number of concurrent tasks...
+        progress "$dirname" "PLOTTING THE EXPANDED TABLES (takes a while)..."
+        for howmany in "${out_dir}/${dirname}/howmany"*; do
+            if [ ! -d "$howmany" ]; then continue; fi
+            for island in "${howmany}/island"*; do
+                if [ ! -d "$island" ]; then continue; fi
+                # Execution time
+                "${PYSCRIPTS_PATH}"/plotstuff.py \
+                    "${island}"/task_* \
+                    -x frequency \
+                    -y time_rel \
+                    -X 'Frequency [Hz]' \
+                    -Y 'Relative Execution Time' \
+                    -o "${island}"/time \
+                    -O .png \
+                    -O .pdf
+
+                # Power consumption
+                "${PYSCRIPTS_PATH}"/plotstuff.py \
+                    "${island}"/task_* \
+                    -x frequency \
+                    -y power_mean \
+                    -X 'Frequency [Hz]' \
+                    -Y 'Power Consumption [µW]' \
+                    -o "${island}"/power \
+                    -O .png \
+                    -O .pdf
+            done
+        done
+
+        # ... Then for scalability
+        for island in "${out_dir}/${dirname}/MULTI/island"*; do
+            if [ ! -d "$island" ]; then continue; fi
+            for freq in "${island}/freq_"*; do
+                if [ ! -d "$freq" ]; then continue; fi
+                # Execution time
+                "${PYSCRIPTS_PATH}"/plotstuff.py \
+                    "${freq}"/task_* \
+                    -x howmany \
+                    -y time_rel \
+                    -X 'Number of concurrent tasks' \
+                    -Y 'Relative Execution Time' \
+                    -o "${freq}"/time \
+                    -O .png \
+                    -O .pdf
+
+                # Power consumption
+                "${PYSCRIPTS_PATH}"/plotstuff.py \
+                    "${freq}"/task_* \
+                    -x howmany \
+                    -y time_rel \
+                    -X 'Number of concurrent tasks' \
+                    -Y 'Power Consumption [µW]' \
+                    -o "${freq}"/power \
+                    -O .png \
+                    -O .pdf
+            done
+        done
         progress_done "$dirname"
 
         # Calculate the actual simulation table from the collapsed one
