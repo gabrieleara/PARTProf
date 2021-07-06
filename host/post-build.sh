@@ -98,7 +98,8 @@ function get_project_path() {
         progress "$dirname" "COLLAPSING DATA..."
         "${PYSCRIPTS_PATH}"/collapse.py \
             "$f" \
-            -o "${out_dir}/${collapsed}"
+            -o "${out_dir}/${collapsed}" \
+            -c "${out_dir}/${collapsed}.corr"
         progress_done "$dirname"
 
         # Expand to other smaller tables (for plotting purposes only)
