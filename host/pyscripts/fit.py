@@ -90,6 +90,10 @@ def power_balsini(f, V, delta, eta, gamma, kappa):
 def power_balsini_compact(f, delta, eta, gamma_V, kappa_V2):
     return delta + ((1 + gamma_V) * (1 + eta) * kappa_V2 * f)
 
+def power_balsini_compact_alt(f, delta, eta, gamma_V, kappa_V2):
+    return delta + ((1 + gamma_V * f) * (1 + eta) * kappa_V2 * f**3)
+
+
 def time_simpler(f, a, b):
     return a + b / f
 
@@ -106,21 +110,29 @@ HOWMANY='howmany'
 FREQ='frequency'
 TASK='task'
 TIME='time_rel'
-POWER='power_mean'
+# POWER='power_mean'
+POWER='sensor_cpu_uW'
 
 # SUPPOSE ONLY TIME FOR NOW
 def fit_values(df, xcol, ycol, fhandle, plot=False, title=''):
-    # Input range ~ [0-2] GHz
-    x = np.vectorize(lambda f: f_to_range(1/1000000., f))(df[xcol].to_numpy())
+    # Input range ~ [0-2] GHz expressed in KHz (because of cpufreq)
+    x = df[xcol].to_numpy() / 1000000.0
     y = df[ycol].to_numpy()
+
+    whichtodelete = np.argwhere(np.isnan(y))
+    x = np.delete(x, whichtodelete)
+    y = np.delete(y, whichtodelete)
 
     popt, pcov = curve_fit(fhandle, x, y, check_finite=True)
 
-    # plt.plot(x, y, 'o')
-    # plt.plot(x, np.vectorize(lambda f: fhandle(f, *popt))(x), '-')
+    # This is not strictly necessary if not for printing purposes
+    y = y[x.argsort()]
+    x = x[x.argsort()]
+    plt.plot(x, y, 'o')
+    plt.plot(x, np.vectorize(lambda f: fhandle(f, *popt))(x), '-')
     # plt.ylim((0, 1.4))
-    # plt.title(title)
-    # plt.show()
+    plt.title(title)
+    plt.show()
 
     return pd.DataFrame({ 'params': [popt]})
 #-- fit_values
@@ -156,7 +168,7 @@ def fit_table(df, plot=False):
 
     out = out.merge(out2)
 
-    out2 = fit_by_fields(df, FREQ, POWER, power_balsini_compact, fields, plot=plot)
+    out2 = fit_by_fields(df, FREQ, POWER, power_balsini_compact_alt, fields, plot=plot)
     out2 = out2.rename(columns={'params': 'power_params'})
 
     return out.merge(out2)

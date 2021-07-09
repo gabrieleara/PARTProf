@@ -86,6 +86,7 @@ function find_all_deps() {
     tasks="$(find_uniq_depth 4)"
 
     all_stats_files_fname=$(mktemp)
+    all_samples_files_fname=$(mktemp)
 
     for a in ${howmanies}; do
         for b in ${policies}; do
@@ -98,6 +99,7 @@ function find_all_deps() {
                     cur_file="${cur_path}/stats.csv"
 
                     echo "${cur_file}" >> "${all_stats_files_fname}"
+                    echo "${deps}" >> "${all_samples_files_fname}"
 
                     # TODO: change
                     # echo "all: ${cur_file}"
@@ -123,6 +125,12 @@ function find_all_deps() {
     tr '\n' ' ' < "${all_stats_files_fname}"
     echo '' # tr removes also the last newline, so I have to add it manually
     echo -e '\t' 'collect_stats.py -o $@ $^'
+    echo ''
+
+    echo -n 'allsamples.csv: '
+    tr '\n' ' ' < "${all_samples_files_fname}"
+    echo '' # tr removes also the last newline, so I have to add it manually
+    echo -e '\t' 'collect_samples.py -o $@ $^'
     echo ''
 
     rm "${all_stats_files_fname}"

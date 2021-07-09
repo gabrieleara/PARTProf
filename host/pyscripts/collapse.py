@@ -273,16 +273,25 @@ def main():
             # 'voltage',
         ]
         out_df = out_df[the_columns]
+
+        for c in counter_fields + ['time', 'time_rel', 'power']:
+            out_df[c + '_inv'] = 1 / out_df[c]
+
+        for c in counter_fields + ['time', 'time_rel', 'power']:
+            out_df[c + '^2'] = out_df[c]**2
+
         corr = out_df.corr()
         safe_save_to_csv(corr, args.corr_out_file)
 
+        # corr = corr.loc[['time', 'time_rel', 'power'], :]
+        # plt.rcParams.update({'font.size': 5})
         # sns.heatmap(corr,
         #     vmin=-1, vmax=1, center=0,
         #     cmap=sns.diverging_palette(20, 220, n=256),
         #     square=True,
         #     annot=True, fmt=".3f",
         #     xticklabels=corr.columns.values,
-        #     yticklabels=corr.columns.values,
+        #     yticklabels=corr.index,
         # )
         # ax = plt.gca()
         # ax.set_xticklabels(
