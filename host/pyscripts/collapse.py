@@ -284,7 +284,7 @@ def main():
         safe_save_to_csv(corr, args.corr_out_file)
 
         # corr = corr.loc[['time', 'time_rel', 'power'], :]
-        # plt.rcParams.update({'font.size': 5})
+        # plt.rcParams.update({'font.size': 6})
         # sns.heatmap(corr,
         #     vmin=-1, vmax=1, center=0,
         #     cmap=sns.diverging_palette(20, 220, n=256),
