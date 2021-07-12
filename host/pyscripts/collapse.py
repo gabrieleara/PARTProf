@@ -274,10 +274,10 @@ def main():
         ]
         out_df = out_df[the_columns]
 
-        for c in counter_fields + ['time', 'time_rel', 'power']:
+        for c in counter_fields + ['frequency', 'time', 'time_rel', 'power']:
             out_df[c + '_inv'] = 1 / out_df[c]
 
-        for c in counter_fields + ['time', 'time_rel', 'power']:
+        for c in counter_fields + ['frequency', 'time', 'time_rel', 'power']:
             out_df[c + '^2'] = out_df[c]**2
 
         corr = out_df.corr()
