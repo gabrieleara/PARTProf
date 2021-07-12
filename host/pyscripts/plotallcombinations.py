@@ -4,7 +4,9 @@ import argparse
 import os
 from pathlib import Path
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+from pandas.core.indexes import base
 
 # +--------------------------------------------------------+
 # |          Command-line Arguments Configuration          |
@@ -23,19 +25,18 @@ option_defaults = {
 options = [
     {
         'short': None,
-        'long': 'in_files',
+        'long': 'in_file',
         'opts': {
-            'metavar': 'in-files',
+            'metavar': 'in-file',
             'type': argparse.FileType('r'),
-            'nargs': '+',
         },
     },
     {
         'short': '-o',
-        'long': '--out-file',
+        'long': '--out-dir',
         'opts': {
-            'help': 'The output file basename (+path)',
-            'type': str,
+            'help': 'The output directory',
+            'type': dir_path,
             'default': 'out',
         },
     },
@@ -46,24 +47,6 @@ options = [
             'help': 'The list of extensions to append to the file basename',
             'action': 'append',
             'default': [],
-        },
-    },
-    {
-        'short': '-X',
-        'long': '--xlabel',
-        'opts': {
-            'help': 'The label to put on the x axis',
-            'type': str,
-            'default': None,
-        },
-    },
-    {
-        'short': '-Y',
-        'long': '--ylabel',
-        'opts': {
-            'help': 'The label to put on the y axis',
-            'type': str,
-            'default': None,
         },
     },
     {
@@ -84,27 +67,25 @@ options = [
             'action': 'store_false',
         },
     },
+    {
+        'short': '-k',
+        'long': '--key-column',
+        'opts': {
+            'help': 'The following column will be used as key (and therefore excluded from plots)',
+            'action': 'append',
+        }
+    },
+    {
+        'short': '-i',
+        'long': '--ignore-column',
+        'opts': {
+            'help': 'Ignore the given column from the plots',
+            'action': 'append',
+        }
+    },
 ]
 
 required_options = [
-    {
-        'short': '-x',
-        'long': '--xcolumn',
-        'opts': {
-            'help': 'The column to use on the x axis',
-            'type': str,
-            'default': '',
-        },
-    },
-    {
-        'short': '-y',
-        'long': '--ycolumn',
-        'opts': {
-            'help': 'The column to use on the y axis',
-            'type': str,
-            'default': '',
-        },
-    },
 ]
 
 def parse_cmdline_args():
@@ -130,6 +111,7 @@ def parse_cmdline_args():
     return parser.parse_args()
 #-- parse_cmdline_args
 
+#----------------------------------------------------------#
 
 def safe_save_to_csv(out_df, out_file):
     # Create a temporary file in the destination mount fs
@@ -148,68 +130,96 @@ def safe_save_to_csv(out_df, out_file):
     # (or don't, the program will terminate anyway)
 #-- safe_save_to_csv
 
-def plot_series(df, x_field, y_field, label):
-    xvals = df[x_field].to_numpy()
-    yvals = df[y_field].to_numpy()
+def plot_col_pairs(basecommand, outpath, col_pair):
+    x = str(col_pair[0])
+    y = str(col_pair[1])
+    xx = "'" + x + "'"
+    yy = "'" + y + "'"
+    cmd = basecommand + [
+        '-o', "'" + outpath + '/' + x + '_' + y + "'",
+        '-x', xx,
+        '-y', yy,
+        '-X', xx,
+        '-Y', yy,
+    ]
+    the_command = " ".join(cmd)
+    print('> ', the_command)
+    os.system(the_command)
+#--
 
-    yvals = yvals[xvals.argsort()]
-    xvals = xvals[xvals.argsort()]
+def plot_all_combinations(df, args, outpath=''):
+    import pathlib
+    import tempfile
 
-    plt.plot(xvals, yvals,
-        marker='o',
-        alpha=.8,
-        label=label,
-        linewidth=1,
-    )
-#-- plot_series
+    scriptdir = pathlib.Path(__file__).parent.resolve()
 
-import re
+    f = tempfile.NamedTemporaryFile(delete=False)
+    fname = f.name
+    f.close()
 
-def tryint(s):
-    try:
-        return int(s)
-    except:
-        return s
+    # Write temporary filtered file here
+    df.to_csv(fname, index=None)
 
-def alphanum_key(s):
-    return [ tryint(c) for c in re.split('([0-9]+)', s) ]
+    basecommand = [
+        "'" + str(scriptdir) + '/plotstuff.py' + "'",
+        "'" + fname + "'",
+        '--plot-window' if args.plot_window else '--no-plot-window',
+        # O,
+        # o,
+        # x,
+        # y,
+        # xlabel,
+        # ylabel,
+    ]
 
-def alphanum_key_tuple(kv):
-    return alphanum_key(kv[0])
+    # TODO: basepath
 
-#----------------------------------------------------------#
+    for o in args.out_exts:
+        basecommand += [
+            '-O', "'" + str(o) + "'",
+        ]
+
+    cols = df.columns.to_numpy()
+    col_combinations = np.transpose([
+        np.tile(cols, len(cols)),
+        np.repeat(cols, len(cols)),
+    ])
+
+    os.makedirs(outpath, exist_ok=True)
+
+    from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+
+    executor = ThreadPoolExecutor()
+    for _ in executor.map(
+            lambda cols: plot_col_pairs(basecommand, outpath, cols),
+            col_combinations
+            ):
+        pass
+    os.unlink(fname)
+#-- plot_all_combinations
+
+def traverse_combinations(df, keys, args, outpath=''):
+    if len(keys) < 1:
+        plot_all_combinations(df, args, outpath=outpath)
+        return
+
+    keys_copy = keys.copy()
+    key = keys_copy.pop(0)
+
+    for value in df[key].unique():
+        indf = df[df[key] == value]
+        indf = indf.drop(columns=[key])
+        traverse_combinations(indf, keys_copy, args,
+            outpath=outpath + str(value) + '/',
+        )
+#-- traverse_combinations
 
 def main():
     args = parse_cmdline_args()
 
-    dfs = {}
-
-    for f in args.in_files:
-        df = pd.read_csv(f, index_col=False, float_precision='high')
-        label = os.path.basename(os.path.realpath(f.name)).replace('.csv', '')
-        dfs = {**dfs, **{label: df}}
-
-    for label, df in sorted(dfs.items(), key=alphanum_key_tuple):
-        plot_series(df, args.xcolumn, args.ycolumn, label)
-
-    plt.xlabel(args.xlabel if args.xlabel != None else args.xcolumn)
-    plt.ylabel(args.ylabel if args.ylabel != None else args.ycolumn)
-    plt.grid()
-
-    plt.legend(loc='upper center',
-        bbox_to_anchor=(.5, 1.18),
-        ncol=3,
-        # fancybox=True,
-        # shadow=True,
-    )
-
-    if args.plot_window:
-        plt.show()
-
-    if len(args.out_exts) == 0:
-        args.out_exts=['.png']
-    for ext in args.out_exts:
-        plt.savefig(args.out_file + ext)
+    df = pd.read_csv(args.in_file, index_col=False, float_precision='high')
+    df = df.drop(columns=args.ignore_column)
+    traverse_combinations(df, args.key_column, args, outpath=args.out_dir + '/')
 
     return 0
 #-- main

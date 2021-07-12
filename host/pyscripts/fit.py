@@ -14,12 +14,26 @@ from scipy.optimize import curve_fit
 # |          Command-line Arguments Configuration          |
 # +--------------------------------------------------------+
 
+option_defaults = {
+    'should_plot' : False,
+}
+
 options = [
     {
         'short': None,
-        'long': 'in_file',
+        'long': 'in_samples',
         'opts': {
-            'metavar': 'in-file',
+            'metavar': 'in-samples',
+            'help': 'the csv containing all (filtered?) samples collected in all runs',
+            'type': argparse.FileType('r'),
+        },
+    },
+    {
+        'short': None,
+        'long': 'in_averages',
+        'opts': {
+            'metavar': 'in-averages',
+            'help': 'the csv containing all average statistics collected over all runs',
             'type': argparse.FileType('r'),
         },
     },
@@ -32,16 +46,24 @@ options = [
             'default': 'a.out',
         },
     },
-    # {
-    #     'short': '-p',
-    #     'long': '--plot',
-    #     'opts': {
-    #         'help': 'Enables plotting of each fit function',
-    #         'action': argparse.BooleanOptionalAction,
-    #         # 'type': str,
-    #         'default': False,
-    #     },
-    # },
+    {
+        'short': '-p',
+        'long': '--plot',
+        'opts': {
+            'help': 'Enables plotting of each fit function',
+            'dest': 'should_plot',
+            'action': 'store_true',
+        },
+    },
+    {
+        'short': None,
+        'long': '--no-plot',
+        'opts': {
+            'help': 'Enables plotting of each fit function',
+            'dest': 'should_plot',
+            'action': 'store_false',
+        },
+    },
 ]
 
 def parse_cmdline_args():
@@ -54,6 +76,8 @@ def parse_cmdline_args():
             parser.add_argument(o['short'], o['long'], **o['opts'])
         else:
             parser.add_argument(o['long'], **o['opts'])
+
+    parser.set_defaults(**option_defaults)
 
     return parser.parse_args()
 #-- parse_cmdline_args
@@ -113,8 +137,11 @@ TIME='time_rel'
 # POWER='power_mean'
 POWER='sensor_cpu_uW'
 
+should_plot=False
+
 # SUPPOSE ONLY TIME FOR NOW
-def fit_values(df, xcol, ycol, fhandle, plot=False, title=''):
+def fit_values(df, xcol, ycol, fhandle,
+    values_field='params', title=''):
     # Input range ~ [0-2] GHz expressed in KHz (because of cpufreq)
     x = df[xcol].to_numpy() / 1000000.0
     y = df[ycol].to_numpy()
@@ -125,25 +152,23 @@ def fit_values(df, xcol, ycol, fhandle, plot=False, title=''):
 
     popt, pcov = curve_fit(fhandle, x, y, check_finite=True)
 
-    # This is not strictly necessary if not for printing purposes
-    y = y[x.argsort()]
-    x = x[x.argsort()]
-    plt.plot(x, y, 'o')
-    plt.plot(x, np.vectorize(lambda f: fhandle(f, *popt))(x), '-')
-    # plt.ylim((0, 1.4))
-    plt.title(title)
-    plt.show()
+    if should_plot:
+        y = y[x.argsort()]
+        x = x[x.argsort()]
+        plt.plot(x, y, 'o')
+        plt.plot(x, np.vectorize(lambda f: fhandle(f, *popt))(x), '-')
+        # plt.ylim((0, 1.4))
+        plt.title(title)
+        plt.show()
 
-    return pd.DataFrame({ 'params': [popt]})
+    return pd.DataFrame({ values_field: [popt]})
 #-- fit_values
 
 
-def fit_by_fields(df, xcol, ycol, fhandle, fields, plot=False, title=''):
+def fit_by_fields(df, xcol, ycol, fhandle, fields,
+    values_field='params', title=''):
     if len(fields) < 1:
-        return fit_values(df, xcol, ycol, fhandle,
-            plot=plot,
-            title=title,
-        )
+        return fit_values(df, xcol, ycol, fhandle, title=title)
 
     out = pd.DataFrame()
     fields = fields.copy()
@@ -151,34 +176,105 @@ def fit_by_fields(df, xcol, ycol, fhandle, fields, plot=False, title=''):
     for value in df[field].unique():
         indf = df[df[field] == value]
         outdf = fit_by_fields(indf, xcol, ycol, fhandle, fields,
-            plot=plot,
+            values_field=values_field,
             title=title + ' ' + str(field) + ':' + str(value),
         )
         outdf[field] = value
         out = pd.concat([out, outdf], ignore_index=True)
     return out
 
-def fit_table(df, plot=False):
-    fields = [ISLAND, HOWMANY, TASK]
-    out = fit_by_fields(df, FREQ, TIME, time_balsini, fields, plot=plot)
-    out = out.rename(columns={'params': 'time_params'})
+def prepare_table(df, keyfields, in_field, prefix='', suffix=''):
+    newcols = pd.DataFrame(df[in_field].values.tolist(), index=df.index)
+    newcols.columns = [
+        prefix + str(col) + suffix
+        for col in newcols.columns
+    ]
+    newcols[keyfields] = df[keyfields]
+    return newcols
 
-    out2 = fit_by_fields(df, FREQ, TIME, time_simpler, fields, plot=plot)
-    out2 = out2.rename(columns={'params': 'time_simpler_params'})
+def fit_and_prepare(df, xcol, ycol, keyfields, fhandle, prefix='', suffix=''):
+    v_field = 'params'
 
-    out = out.merge(out2)
+    outdf = fit_by_fields(df, xcol, ycol, fhandle, keyfields,
+        values_field=v_field,
+    )
 
-    out2 = fit_by_fields(df, FREQ, POWER, power_balsini_compact_alt, fields, plot=plot)
-    out2 = out2.rename(columns={'params': 'power_params'})
+    return prepare_table(
+        outdf, keyfields, v_field, prefix=prefix, suffix=suffix,
+    )
+#-- fit_and_prepare
 
-    return out.merge(out2)
+def fit_table(df):
+    keyfields = [ISLAND, HOWMANY, TASK]
+    maps = [
+        {
+            'xcol': FREQ, 'ycol': TIME, 'fhandle': time_balsini,
+            'prefix':'param_time',
+        },
+        {
+            'xcol': FREQ, 'ycol': TIME, 'fhandle': time_simpler,
+            'prefix':'param_time_simple',
+        },
+        {
+            'xcol': FREQ, 'ycol': POWER, 'fhandle': power_balsini_compact_alt,
+            'prefix':'param_power',
+        }
+    ]
+
+    outdf = df[keyfields].drop_duplicates()
+    for m in maps:
+        outdf = outdf.merge(
+            fit_and_prepare(df, m['xcol'], m['ycol'], keyfields, m['fhandle'],
+                prefix=m['prefix'],
+            ),
+            how='inner',
+        )
+
+    return outdf
+
+import re
 
 def main():
+    global should_plot
     args = parse_cmdline_args()
-    df = pd.read_csv(args.in_file, float_precision='high')
-    out_df = fit_table(df)
-    safe_save_to_csv(out_df, args.out_file)
-    pass
+
+    should_plot = args.should_plot
+    df_samples = pd.read_csv(args.in_samples, float_precision='high')
+    df_averages = pd.read_csv(args.in_averages, float_precision='high')
+
+    outdf = fit_table(df_samples)
+    outdf = outdf.merge(df_averages, how='inner')
+    outdf = outdf.rename(
+        columns=lambda x: re.sub('_mean','',x)
+    )
+
+    safe_save_to_csv(outdf, args.out_file)
+
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    corr = outdf.corr()
+    # corr = corr.loc[['time', 'time_rel', 'power'], :]
+    plt.rcParams.update({'font.size': 5})
+    sns.heatmap(corr,
+        vmin=-1, vmax=1, center=0,
+        cmap=sns.diverging_palette(20, 220, n=256),
+        square=True,
+        annot=True, fmt=".3f",
+        xticklabels=corr.columns.values,
+        yticklabels=corr.index,
+    )
+    ax = plt.gca()
+    ax.set_xticklabels(
+        ax.get_xticklabels(),
+        rotation=45, horizontalalignment='right', rotation_mode="anchor")
+    ax.grid(False, 'major')
+    ax.grid(True, 'minor')
+    ax.set_xticks([t + 0.5 for t in ax.get_xticks()], minor=True)
+    ax.set_yticks([t + 0.5 for t in ax.get_yticks()], minor=True)
+    plt.show()
+
+    return 0
 #-- main
 
 if __name__ == "__main__":
