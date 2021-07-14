@@ -280,6 +280,7 @@ def main():
         for c in counter_fields + ['frequency', 'time', 'time_rel', 'power']:
             out_df[c + '^2'] = out_df[c]**2
 
+        out_df = out_df[out_df['task'] != 'idle']
         corr = out_df.corr()
         safe_save_to_csv(corr, args.corr_out_file)
 

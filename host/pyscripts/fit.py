@@ -253,6 +253,7 @@ def main():
     import matplotlib.pyplot as plt
     import seaborn as sns
 
+    outdf = outdf[outdf['task'] != 'idle']
     corr = outdf.corr()
     # corr = corr.loc[['time', 'time_rel', 'power'], :]
     plt.rcParams.update({'font.size': 5})
