@@ -15,12 +15,9 @@ PARTProf
 ├── data          [untracked]
 │   └── ...
 ├── embedded
-│   ├── apps
-│   ├── confdir
-│   └── scripts
+│   ├── ...
 ├── host
-│   ├── cmaps
-│   └── pyscripts
+│   ├── ...
 ├── images        [untracked]
 │   └── backups   [untracked]
 ├── install
@@ -46,8 +43,8 @@ Description:
   see [host/README.md](host/README.md) for more details.
 
 - `images`: contains images and backup images of disks to be used on embedded
-  devices (sdcards, eMMC memories, etc.); see
-  [tools/README.md](tools/README.md) for more details.
+  devices (sdcards, eMMC memories, etc.); see [tools/README.md](tools/README.md)
+  for more details.
 
 - `install`: contains scripts that are used to install dependencies and maintain
   a consistent state of source files between host and embedded devices; see
@@ -55,3 +52,16 @@ Description:
 
 - `tools`: contains scripts that are used to manage sdcards, eMMC memories,
   etc.; see [tools/README.md](tools/README.md) for more details.
+
+## Installing
+
+The project consists on a lot of Bash scripts, C/C++ source files and Python
+scripts.
+
+Typically, no action is requied to use the components of the project on the
+destination system: all files that shall be compiled are re-compiled (when
+necessary) before being used directly from the sources. This is true both for
+the `host` and the `embedded` components.
+
+However, some dependencies may need to be installed. Please refer to each
+component that you intend to use for its dependencies.
