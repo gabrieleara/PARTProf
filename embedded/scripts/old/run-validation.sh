@@ -104,7 +104,7 @@ function printsay() {
 function get_prio_cmd() {
     case $HIGH_PRIO_KIND in
     nice)
-        echo "nice -n -100" # Will receive minimum niceness on the system
+        echo "nice -n -20" # Will receive minimum niceness on the system
         ;;
     fifo)
         echo "chrt -f $FIFO_PRIORITY"

@@ -275,7 +275,7 @@ function ramfs_current_logfile_power_err() {
 function high_prio_kind_to_cmd() {
     case $HIGH_PRIO_KIND in
     nice)
-        echo "nice -n -100" # Will receive minimum niceness on the system
+        echo "nice -n -20" # Will receive minimum niceness on the system
         ;;
     fifo)
         echo "chrt -f $FIFO_PRIORITY"
