@@ -114,16 +114,21 @@ STRESS_NG_CPU_MET=(
     fft
     matrixprod
 )
-STRESS_NG_CPU_ITER=()
--ops 100000
 
+# Number of iterations for a stress-ng stressor to run for one second
+STRESS_NG_CPU_ITER=(
+    67
+    85
+    350
+    52
+)
 
-for i in $(seq 1 ${#STRESS_NG_STRESSORS[@]}); do
+for i in $(seq 1 ${#STRESS_NG_CPU_MET[@]}); do
     Mt="${STRESS_NG_CPU_MET[i - 1]}"
     It="${STRESS_NG_CPU_ITER[i - 1]}"
     It=$((It * EXP_TASK_MIN_DURATION))
 
-    TASKS_NAME+=("${STRESS_NG_STRESSORS[i]}")
+    TASKS_NAME+=("ng-${STRESS_NG_CPU_MET[i]}")
     TASKS_CMD+=("stress-ng --cpu --cpu-method $Mt --cpu-ops $It")
     TASKS_FILESIZE_RATIO+=(0)
 done
