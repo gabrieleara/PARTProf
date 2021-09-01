@@ -129,6 +129,6 @@ for i in $(seq 1 ${#STRESS_NG_CPU_MET[@]}); do
     It=$((It * EXP_TASK_MIN_DURATION))
 
     TASKS_NAME+=("ng-${STRESS_NG_CPU_MET[i]}")
-    TASKS_CMD+=("stress-ng --cpu --cpu-method $Mt --cpu-ops $It")
+    TASKS_CMD+=("stress-ng --cpu 1 --cpu-method $Mt --cpu-ops $It")
     TASKS_FILESIZE_RATIO+=(0)
 done
