@@ -39,29 +39,29 @@ TASKS_FILESIZE_RATIO+=(0)
 #                       SIMPLE TASKS                       #
 # -------------------------------------------------------- #
 
-TASKS_NAME+=("hash")
-TASKS_CMD+=("sha256sum INFILE")
-TASKS_FILESIZE_RATIO+=(90)
+# TASKS_NAME+=("hash")
+# TASKS_CMD+=("sha256sum INFILE")
+# TASKS_FILESIZE_RATIO+=(90)
 
-# for ((i = 1; i <= 9; i += 4)); do
-#     TASKS_NAME+=("gzip-$i")
-#     TASKS_CMD+=("gzip -kqf -$i INFILE -S .OUTFILE_EXT")
-#     TASKS_FILESIZE_RATIO+=(13)
-# done
+# # for ((i = 1; i <= 9; i += 4)); do
+# #     TASKS_NAME+=("gzip-$i")
+# #     TASKS_CMD+=("gzip -kqf -$i INFILE -S .OUTFILE_EXT")
+# #     TASKS_FILESIZE_RATIO+=(13)
+# # done
 
-TASKS_NAME+=("gzip")
-TASKS_CMD+=("gzip -kqf INFILE -S .OUTFILE_EXT")
-TASKS_FILESIZE_RATIO+=(13)
+# TASKS_NAME+=("gzip")
+# TASKS_CMD+=("gzip -kqf INFILE -S .OUTFILE_EXT")
+# TASKS_FILESIZE_RATIO+=(13)
 
-# NOTE: encrypt and decrypt are not tested with deadline scheduler yet!
-TASKS_NAME+=("encrypt")
-TASKS_CMD+=("openssl des3 -e -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk")
-TASKS_FILESIZE_RATIO+=(14)
-
-## FIXME: decrypt does not work as of now!
-# TASKS_NAME+=("decrypt")
-# TASKS_CMD+=("openssl des3 -d -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk")
+# # NOTE: encrypt and decrypt are not tested with deadline scheduler yet!
+# TASKS_NAME+=("encrypt")
+# TASKS_CMD+=("openssl des3 -e -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk")
 # TASKS_FILESIZE_RATIO+=(14)
+
+# ## FIXME: decrypt does not work as of now!
+# # TASKS_NAME+=("decrypt")
+# # TASKS_CMD+=("openssl des3 -d -in INFILE -out INFILE.OUTFILE_EXT -pbkdf2 -pass pass:abcdefghijk")
+# # TASKS_FILESIZE_RATIO+=(14)
 
 # -------------------------------------------------------- #
 #                     CACHE STRESSORS                      #
@@ -86,8 +86,10 @@ TASKS_FILESIZE_RATIO+=(14)
 # many iterations are needed at the highest frequency on the
 # fastest core to run the application for 1 second.
 
-MISS_PERCENTAGES=(0 5 10 20 60 100)
-MISS_ITERATIONS=(220000000 200000000 180000000 155000000 60000000 20000000)
+# MISS_PERCENTAGES=(0 5 10 20 60 100)
+# MISS_ITERATIONS=(220000000 200000000 180000000 155000000 60000000 20000000)
+MISS_PERCENTAGES=(5 10 20)
+MISS_ITERATIONS=(200000000 180000000 155000000)
 
 # DO NOT TOUCH FROM HERE
 
@@ -128,7 +130,7 @@ for i in $(seq 1 ${#STRESS_NG_CPU_MET[@]}); do
     It="${STRESS_NG_CPU_ITER[i - 1]}"
     It=$((It * EXP_TASK_MIN_DURATION))
 
-    TASKS_NAME+=("ng-${STRESS_NG_CPU_MET[i]}")
+    TASKS_NAME+=("ng-$Mt}")
     TASKS_CMD+=("stress-ng --cpu 1 --cpu-method $Mt --cpu-ops $It")
     TASKS_FILESIZE_RATIO+=(0)
 done
