@@ -64,7 +64,7 @@ def cartesian(x, y):
     return np.transpose([np.tile(x, len(y)), np.repeat(y, len(x))])
 
 
-base_units = ['W', 'A', 'V', 'C']
+base_units = ['W', 'A', 'V', 'C', 's']
 unit_modifiers = ['', 'm', 'u']
 
 # Examples: W, mW, uW
@@ -120,6 +120,10 @@ def rawfile_to_df(inf):
             split = line.split()
             k = split[0].strip()
             vv = split[1:]
+
+            if (k.startswith('----------')):
+                k = 'breakpoint'
+                vv = '1'
 
             # Some columns are already in the _ format, but I don't like it,
             # I prefer to do it manually in python so that I can change the

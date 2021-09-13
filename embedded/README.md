@@ -174,6 +174,25 @@ adds additional directories and files to the structure of the `data` directory
 which will not be covered here. See [../host/README.md](../host/README.md) for
 more information about that.
 
+The directory structure of the `data` folder expected typically in the root
+directory of this project is the following:
+
+```
+data
+└── results
+    └── <board-name>
+    |   ├── howmany_<H>
+    |   │   └── policy_<P>
+    │   │       ├── freq_<F>
+    │   │       │   ├── task_<T>
+    │   │       │   │   ├── <N>
+    │   │       │   │   │   ├── measure_power.txt
+    │   │       │   │   │   ├── measure_power.txt.err
+    │   │       │   │   │   └── measure_time.txt.<1-H>
+    │   │       │   │   │   └── raw_measure_time.1.csv
+    ...
+```
+
 > **TODO**: Write down this section
 
 ### Power Data Format

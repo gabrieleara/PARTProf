@@ -338,10 +338,23 @@ function run_a_test() {
     local task_outfile=
     local task_core=
 
+    local cores_in_policy=($(cpufreq_policy_cpu_list "$policy"))
+
+    # NOTE: enable the following block to iterate across cores during the
+    # repeated runs, supposes only one core at the time will be used
+    # --- BEGIN ITERATE CORES --- #
+    if [ "$task_rep" -gt 1 ]; then
+        cores_in_policy=(${cores_in_policy[@]:$((task_rep-1))})
+        pdebug "${cores_in_policy[@]}"
+        pdebug_newline
+        pdebug_newline
+    fi
+    # ---   END ITERATE CORES --- #
+
     # For each CPU, but no more tasks than requested,
     # prepare parameters for all tasks to start before
     # actually starting them
-    for task_core in $(cpufreq_policy_cpu_list "$policy"); do
+    for task_core in "${cores_in_policy[@]}"; do
         if [ "$tasks_count" -ge "$HOWMANY_TASKS" ]; then
             break
         fi
@@ -387,6 +400,9 @@ function run_a_test() {
         >"${sampler_logfile}" 2>"${sampler_logfile_err}" &
 
     sampler_pid="$!"
+
+    # Ensure that the sampler is up and running... in an OK fashion
+    sleep 2s
 
     # Start one by one all tasks
     local tasks_pids=()
@@ -629,8 +645,8 @@ function sort_and_lineup() {
             continue
         fi
 
-        policy_cpulist=( $(cpufreq_policy_cpu_list "$policy") )
-        if [ "${#policy_cpulist[@]}" -lt "$HOWMANY_TASKS" ] ; then
+        policy_cpulist=($(cpufreq_policy_cpu_list "$policy"))
+        if [ "${#policy_cpulist[@]}" -lt "$HOWMANY_TASKS" ]; then
             pinfosay1 "Skipping CPU Island ${policy} because it has only $#_cpulist[@] cpus instead of the $HOWMANY_TASKS required!"
             continue
         fi
