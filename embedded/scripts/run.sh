@@ -190,7 +190,7 @@ function terminate_all() {
         err_extra_line
     fi
 
-    kill -9 $pids &>/dev/null || truekill -9 "${@:3}" &>/dev/null || true
+    kill -9 $pids &>/dev/null || true
 }
 
 # -------------------------------------------------------- #
