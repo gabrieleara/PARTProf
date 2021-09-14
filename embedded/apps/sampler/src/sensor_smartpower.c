@@ -43,7 +43,7 @@ sensor_smartpower_write_request(struct sensor_smartpower *self,
     return 0;
 
 error:
-    sensor_smartpower_close((struct sensor*)self);
+    sensor_smartpower_close((struct sensor *)self);
     return -1;
 }
 
@@ -86,7 +86,7 @@ int sensor_smartpower_read_response(struct sensor_smartpower *self) {
     return 0;
 
 error:
-    sensor_smartpower_close((struct sensor*)self);
+    sensor_smartpower_close((struct sensor *)self);
     return -1;
 }
 
@@ -168,7 +168,6 @@ int sensor_smartpower_read(struct sensor *sself) {
     res = sensor_smartpower_read_response(self);
     if (res < 0)
         goto end;
-
 
 end:
     return res;

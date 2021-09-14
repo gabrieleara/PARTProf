@@ -439,8 +439,8 @@ hid_device *HID_API_EXPORT hid_open_path(const char *path) {
     }
 }
 
-int HID_API_EXPORT hid_write(hid_device *dev, const unsigned char *data,
-                             size_t length) {
+int HID_API_EXPORT hid_write2(hid_device *dev, const unsigned char *data,
+                              size_t length) {
     int bytes_written;
 
     bytes_written = write(dev->device_handle, data, length);
@@ -468,6 +468,9 @@ int HID_API_EXPORT hid_read_timeout(hid_device *dev, unsigned char *data,
             return ret;
     }
 
+    // NOTE TO SELF: Do I have to comment this out because otherwise I can't
+    // distinguish between an EAGAIN situation and a normal situation? I think I
+    // just need to check for the EINTR from outside...
     bytes_read = read(dev->device_handle, data, length);
     if (bytes_read < 0 && errno == EAGAIN)
         bytes_read = 0;
@@ -482,8 +485,8 @@ int HID_API_EXPORT hid_read_timeout(hid_device *dev, unsigned char *data,
     return bytes_read;
 }
 
-int HID_API_EXPORT hid_read(hid_device *dev, unsigned char *data,
-                            size_t length) {
+int HID_API_EXPORT hid_read2(hid_device *dev, unsigned char *data,
+                             size_t length) {
     return hid_read_timeout(dev, data, length, (dev->blocking) ? -1 : 0);
 }
 
@@ -565,4 +568,16 @@ hid_get_indexed_string(hid_device *dev __attribute((unused)),
 HID_API_EXPORT const wchar_t *HID_API_CALL hid_error(hid_device *dev
                                                      __attribute((unused))) {
     return NULL;
+}
+
+#include <readfile.h>
+
+int HID_API_EXPORT hid_read(hid_device *dev, unsigned char *data,
+                             size_t length) {
+    return UNTIL_INTERRUPTED(hid_read2(dev, data, length));
+}
+
+int HID_API_EXPORT hid_write(hid_device *dev, const unsigned char *data,
+                             size_t length) {
+    return UNTIL_INTERRUPTED(hid_write2(dev, data, length));
 }
