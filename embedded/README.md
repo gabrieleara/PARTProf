@@ -189,7 +189,6 @@ data
     │   │       │   │   │   ├── measure_power.txt
     │   │       │   │   │   ├── measure_power.txt.err
     │   │       │   │   │   └── measure_time.txt.<1-H>
-    │   │       │   │   │   └── raw_measure_time.1.csv
     ...
 ```
 
