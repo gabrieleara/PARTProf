@@ -1,0 +1,7 @@
+{
+    "git.ignoreLimitWarning": true,
+    "files.associations": {
+        "sensor_smartpower.h": "c",
+        "dirent.h": "c"
+    },
+}

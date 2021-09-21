@@ -1,0 +1,143 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Bash-Debug (select script from list of sh files)",
+            "cwd": "${workspaceFolder}",
+            "program": "${command:SelectScriptName}",
+            "args": []
+        },
+        {
+            "name": "Python: power_samples_to_table.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/new/power_samples_to_table.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-c",
+                "host/cmaps/odroid_xu4.cmap",
+                "${workspaceFolder}/data/results/odroid-xu4-thermal/howmany_1/policy_4/freq_1900000/task_ng-dither/1/measure_power.txt",
+                "-o",
+                "${workspaceFolder}/a.out"
+            ]
+        },
+        {
+            "name": "Python: perf_samples_to_table.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/new/perf_samples_to_table.py",
+            "console": "integratedTerminal",
+            "args": [
+                "${workspaceFolder}/data/results/odroid-xu4-simple/howmany_1/policy_4/freq_1900000/task_ng-dither/1/measure_time.txt.1",
+                "-o",
+                "${workspaceFolder}/a.out"
+            ]
+        },
+        {
+            "name": "Python: power_tables_collect.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/new/power_tables_collect.py",
+            "console": "integratedTerminal",
+            "args": [
+                "$(find ${workspaceFolder}/data/results/odroid-xu4-thermal/ -name '*power*.csv')",
+                "-o",
+                "${workspaceFolder}/b.out"
+            ]
+        },
+        {
+            "name": "Python: plot/plot_time.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/plot/plot_time.py",
+            "console": "integratedTerminal",
+            "args": [
+                "${workspaceFolder}/data/results/odroid-xu4-thermal/howmany_1/policy_4/freq_1900000/task_ng-dither/1/raw_measure_power.csv",
+                "--p",
+                "-y1",
+                "thermal_zone_temp0", //TODO: change
+            ]
+        },
+        {
+            "name": "raw-csv-to-stats",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/raw_csv_to_stats.py",
+            "cwd": "${workspaceFolder}/results/raspberry",
+            "console": "integratedTerminal",
+            "args": [
+                // "raw_csv_to_stats.py",
+                "-o",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/stats.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/1/raw_measure_power.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/2/raw_measure_power.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/3/raw_measure_power.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/4/raw_measure_power.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/5/raw_measure_power.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/1/raw_measure_time.1.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/2/raw_measure_time.1.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/3/raw_measure_time.1.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/4/raw_measure_time.1.csv",
+                "howmany_1/policy_0/freq_1000000/task_gzip-1/5/raw_measure_time.1.csv"
+            ]
+        },
+        {
+            "name": "collect-stats",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/collect_stats.py",
+            "cwd": "${workspaceFolder}/results",
+            "console": "integratedTerminal",
+            "args": [
+                // collect_stats.py
+                "-o",
+                "outdata.csv",
+                "raspberry/howmany_1/policy_0/freq_1000000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_1100000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_1200000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_1300000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_1400000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_1500000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_600000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_700000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_800000/stats.csv",
+                "raspberry/howmany_1/policy_0/freq_900000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_1000000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_1100000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_1200000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_1300000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_1400000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_1500000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_600000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_700000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_800000/stats.csv",
+                "raspberry/howmany_2/policy_0/freq_900000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_1000000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_1100000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_1200000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_1300000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_1400000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_1500000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_600000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_700000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_800000/stats.csv",
+                "raspberry/howmany_3/policy_0/freq_900000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_1000000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_1100000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_1200000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_1300000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_1400000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_1500000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_600000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_700000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_800000/stats.csv",
+                "raspberry/howmany_4/policy_0/freq_900000/stats.csv",
+            ]
+        }
+    ]
+}
