@@ -169,9 +169,9 @@ function parse_opt_args() {
                 usage
                 false
             fi
-            cmap_file="$OPTARG"
-            if [[ "$cmap_file" != "/*" ]]; then
-                cmap_file="$(realpath $(pwd))/$cmap_file"
+            col_opt="$OPTARG"
+            if [[ "$col_opt" != "/*" ]]; then
+                col_opt="$(realpath $(pwd))/$col_opt"
             fi
             ;;
 
@@ -222,7 +222,7 @@ function build() {
     # fi
 
     local cur_dir
-    local generated_makefile
+    local deps_makefile
     local args
     local log_make_err
     local log_time
@@ -236,23 +236,22 @@ function build() {
         false
     fi
 
-    generated_makefile="$(mktemp)"
+    deps_makefile="$(mktemp)"
     log_make_err="$(mktemp)"
     log_time="$(mktemp)"
 
     printf ' --> Generating Dependencies for %s ...\n' "$cur_dir"
-    "${path_host}/make_rules.sh" "$cur_dir" >"${generated_makefile}"
-    cat "${generated_makefile}" | cut -c 1-50
+    "${path_host}/gen_deps.sh" "$cur_dir" >"${deps_makefile}"
+    # cat "${deps_makefile}"
 
-    args=" -r -C ${cur_dir} -f $base_makefile"
-    args+=" GENERATED_RULES=$generated_makefile"
+    args=" -r -C ${cur_dir} -f $base_makefile GENERATED_DEPS=$deps_makefile"
 
     if [ $dry_run = 1 ]; then
         args+=" --dry-run"
     fi
 
-    if [ ! -z "$cmap_file" ]; then
-        args+=" CMAP_FILE=$cmap_file"
+    if [ ! -z "$col_opt" ]; then
+        args+=" col_opt=$col_opt"
     fi
 
     if [ $use_jobs = 1 ]; then
@@ -272,7 +271,7 @@ function build() {
     printf ' --> That took exactly'
     cat "$log_time"
 
-    rm $log_time $log_make_err $generated_makefile
+    rm $log_time $log_make_err $deps_makefile
 
     if [ "$run_successful" = 1 ]; then
         printf ' --> Run successful!\n'
@@ -357,4 +356,48 @@ function touch_power() {
             esac
         done
     fi
+
+    #------------------------------------------------------#
+
+    # # TODO: optional arguments to enable/disable parallelism
+    # # and where to log outputs and errors
+
+    # if [ $# -gt 0 ]; then
+    #     results_dir="$1"
+    # fi
+
+    # # NOTE: next command is virtually equivalent to a clean
+    # # find "$results_dir" -name measure_power.txt -exec touch {} \;
+    # # find "$results_dir" -name measure_time.txt  -exec touch {} \;
+
+    # # cpumask="0-$((nprocs - 1))"
+
+    # deps_makefile_list=()
+
+    # for d in "$results_dir/"*; do
+    #     if [ ! -d "$d" ] || [ "$d" = "$results_dir/." ] ||
+    #         [ "$d" = "$results_dir/.." ]; then
+    #         continue
+    #     fi
+
+    #     deps_makefile="$(mktemp)"
+
+    #     echo "GENERATING DEPENDENCIES FOR : $d"
+    #     echo "..."
+    #     "$HOST_PATH/gen_deps.sh" "$d" >>"${deps_makefile}"
+
+    #     COL_OPT="$HOST_PATH/cmaps/raw_$(basename "$d").cmap"
+
+    #     echo "STARTING GENERATION"
+    #     time taskset -c "$cpumask" make -r -C "$d" -f "$MAKEFILE" \
+    #         GENERATED_DEPS="${deps_makefile}" \
+    #         col_opt="$COL_OPT" -j"${nprocs}"
+    #     # >"$d.log" 2>"$d.error_log" &
+
+    #     deps_makefile_list+=("${deps_makefile}")
+    # done
+
+    # wait
+
+    # rm -f "${deps_makefile_list[@]}"
 )

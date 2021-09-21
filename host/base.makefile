@@ -1,13 +1,18 @@
-col_opt ?= ''
-GENERATED_DEPS ?= ''
+CMAP_FILE       ?= ''
+GENERATED_RULES ?= ''
 
 .PHONY: all
-all: outdata.csv allsamples.csv
 
-%raw_measure_power.csv: %measure_power.txt
-	raw_to_csv.py -c $(col_opt) -o $@ $<
+all: global_table.csv
 
-raw_measure_time%.csv: measure_time.txt%
-	perf_csv_to_csv.py -o $@ $<
+table_power.csv: measure_power.txt
+	power_samples_to_table.py -o $@ $< -c $(CMAP_FILE)
 
--include $(GENERATED_DEPS)
+table_perf.%.csv: measure_time.txt.%
+	perf_samples_to_table.py -o $@ $< -c $(CMAP_FILE)
+
+# TODO: implement this part
+global_table.csv: collapsed_table_power.csv # collapsed_table_perf.csv
+	cp $< $@
+
+-include $(GENERATED_RULES)

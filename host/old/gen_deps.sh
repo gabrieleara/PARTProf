@@ -127,11 +127,11 @@ function find_all_deps() {
     echo -e '\t' 'collect_stats.py -o $@ $^'
     echo ''
 
-    echo -n 'allsamples.csv: '
-    tr '\n' ' ' < "${all_samples_files_fname}"
-    echo '' # tr removes also the last newline, so I have to add it manually
-    echo -e '\t' 'collect_samples.py -o $@ $^'
-    echo ''
+    # echo -n 'allsamples.csv: '
+    # tr '\n' ' ' < "${all_samples_files_fname}"
+    # echo '' # tr removes also the last newline, so I have to add it manually
+    # echo -e '\t' 'collect_samples.py -o $@ $^'
+    # echo ''
 
     rm "${all_stats_files_fname}"
 )
