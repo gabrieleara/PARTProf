@@ -8,6 +8,7 @@ eligible for use with GNU Make.
 
 import os
 import pathlib
+import pandas as pd
 
 def safe_write(outfun, outfile, *args, **kwargs):
     """
@@ -48,3 +49,16 @@ def safe_write(outfun, outfile, *args, **kwargs):
 
     # NOTE: If you do disable signal handlers, re-enable them here!
 #-- safe_write
+
+
+def df_safe_to_csv(df,
+    path_or_buf,
+    *args,
+    index=None,
+    **kwargs):
+    safe_write(df.to_csv,
+       path_or_buf,
+       index=None,
+       *args,
+       **kwargs)
+    pass

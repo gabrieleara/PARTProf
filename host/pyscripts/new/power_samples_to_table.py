@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
-
 import modules.cmap as cmap
 import modules.cmdargs as cmdargs
 import modules.maketools as maketools
@@ -20,7 +18,7 @@ cmdargs_conf = {
             'long': 'in_file',
             'opts': {
                 'metavar': 'in-file',
-                'type': str,
+                'type': cmdargs.argparse.FileType('r'),
             },
         },
         {
@@ -29,8 +27,8 @@ cmdargs_conf = {
             'opts': {
                 'help': 'The file that defines mappings between input labels '
                     'and output column names',
-                'type': str,
                 'default': '',
+                'type': cmdargs.argparse.FileType('r'),
             },
         },
         {
@@ -138,14 +136,14 @@ def powerfile_to_table(inf, column_map):
 #----------------------------------------------------------#
 
 def main():
-    global args
-
     args = cmdargs.parse_args(cmdargs_conf)
 
-    column_map = cmap.loadmap(args.col_map) if args.col_map else {}
-    df = powerfile_to_table(args.in_file, column_map)
+    column_map = {}
+    if args.col_map:
+        column_map = cmap.loadmap(args.col_map.readlines())
 
-    maketools.safe_write(df.to_csv, args.out_file, index=None)
+    df = powerfile_to_table(args.in_file, column_map)
+    maketools.df_safe_to_csv(df, args.out_file)
     return 0
 #-- main
 
