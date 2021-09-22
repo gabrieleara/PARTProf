@@ -5,11 +5,11 @@ GENERATED_RULES ?= ''
 
 all: global_table.csv
 
-table_power.csv: measure_power.txt
-	power_samples_to_table.py -o $@ $< -c $(CMAP_FILE)
+%table_power.csv: %measure_power.txt
+	power_samples_to_table.py -c $(CMAP_FILE) -o $@ $<
 
 table_perf.%.csv: measure_time.txt.%
-	perf_samples_to_table.py -o $@ $< -c $(CMAP_FILE)
+	perf_samples_to_table.py -c $(CMAP_FILE) -o $@ $<
 
 # TODO: implement this part
 global_table.csv: collapsed_table_power.csv # collapsed_table_perf.csv

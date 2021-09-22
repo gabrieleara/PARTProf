@@ -5,7 +5,8 @@ function is_zero_repetition() {
 }
 
 function print_all_matching_no_zero() {
-    for f in $(find "$@"); do
+    # NOTE: printing absolute paths is a must!
+    for f in $(find "$(realpath "$1")" "${@:2}"); do
         if is_zero_repetition "$f" ; then
             continue
         fi
@@ -14,11 +15,11 @@ function print_all_matching_no_zero() {
 }
 
 function print_files_samples_perf() {
-    print_all_matching_no_zero -name 'measure_time.txt*'
+    print_all_matching_no_zero "$1" -name 'measure_time.txt*'
 }
 
 function print_files_samples_power() {
-    print_all_matching_no_zero -name 'measure_power.txt'
+    print_all_matching_no_zero "$1" -name 'measure_power.txt'
 }
 
 function sample2table_perf() {
@@ -44,8 +45,8 @@ function sample2table_power() {
     files_tables_perf=$(mktemp)
     files_tables_power=$(mktemp)
 
-    print_files_samples_perf                        >"${files_samples_perf}"
-    print_files_samples_power                       >"${files_samples_power}"
+    print_files_samples_perf    "$base_path"        >"${files_samples_perf}"
+    print_files_samples_power   "$base_path"        >"${files_samples_power}"
     sample2table_perf   "${files_samples_perf}"     >"${files_tables_perf}"
     sample2table_power  "${files_samples_power}"    >"${files_tables_power}"
 
