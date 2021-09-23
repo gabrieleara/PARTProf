@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import re
-
 import pandas as pd
+
+from . import si
 
 def pd_read_csv(
         *args,
@@ -20,87 +21,6 @@ def pd_read_csv(
         **kwargs,
     )
 
-si_units = {
-    # Base
-    'second':       's',
-    'metre':        'm',
-    'gram':         'g',
-    'ampere':       'A',
-    'kelvin':       'K',
-    'mole':         'mol',
-    'candela':      'cd',
-
-    # Derived
-    'radian':       'rad',
-    'steradian':    'sr',
-    'hertz':        'Hz',
-    'newton':       'N',
-    'pascal':       'Pa',
-    'joule':        'J',
-    'watt':         'W',
-    'coulomb':      'C',
-    'volt':         'V',
-    'farad':        'F',
-    'ohm':          'Ω',
-    'siemens':      'S',
-    'weber':        'Wb',
-    'tesla':        'T',
-    'henry':        'H',
-    'celsius':      'C',
-    'lumen':        'lm',
-    'lux':          'lx',
-    'becquerel':    'Bq',
-    'gray':         'Gy',
-    'sievert':      'Sv',
-    'katal':        'kat',
-}
-
-si_prefixes = {
-    'Y':    10**24,
-    'Z':    10**21,
-    'E':    10**18,
-    'P':    10**15,
-    'T':    10**12,
-    'G':    10**9,
-    'M':    10**6,
-    'k':    10**3,
-    'h':    10**2,
-    'da':   10**1,
-    '':     10**0,
-    'd':    10**-1,
-    'c':    10**-2,
-    'm':    10**-3,
-    'μ':    10**-6,
-    'u':    10**-6,
-    'n':    10**-9,
-    'p':    10**-12,
-    'f':    10**-15,
-    'a':    10**-18,
-    'z':    10**-21,
-    'y':    10**-24,
-}
-
-LETTERS_ROMAN_GREEK = 'A-Za-zΑ-Ωα-ω'
-
-def regex_match_unit_group(s: str, unit: str):
-    return re.match(
-        '.*_([' + LETTERS_ROMAN_GREEK + ']+)' + unit + '$',
-        s,
-        re.I,
-    )
-
-def regex_strip_unit_suffix(s: str, unit: str, replace: str):
-    return re.sub(
-        '_[' + LETTERS_ROMAN_GREEK + ']+' + unit + '$',
-        replace,
-        s,
-    )
-
-def si_extractprefix(col: str, unit: str):
-    col = col.strip()
-    match = regex_match_unit_group(col, unit)
-    return match.group(1) if match else ''
-
 def extract_update_period(df):
     """
     Remove update period special column and row from the
@@ -114,17 +34,17 @@ def extract_update_period(df):
 
     # Find update period column with unit
     for c in df.columns:
-        prefix = si_extractprefix(c, si_units['second'])
+        prefix = si.extractprefix(c, si.units['second'])
         if len(prefix):
             if error_on_find:
                 # TODO: raise an error and terminate
                 pass
             the_col = c
-            magnitude = si_prefixes[prefix]
+            magnitude = si.prefixes[prefix]
             error_on_find = True
 
     df_update_period = df[ df[the_col] > 0 ]
-    if (df[the_col].count() != 1):
+    if df[the_col].count() != 1:
         # TODO: raise an error and terminate
         pass
 
@@ -164,12 +84,38 @@ def extract_breakpoint(df):
 
     return df, breakpoint
 
-def substitute_unit_suffix(cols, unit: str , replace: str, c: str):
-    if c in cols:
-        return regex_strip_unit_suffix(c, unit, replace)
-    return c
+def select_cols_startwith(cols, string: str):
+    return [c for c in cols if c.startswith(string)]
 
-def remove_unit_suffix(cols, unit: str , c: str):
-    if c in cols:
-        return regex_strip_unit_suffix(c, unit, '')
-    return c
+def select_cols_endswith(cols, string: str):
+    return [c for c in cols if c.endswith(string)]
+
+def select_sample_cols_freq(cols):
+    cols = select_cols_startwith(cols, 'cpu_freq')
+    return cols, si.prefixes['k']
+
+def select_sample_cols_temp(cols):
+    cols = select_cols_startwith(cols, 'thermal_zone')
+    return cols, si.prefixes['m']
+
+def select_sample_cols_power(cols):
+    cols = select_cols_startwith(cols, 'sensor')
+    cols = select_cols_endswith(cols, si.units['watt'])
+
+    # NOTE: assuming all columns have the same unit
+    prefix      = si.extractprefix(cols[0], si.units['watt'])
+    magnitude   = si.prefixes[prefix]
+    return cols, magnitude
+
+def apply_magnitudes(df, cols, magnitude):
+    df[cols] = df[cols] * magnitude
+    return df
+
+def select_table_cols_freq(cols):
+    return select_cols_startwith(cols, 'freq_')
+
+def select_table_cols_temp(cols):
+    return select_cols_startwith(cols, 'temp_')
+
+def select_table_cols_power(cols):
+    return select_cols_startwith(cols, 'power_')

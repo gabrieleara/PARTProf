@@ -16,7 +16,7 @@
             "name": "Python: power_samples_to_table.py",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/host/pyscripts/new/power_samples_to_table.py",
+            "program": "${workspaceFolder}/host/pyscripts/power_samples_to_table.py",
             "console": "integratedTerminal",
             "args": [
                 "-c",
@@ -30,7 +30,7 @@
             "name": "Python: perf_samples_to_table.py",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/host/pyscripts/new/perf_samples_to_table.py",
+            "program": "${workspaceFolder}/host/pyscripts/perf_samples_to_table.py",
             "console": "integratedTerminal",
             "args": [
                 "${workspaceFolder}/data/results/odroid-xu4-simple/howmany_1/policy_4/freq_1900000/task_ng-dither/1/measure_time.txt.1",
@@ -42,12 +42,18 @@
             "name": "Python: power_tables_collect.py",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/host/pyscripts/new/power_tables_collect.py",
+            "program": "${workspaceFolder}/host/pyscripts/power_tables_collect.py",
             "console": "integratedTerminal",
             "args": [
-                "$(find ${workspaceFolder}/data/results/odroid-xu4-thermal/ -name '*power*.csv')",
+                "${workspaceFolder}/data/results/odroid-xu4-thermal/howmany_1/policy_4/freq_1900000/task_gzip/1/table_power.csv",
                 "-o",
-                "${workspaceFolder}/b.out"
+                "prova.csv",
+                "-i",
+                "big",
+                "-p",
+                "4",
+                "-c",
+                "4-7",
             ]
         },
         {

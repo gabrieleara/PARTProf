@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
-import modules.cmap as cmap
-import modules.cmdargs as cmdargs
-import modules.maketools as maketools
+import re
 
-import numpy as np
-import pandas as pd
+import numpy    as np
+import pandas   as pd
+
+from modules import cmap
+from modules import cmdargs
+from modules import maketools
+from modules import tabletools
 
 # +--------------------------------------------------------+
 # |          Command-line Arguments Configuration          |
@@ -47,6 +50,7 @@ cmdargs_conf = {
 # |             Units Management in line names             |
 # +--------------------------------------------------------+
 
+# TODO: use the new si.py module
 def cartesian_prod(x, y):
     return np.transpose([np.tile(x, len(y)), np.repeat(y, len(x))])
 
@@ -135,6 +139,56 @@ def powerfile_to_table(inf, column_map):
 #                           Main                           #
 #----------------------------------------------------------#
 
+
+def table_convert_form(df):
+    df, update_period = tabletools.extract_update_period(df)
+    df, breakpoint    = tabletools.extract_breakpoint(df)
+
+    columns = df.columns
+    cols_in_freq,  magnitude_freq  = tabletools.select_sample_cols_freq(columns)
+    cols_in_temp,  magnitude_temp  = tabletools.select_sample_cols_temp(columns)
+    cols_in_power, magnitude_power = tabletools.select_sample_cols_power(columns)
+
+    df = tabletools.apply_magnitudes(df, cols_in_freq, magnitude_freq)
+    df = tabletools.apply_magnitudes(df, cols_in_temp, magnitude_temp)
+    df = tabletools.apply_magnitudes(df, cols_in_power, magnitude_power)
+
+    numrows = len(df.index)
+
+    outdf = pd.DataFrame()
+    outdf['time'] = np.arange(numrows) * update_period
+
+    empty = np.full(numrows, np.nan)
+    up = empty.copy()
+    up[0] = update_period
+    bp = empty.copy()
+    bp[0] = breakpoint
+
+    outdf['sampling_time']  = up
+    outdf['breakpoint']     = bp
+
+    cols_out_freq = [
+        c.replace('cpu_freq', 'freq_cpu')
+        for c in cols_in_freq
+    ]
+
+    cols_out_temp = [
+        c.replace('thermal_zone_temp', 'temp_tz')
+        for c in cols_in_temp
+    ]
+
+    cols_out_power = [
+        re.sub(r'sensor_([a-z]+)_.*', r'power_\1', c, flags=re.I)
+        for c in cols_in_power
+    ]
+
+    outdf[cols_out_freq]    = df[cols_in_freq]
+    outdf[cols_out_temp]    = df[cols_in_temp]
+    outdf[cols_out_power]   = df[cols_in_power]
+
+    return outdf
+
+
 def main():
     args = cmdargs.parse_args(cmdargs_conf)
 
@@ -143,7 +197,13 @@ def main():
         column_map = cmap.loadmap(args.col_map.readlines())
 
     df = powerfile_to_table(args.in_file, column_map)
-    maketools.df_safe_to_csv(df, args.out_file)
+
+    for c in df.columns:
+        outc = pd.to_numeric(df[c])
+        df[c] = outc
+
+    outdf = table_convert_form(df)
+    maketools.df_safe_to_csv(outdf, args.out_file)
     return 0
 #-- main
 

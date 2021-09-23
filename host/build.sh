@@ -241,7 +241,7 @@ function build() {
     log_time="$(mktemp)"
 
     printf ' --> Generating Dependencies for %s ...\n' "$cur_dir"
-    "${path_host}/make_rules.sh" "$cur_dir" >"${generated_makefile}"
+    "${path_host}/make_rules.sh" "$cur_dir" -i big -c 4-7 -p 4 >"${generated_makefile}"
     cat "${generated_makefile}" | cut -c 1-50
 
     args=" -r -C ${cur_dir} -f $base_makefile"

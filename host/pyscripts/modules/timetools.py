@@ -74,50 +74,83 @@ The time constant τ of a dynamic first-order system described by the function
 reach the value `T(τ) = exp(-1) = 1/e`.
 
 When a gain is also applied, the system usually transitions between two
-steady-state values. If we consider T(0) = T0 and T(∞) = T1, the system can be
-described by the function `T(t) = T0 + (T1 - T0) * exp(-t/τ)`.
+steady-state values. If we consider T(0) = T0 and T(∞) = Tf, the system can be
+described by the function `T(t) = Tf - (T0 - Tf) * exp(-t/τ)`.
 
-Defining `∆T = T1 - T0`, we can calculate τ as the time it takes for the system
-to reach the value `T(τ) = T0 + ∆T * 1/e`.
+Defining `∆T = Tf - T0`, we can calculate τ as the time it takes for the system
+to reach the value `T(τ) = Tf - ∆T * 1/e`.
 
 From this comes that TIME_CONSTANT_RATIO = 1/e.
+
+HOWEVER! THIS IS NOT VERY ACCURATE FOR OUR EXPERIMENTATIONS! WE WILL USE INSTEAD
+A MULTIPLE OF THE TIME CONSTANT RATIO AND THEN SCALE IT DOWN BEFORE RETURNING IT
+OUT!
+
+FOR EXAMPLE, IT IS TYPICAL TO CONSIDER Tsettle = (1-ln(0.02))
 """ # pylint: disable=W0105
 
-def interpolate_time(t1, t2, v1, v2, v_exp):
+def __interpolate_time(t1, t2, v1, v2, v_exp):
     if t1 < 0:
         return t2
     slope = (v2-v1) / (t2-t1)
+    if slope == 0:
+        return t1
     return t1 + ((v_exp - v1) / slope)
 
+def interpolate_time(time, values, i, v_exp):
+    t1 = time[i-1]
+    t2 = time[i]
+    v1 = values[i-1]
+    v2 = values[i]
+    return __interpolate_time(t1, t2, v1, v2, v_exp)
 
-def __interpolate_indexes(values, i, v_exp):
-    return interpolate_time(i-1, i, values[i-1], values[i], v_exp)
-
-def time_constant(values, start_steady_value, end_steady_value):
+def time_constant(time, values, v_zero, v_final,
+    settle=0.02,
+    ):
     """
     Returns the time constant of the step response provided as input, assuming
     that the response transitions between the two given steady-state values.
     """
+    delta = v_final - v_zero
 
-    # TODO: find where the response actually begins
+    if delta < 10**-6:
+        return 0
 
-    delta = end_steady_value - start_steady_value
+    value_begin = v_zero    + (delta * 2 * 10**-5)
+    value_tau   = v_final   - (delta * TIME_CONSTANT_RATIO)
+    # value_tau = v_final   - (delta * settle)
 
-    value_begin = start_steady_value + (delta * 0.02)
-    value_tau   = start_steady_value + (delta * TIME_CONSTANT_RATIO)
-
-    comparator = operator.ge if delta > 0 else operator.le
+    comparator      = operator.ge if delta >= 0 else operator.le
     condition_begin = lambda v: comparator(v, value_begin)
     condition_tau   = lambda v: comparator(v, value_tau)
 
     index_begin = __first_match_index(values, condition_begin)
     index_tau   = __first_match_index(values, condition_tau)
-    time_begin  = __interpolate_indexes(values, index_begin, value_begin)
-    time_tau    = __interpolate_indexes(values, index_tau, value_tau)
 
-    return time_tau - time_begin
+    if index_begin == 0:
+        index_begin = 1
 
-def smooth(values, window_len=11, window='hanning'):
+    # if type(index_begin) != int or type(index_tau) != int:
+    #     print('delta', delta)
+    #     print('index_begin', index_begin)
+    #     print('index_tau', index_tau)
+
+    # time_begin  = interpolate_time(time, values, index_begin, value_begin)
+    # time_tau    = interpolate_time(time, values, index_tau, value_tau)
+    time_begin  = time[index_begin]
+    time_tau    = time[index_tau]
+    time_tau_exp = time_tau - time_begin
+
+    # time_settle = time_tau - time_begin
+    # time_tau_exp = time_settle * math.log(1 / (1 - settle))
+
+    # print(time_settle)
+    # print(time_tau_exp)
+    # print("---------------")
+
+    return time_tau_exp
+
+def smooth(values, window_len=11, window='flat', samelen=True):
     """
     Smooths the given time series using the requested window function and
     length.
@@ -170,4 +203,8 @@ def smooth(values, window_len=11, window='hanning'):
         w = eval('np.'+window+'(window_len)')
 
     y = np.convolve(w/w.sum(),s,mode='valid')
+
+    if samelen:
+        y = y[(int(window_len/2)):-int(window_len/2)]
+
     return y

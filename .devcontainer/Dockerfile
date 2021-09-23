@@ -11,6 +11,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists
 
+RUN conda install sympy
+
 # Other interesting packages: cppcheck valgrind clang lldb llvm
 
 # ** [Optional] Uncomment this section to install additional packages. **

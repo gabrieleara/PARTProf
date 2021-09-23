@@ -8,7 +8,8 @@ eligible for use with GNU Make.
 
 import os
 import pathlib
-import pandas as pd
+import re
+import sys
 
 def safe_write(outfun, outfile, *args, **kwargs):
     """
@@ -54,7 +55,6 @@ def safe_write(outfun, outfile, *args, **kwargs):
 def df_safe_to_csv(df,
     path_or_buf,
     *args,
-    index=None,
     **kwargs):
     safe_write(df.to_csv,
        path_or_buf,
@@ -62,3 +62,54 @@ def df_safe_to_csv(df,
        *args,
        **kwargs)
     pass
+
+
+FILENAME_REGEXES = {
+    'howmany':      r'howmany_(\d+)/',
+    'island':       r'policy_(\w+)/',
+    'frequency':    r'freq_(\d+)/',
+    'task':         r'task_([\w-]+)/',
+    'cpu':          r'(\d+)/',
+}
+
+for k in FILENAME_REGEXES:
+    FILENAME_REGEXES[k] = re.compile(FILENAME_REGEXES[k])
+
+
+def match_last(regex: re.Pattern, string: str):
+    match = None
+    *_, match = regex.finditer(string)
+    return match
+#-- match_last
+
+def extract_metadata(file, policy_island_map, island_cpus_map):
+    filepath = os.path.realpath(file.name)
+
+    metadata = {}
+    for k in FILENAME_REGEXES:
+        metadata[k] = match_last(FILENAME_REGEXES[k], filepath).group(1)
+
+    # Map policy to correct island name
+    if not metadata['island'] in policy_island_map:
+        sys.exit("Policy " + str(metadata['island']) + " not present in current mapping! Use --help for help.")
+
+    metadata['island']  = policy_island_map[metadata['island']]
+
+    if not metadata['island'] in island_cpus_map:
+        sys.exit("Island " + str(metadata['island']) + " not present in current mapping! Use --help for help.")
+
+    try:
+        metadata['cpu'] = int(metadata['cpu'])-1
+    except ValueError:
+        sys.exit("CPU '" + str(metadata['cpu']) + "is not a valid CPU number!")
+
+    cpus = island_cpus_map[metadata['island']]
+    if metadata['cpu'] > len(cpus):
+        sys.exit("CPU '" + str(metadata['cpu']) + "is not a valid CPU number for the island " + metadata['island'] + " !")
+
+    # Maps the cpus in order from 0,1,2,3 to the correct numbers inside the
+    # island
+    metadata['cpu'] = cpus[metadata['cpu']]
+
+    return metadata
+#-- extract_metadata

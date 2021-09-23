@@ -12,8 +12,8 @@ needed.
 import io
 import re
 
-import modules.cmdargs as cmdargs
-import modules.maketools as maketools
+from modules import cmdargs
+from modules import maketools
 
 import numpy as np
 import pandas as pd
