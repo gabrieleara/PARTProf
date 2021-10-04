@@ -95,6 +95,9 @@ for i in range(CPUS_N):
 sol = sympy.solvers.ode.systems.dsolve_system(eqs, funcs, t, ics=ics,
     doit=True, simplify=True)
 
+with open("sympy_solution.txt", "w") as save_file:
+    save_file.write(str(sol))
+
 print('')
 print('')
 print('')

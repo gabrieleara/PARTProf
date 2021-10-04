@@ -11,7 +11,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists
 
-RUN conda install sympy
+RUN conda install sympy scipy \
+    && conda install -c conda-forge lmfit
 
 # Other interesting packages: cppcheck valgrind clang lldb llvm
 

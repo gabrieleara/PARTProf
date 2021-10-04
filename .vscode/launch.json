@@ -13,6 +13,28 @@
             "args": []
         },
         {
+            "name": "Python: plot_time_prediction.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/plot_time_prediction.py",
+            "console": "integratedTerminal",
+            "args": [
+                "${workspaceFolder}/data/results/odroid-xu4-thermal/howmany_1/policy_4/freq_1900000/task_encrypt/1/table_power.csv",
+                "${workspaceFolder}/data/results/odroid-xu4-thermal/collapsed_table_power.csv",
+                "-y1",
+                "power_cpu",
+                "-y2",
+                "temp_tz0",
+                "-y2",
+                "temp_tz1",
+                "-y2",
+                "temp_tz2",
+                "-y2",
+                "temp_tz3",
+                "-p"
+            ]
+        },
+        {
             "name": "Python: power_samples_to_table.py",
             "type": "python",
             "request": "launch",

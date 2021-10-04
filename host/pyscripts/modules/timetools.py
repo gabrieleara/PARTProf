@@ -20,9 +20,9 @@ def __check_start_end(values, start, end):
 
     The start must be included, the end is excluded.
     """
-    if start < 0:
-        start = 0
-    if end < start or end > len(values):
+    if start < 0 or start > len(values):
+        start = len(values)
+    if end < 0 or end > len(values):
         end = len(values)
     return start, end
 
@@ -65,7 +65,10 @@ def steady_value(values,    # must be contiguous non-NaN values
     new_start   = int(start + difference * edge_fraction)
     new_end     = int(end - difference * edge_fraction)
     mid         = int((new_start + new_end)  * mid_fraction)
-    return np.mean(values[mid:new_end])
+    if mid < new_end:
+        return np.mean(values[mid:new_end])
+    else:
+        return np.mean(values[new_end:mid])
 
 TIME_CONSTANT_RATIO = math.exp(-1)
 """
@@ -75,7 +78,7 @@ reach the value `T(τ) = exp(-1) = 1/e`.
 
 When a gain is also applied, the system usually transitions between two
 steady-state values. If we consider T(0) = T0 and T(∞) = Tf, the system can be
-described by the function `T(t) = Tf - (T0 - Tf) * exp(-t/τ)`.
+described by the function `T(t) = Tf + (T0 - Tf) * exp(-t/τ)`.
 
 Defining `∆T = Tf - T0`, we can calculate τ as the time it takes for the system
 to reach the value `T(τ) = Tf - ∆T * 1/e`.
