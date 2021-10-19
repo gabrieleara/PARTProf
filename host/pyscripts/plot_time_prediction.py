@@ -290,6 +290,13 @@ def main():
         y = y[:, offset_begin : (int(breakpoint) - offset_end)]
         x = x[:y.shape[1]]
 
+        # NO! DO NOT NORMALIZE y!!!! OTHERWISE THE MODEL DOES NOT WORK ANYMORE!!
+
+        # # NORMALIZE y
+        # for i in range(cpu_num):
+        #     y[i, :] = y[i, :] - np.min(y[i,:])
+        #     y[i, :] = y[i, :] / np.max(y[i,:])
+
         power_idle_cpu = params_idle['power_cpu'].to_numpy()[0] / cpu_num
 
         # NOTE: lots of custom code here!
@@ -297,6 +304,7 @@ def main():
         P  = np.zeros_like(T0)
         P[0] = params['power_cpu'].to_numpy()[0] - (cpu_num-1) * power_idle_cpu
         for i in range(1, cpu_num):
+        # for i in range(cpu_num):
             P[i] = power_idle_cpu
 
         # print(y)
@@ -305,15 +313,21 @@ def main():
         print(P)
         print('CHECK ZERO:', np.sum(P) - params['power_cpu'].to_numpy()[0])
 
-        result, inputs = tpfit.fit_temp(x, y, cpu_num, P, T0)
-        y2 = tpfit.model_multi_cpu(result.params, x, inputs)
+        result, inputs = tpfit.fit_temp_single_run(x, y, cpu_num, P, T0,
+            tpfit.tempmodel_direct,
+        )
+        y2 = tpfit.tempmodel_direct(result.params, x, inputs)
+
+        # # pars = tpfit.build_params(cpu_num)
+        # # inputs = tpfit.build_inputs(cpu_num, P, T0, Te)
+        # # y2 = tpfit.tempmodel_direct(pars, x, inputs)
 
         for i in range(cpu_num):
             ax2.plot(x, y[i, :], label='Y_%d' % i)
             ax2.plot(x, y2[i, :], label='FIT_%d' % i)
 
-        # plot_cols(ax2, x, table, args.y2columns,
-        #     **plotting.DEFAULT_PLOT_OPTIONS)
+        # # plot_cols(ax2, x, table, args.y2columns,
+        # #     **plotting.DEFAULT_PLOT_OPTIONS)
 
         ax2.set_ylabel(args.y2label)
         ax2.legend(loc='upper right',

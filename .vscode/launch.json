@@ -13,6 +13,16 @@
             "args": []
         },
         {
+            "name": "Python: thermal_model_fit.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/thermal_model_fit.py",
+            "console": "integratedTerminal",
+            "args": [
+                "${workspaceFolder}/data/results/odroid-xu4-thermal/th_megadb.csv",
+            ]
+        },
+        {
             "name": "Python: plot_time_prediction.py",
             "type": "python",
             "request": "launch",
@@ -58,6 +68,24 @@
                 "${workspaceFolder}/data/results/odroid-xu4-simple/howmany_1/policy_4/freq_1900000/task_ng-dither/1/measure_time.txt.1",
                 "-o",
                 "${workspaceFolder}/a.out"
+            ]
+        },
+        {
+            "name": "Python: power_tables_to_megadb.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/host/pyscripts/power_tables_to_megadb.py",
+            "console": "integratedTerminal",
+            "args": [
+                "${workspaceFolder}/data/results/odroid-xu4-thermal/howmany_1/policy_4/freq_1900000/task_gzip/1/table_power.csv",
+                "-o",
+                "prova.csv",
+                "-i",
+                "big",
+                "-p",
+                "4",
+                "-c",
+                "4-7",
             ]
         },
         {

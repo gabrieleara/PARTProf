@@ -35,7 +35,7 @@ def __first_match_index(iterable, condition = lambda x: True):
     for i, v in enumerate(iterable):
         if condition(v):
             return i
-    return {}
+    return -1
 
 def is_unique_value(values):
     """
@@ -107,51 +107,37 @@ def interpolate_time(time, values, i, v_exp):
     v2 = values[i]
     return __interpolate_time(t1, t2, v1, v2, v_exp)
 
-def time_constant(time, values, v_zero, v_final,
-    settle=0.02,
-    ):
+def time_to_value(time, values, the_value, delta, skip_zero=False):
+    target_value = the_value + (delta * 2 * 10**-5)
+    comparator = operator.ge if delta >= 0 else operator.le
+    condition = lambda v: comparator(v, target_value)
+    index = __first_match_index(values, condition)
+    if skip_zero and index < 1:
+        index = 1
+    return time[index]
+
+def time_begin(time, values, v_zero, v_final):
+    delta = v_final - v_zero
+    return time_to_value(time, values, v_zero, delta, skip_zero=True)
+
+def time_tau(time, values, v_zero, v_final):
+    delta = v_final - v_zero
+    if delta < 10**-6:
+        return 0
+    the_value = v_final - (delta * TIME_CONSTANT_RATIO)
+    return time_to_value(time, values, the_value, delta)
+
+def time_constant(time, values, v_zero, v_final):
     """
     Returns the time constant of the step response provided as input, assuming
     that the response transitions between the two given steady-state values.
     """
     delta = v_final - v_zero
-
     if delta < 10**-6:
         return 0
-
-    value_begin = v_zero    + (delta * 2 * 10**-5)
-    value_tau   = v_final   - (delta * TIME_CONSTANT_RATIO)
-    # value_tau = v_final   - (delta * settle)
-
-    comparator      = operator.ge if delta >= 0 else operator.le
-    condition_begin = lambda v: comparator(v, value_begin)
-    condition_tau   = lambda v: comparator(v, value_tau)
-
-    index_begin = __first_match_index(values, condition_begin)
-    index_tau   = __first_match_index(values, condition_tau)
-
-    if index_begin == 0:
-        index_begin = 1
-
-    # if type(index_begin) != int or type(index_tau) != int:
-    #     print('delta', delta)
-    #     print('index_begin', index_begin)
-    #     print('index_tau', index_tau)
-
-    # time_begin  = interpolate_time(time, values, index_begin, value_begin)
-    # time_tau    = interpolate_time(time, values, index_tau, value_tau)
-    time_begin  = time[index_begin]
-    time_tau    = time[index_tau]
-    time_tau_exp = time_tau - time_begin
-
-    # time_settle = time_tau - time_begin
-    # time_tau_exp = time_settle * math.log(1 / (1 - settle))
-
-    # print(time_settle)
-    # print(time_tau_exp)
-    # print("---------------")
-
-    return time_tau_exp
+    t_begin = time_begin(time, values, v_zero, v_final)
+    t_tau   = time_tau(time, values, v_zero, v_final)
+    return t_tau - t_begin
 
 def smooth(values, window_len=11, window='flat', samelen=True):
     """

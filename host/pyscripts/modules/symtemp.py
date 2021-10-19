@@ -5,7 +5,7 @@ import numpy as np
 
 from sympy.matrices.dense import symarray
 
-CPUS_N = 2
+CPUS_N = 4
 
 kwargs = {
     'positive': True,
@@ -91,6 +91,12 @@ for i in range(CPUS_N):
     eqs.append(sympy.Eq(dT[i], rhs[i]))
     funcs.append(T[i](t))
     ics[T[i](0)] = T0[i]
+
+print("=========================")
+print("")
+sympy.pprint(matrix_A.diagonalize())
+print("")
+print("=========================")
 
 sol = sympy.solvers.ode.systems.dsolve_system(eqs, funcs, t, ics=ics,
     doit=True, simplify=True)

@@ -107,6 +107,8 @@ def extract_metadata(file, policy_island_map, island_cpus_map):
     if metadata['cpu'] > len(cpus):
         sys.exit("CPU '" + str(metadata['cpu']) + "is not a valid CPU number for the island " + metadata['island'] + " !")
 
+    metadata['cpu_internal_idx'] = metadata['cpu']
+
     # Maps the cpus in order from 0,1,2,3 to the correct numbers inside the
     # island
     metadata['cpu'] = cpus[metadata['cpu']]

@@ -66,6 +66,13 @@ function sample2table_power() {
     echo -e '\t' 'power_tables_collect.py -o $@ $^' "${@:2}"
     echo ''
 
+    # Also the "megadb" thermal table has all power tables as dependencies
+    echo 'th_megadb.csv: ' \
+        "$(cat "${files_tables_power}" | tr '\n' ' ')" \
+        ''
+    echo -e '\t' 'power_tables_to_megadb.py -o $@ $^' "${@:2}"
+    echo ''
+
     rm -f "${files_samples_perf}"
     rm -f "${files_samples_power}"
     rm -f "${files_tables_perf}"
