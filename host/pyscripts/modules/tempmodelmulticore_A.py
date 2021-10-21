@@ -29,7 +29,7 @@ Te = 25.0
 
 # CONSTANTS USED TO LIMIT THE PARAMETERS
 EPS = 1e-4
-INF = 1e3
+INF = 120
 VAL = 1
 
 def find_binomial(N):
@@ -156,6 +156,10 @@ DEFAULTS = {
     'R_2_3':  5.00,
     'R_3_3':  0,
 }
+
+# def build_params_A(cpu_num):
+#     pars = lmfit.Parameters()
+#     pa
 
 def build_params(cpu_num):
     pars = lmfit.Parameters()
@@ -322,9 +326,6 @@ def print_max_abs_error(errors, should_print):
         print('& Step %d \t' % count_invocations, '& max error %f' % maxabs)
         count_invocations += 1
 
-def ape_vector_flat(model, data):
-    return np.divide((model - data), data).flatten()
-
 def residual_single_run(pars, t, inputs, data, model, should_print=True):
     """
     Calculate the residual of the model applied to the given time interval when
@@ -333,7 +334,7 @@ def residual_single_run(pars, t, inputs, data, model, should_print=True):
     # start = time.time()
     out = model(pars, t, inputs)
     # end = time.time()
-    out = ape_vector_flat(out, data)
+    out = (out - data).flatten()
     print_max_abs_error(out, should_print)
     # print('TIME:', end - start)
     return out
@@ -431,7 +432,7 @@ def residual_asymptote(pars, sampledb, model,
             as_data     = get_asymptote_2d(data)
             as_model    = tempmodel_asymptote(model, pars, t, inputs)
 
-            res = ape_vector_flat(as_model, as_data)
+            res = (as_model - as_data).flatten()
             out = np.append(out, res)
 
     print_max_abs_error(out, should_print)
@@ -450,7 +451,7 @@ def residual_asymptote(pars, sampledb, model,
 #             Te)
 #         data = rowv[TEMP_TZ0:TEMP_TZ3+1].to_numpy()
 #         out = model(pars, t, inputs)
-#         residual = ape_vector_flat(out, data)
+#         residual = out - data
 #         residuals = np.append(residuals, residual)
 #     residuals = residuals.flatten()
 #     min, max = residuals.min(), residuals.max()
@@ -474,7 +475,7 @@ def residual_asymptote(pars, sampledb, model,
 #             Te)
 #         data = rowv[TEMP_TZ0:TEMP_TZ3+1].to_numpy()
 #         out = model(pars, t, inputs)
-#         residual = ape_vector_flat(out, data)
+#         residual = out - data
 #         residuals = np.append(residuals, residual)
 #     residuals = residuals.flatten()
 #     min, max = residuals.min(), residuals.max()
@@ -518,7 +519,6 @@ def fit_temp_multirun_by_multiple_fits(sampledb, model):
 def fit_temp_multirun(sampledb, model,
     fit_asymptote=False,
     skip_fit = False,
-    method = 'leastsq',
     ):
     pars = build_params(cpu_num=4)
 
@@ -530,28 +530,21 @@ def fit_temp_multirun(sampledb, model,
     if fit_asymptote:
         residual_fun = residual_asymptote
 
-    PARAMS_PER_METHOD = {
-        # 'leastsq': {
-        #     'epsfcn': 0.2,
-        # },
-    }
-
-    params = {}
-
-    if method in PARAMS_PER_METHOD:
-        params = PARAMS_PER_METHOD[method]
-
     minimizer = lmfit.Minimizer(
         residual_fun, pars,
         fcn_args=(sampledb, model))
-
     fitresult = minimizer.minimize(
-        method=method,
-        **params,
+        # method='leastsq',
+        # epsfcn=0.2,
+        method='differential_evolution',
+        fit_kws = {
+            'workers': -1,
+        }
     )
-
+    # fitresult = minimizer.leastsq(
+    #     epsfcn=0.2
+    # )
     print(lmfit.fit_report(fitresult))
-
     return fitresult.params
 
 # # NOTE: x and y are numpy arrays
